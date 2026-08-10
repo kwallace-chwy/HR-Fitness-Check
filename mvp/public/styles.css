@@ -75,6 +75,12 @@ button {
   cursor: pointer;
 }
 
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
@@ -608,6 +614,10 @@ input[type="search"] {
 }
 
 .chart-data summary {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
   color: var(--chewy-blue);
   cursor: pointer;
   font-weight: 700;

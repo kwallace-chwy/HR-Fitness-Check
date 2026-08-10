@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-TECH-001` |
-| Version | `0.2` |
+| Version | `0.3` |
 | Status | Implemented MVP contract; not a production architecture approval |
 | Last updated | 2026-08-10 |
 | Runtime | Node.js 22 or newer; use a supported LTS line; built-in production modules only; Playwright/Axe are development test dependencies |
@@ -181,7 +181,7 @@ Rows reconcile to `/api/v1/sites` for the same filters. Fields beginning with `=
 
 ## Audit contract
 
-Each API request records `requestId`, UTC timestamp, fixed `userScope="mvp-reviewer / fixture"`, capability ID, route, method, status code, filters, data status, catalog version/status, latency in milliseconds, and `decision` (`answered` below 400; otherwise `rejected`). Report routes use `cap.hrfc.reporting.v1`; other API routes use `cap.hrfc.cockpit_read.v1`.
+Each API request records `requestId`, UTC timestamp, fixed `userScope="mvp-reviewer / fixture"`, capability ID, route, method, status code, route-applicable filters, data status, catalog version/status, latency in milliseconds, and `decision` (`answered` below 400; otherwise `rejected`). Capability is selected by exact registered route membership: the two registered report routes use `cap.hrfc.reporting.v1`; every other or unknown API route uses `cap.hrfc.cockpit_read.v1`. Unscoped routes and requests rejected before filter resolution store `filters=null`; scoped routes store only the filter keys allowed by that route.
 
 The store is process memory only, holds at most 100 newest events, returns at most 50, and resets on restart. It is demonstrative observability, not production auditability.
 
@@ -199,7 +199,7 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | `TECH-REQ-008` | Responses shall include no-store and implemented security headers, and the static app shall require no external asset host. |
 | `TECH-REQ-009` | The MVP shall perform no external source, model, approval, Confluence, or HR-system call. |
 | `TECH-REQ-010` | Production runtime shall not reuse the fixed fixture user scope or memory audit as an authorization/audit control. |
-| `TECH-REQ-011` | Startup shall validate fixture referential integrity, enumerations, periods, counts, and distributions before accepting a request. |
+| `TECH-REQ-011` | Startup shall validate every published fixture metadata/source/gate field, nonblank rendered dimensions, exact safety statuses, canonical UTC provenance, newest-to-oldest contiguous quarters, referential integrity, enumerations, bounded catalog counts, and distributions before accepting a request. |
 | `TECH-REQ-012` | Report content identity shall be deterministic over semantic report content and scoped results while request ID and generation time remain volatile. |
 
 ## Future production work

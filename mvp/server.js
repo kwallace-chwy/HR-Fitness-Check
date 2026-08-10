@@ -10,9 +10,28 @@ function fixtureAssertion(condition, message) {
   if (!condition) throw new Error(`Invalid fixture: ${message}`);
 }
 
+function isNonEmptyString(value) {
+  return typeof value === "string" && value.trim().length > 0;
+}
+
+function isCanonicalUtcTimestamp(value) {
+  const utcPattern = /^\d{4}-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12]\d|3[01])T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{3})?Z$/;
+  if (!isNonEmptyString(value) || !utcPattern.test(value)) return false;
+  const parsed = new Date(value);
+  if (!Number.isFinite(parsed.getTime())) return false;
+  const canonical = parsed.toISOString();
+  return value === canonical || value === canonical.replace(".000Z", "Z");
+}
+
+function assertNonEmptyFields(record, fields, label) {
+  for (const field of fields) {
+    fixtureAssertion(isNonEmptyString(record[field]), `${label}.${field} must be a non-empty string.`);
+  }
+}
+
 function assertUniqueValues(rows, key, label) {
   const values = rows.map((row) => row[key]);
-  fixtureAssertion(values.every((value) => typeof value === "string" && value.length > 0), `${label} must be non-empty strings.`);
+  fixtureAssertion(values.every(isNonEmptyString), `${label} must be non-empty strings.`);
   fixtureAssertion(new Set(values).size === values.length, `${label} must be unique.`);
 }
 
@@ -25,14 +44,32 @@ function validateFixture(fixture) {
     fixtureAssertion(fixture[collection].length > 0, `${collection} must not be empty.`);
   }
 
-  fixtureAssertion(fixture.periods.every((period) => typeof period === "string" && period.length > 0), "periods must be non-empty strings.");
+  assertNonEmptyFields(
+    fixture.meta,
+    ["product", "version", "catalogVersion", "disclaimer", "sourceOfTruth"],
+    "meta"
+  );
+  fixtureAssertion(fixture.meta.dataStatus === "fixture", "meta.dataStatus must be fixture.");
+  fixtureAssertion(fixture.meta.catalogApprovalStatus === "approval_pending", "meta.catalogApprovalStatus must be approval_pending.");
+  fixtureAssertion(fixture.meta.comparisonStatus === "illustrative_not_recast", "meta.comparisonStatus must be illustrative_not_recast.");
+  fixtureAssertion(Array.isArray(fixture.meta.sourceRefs) && fixture.meta.sourceRefs.length > 0, "meta.sourceRefs must be a non-empty array.");
+  fixtureAssertion(fixture.meta.sourceRefs.every(isNonEmptyString), "meta.sourceRefs must contain non-empty strings.");
+  fixtureAssertion(new Set(fixture.meta.sourceRefs).size === fixture.meta.sourceRefs.length, "meta.sourceRefs must be unique.");
+
+  fixtureAssertion(fixture.periods.every((period) => /^\d{4} Q[1-4]$/.test(period)), "periods must use YYYY Q1-Q4 format.");
   fixtureAssertion(new Set(fixture.periods).size === fixture.periods.length, "periods must be unique.");
   fixtureAssertion(fixture.periods.includes(fixture.meta.defaultPeriod), "meta.defaultPeriod must be present in periods.");
+  const periodOrdinals = fixture.periods.map((period) => {
+    const [year, quarter] = period.match(/^(\d{4}) Q([1-4])$/).slice(1).map(Number);
+    return year * 4 + quarter - 1;
+  });
+  fixtureAssertion(
+    periodOrdinals.every((ordinal, index) => index === 0 || ordinal === periodOrdinals[index - 1] - 1),
+    "periods must be newest-to-oldest contiguous quarters."
+  );
+  fixtureAssertion(fixture.meta.defaultPeriod === fixture.periods[0], "meta.defaultPeriod must be the newest configured period.");
   for (const timestampField of ["generatedAt", "catalogAsOf"]) {
-    fixtureAssertion(
-      typeof fixture.meta[timestampField] === "string" && Number.isFinite(Date.parse(fixture.meta[timestampField])),
-      `meta.${timestampField} must be a valid timestamp.`
-    );
+    fixtureAssertion(isCanonicalUtcTimestamp(fixture.meta[timestampField]), `meta.${timestampField} must be a canonical UTC timestamp.`);
   }
 
   assertUniqueValues(fixture.sources, "id", "source IDs");
@@ -49,11 +86,12 @@ function validateFixture(fixture) {
   const sourceIds = new Set(fixture.sources.map((source) => source.id));
 
   for (const source of fixture.sources) {
+    assertNonEmptyFields(source, ["family", "coverage", "owner", "freshness", "nextAction", "evidence"], `source ${source.id}`);
     fixtureAssertion(sourceStatuses.has(source.status), `source ${source.id} has an unknown status.`);
   }
   for (const item of fixture.catalogItems) {
-    fixtureAssertion(typeof item.task === "string" && item.task.length > 0, `catalog item ${item.demoItemId} requires a task.`);
-    fixtureAssertion(typeof item.category === "string" && item.category.length > 0, `catalog item ${item.demoItemId} requires a category.`);
+    fixtureAssertion(isNonEmptyString(item.task), `catalog item ${item.demoItemId} requires a task.`);
+    fixtureAssertion(isNonEmptyString(item.category), `catalog item ${item.demoItemId} requires a category.`);
     fixtureAssertion(ownerGroups.has(item.ownerGroup), `catalog item ${item.demoItemId} has an unknown owner group.`);
     fixtureAssertion(implementationModes.has(item.implementationMode), `catalog item ${item.demoItemId} has an unknown implementation mode.`);
     fixtureAssertion(evidenceModes.has(item.evidenceMode), `catalog item ${item.demoItemId} has an unknown evidence mode.`);
@@ -61,19 +99,33 @@ function validateFixture(fixture) {
     fixtureAssertion(sourceIds.has(item.sourceId), `catalog item ${item.demoItemId} references unknown source ${item.sourceId}.`);
   }
   for (const gate of fixture.releaseGates) {
+    assertNonEmptyFields(gate, ["name", "owner"], `release gate ${gate.id}`);
     fixtureAssertion(releaseGateStatuses.has(gate.status), `release gate ${gate.id} has an unknown status.`);
   }
 
   const itemCount = fixture.catalogItems.length;
+  assertNonEmptyFields(fixture.catalog, ["status", "workbookVersion", "approvalStatus"], "catalog");
+  fixtureAssertion(isCanonicalUtcTimestamp(fixture.catalog.workbookModifiedAt), "catalog.workbookModifiedAt must be a canonical UTC timestamp.");
+  fixtureAssertion(fixture.catalog.workbookModifiedAt === fixture.meta.catalogAsOf, "catalog.workbookModifiedAt must equal meta.catalogAsOf.");
   fixtureAssertion(fixture.catalog.taskRows === itemCount, "catalog.taskRows must equal catalogItems length.");
   fixtureAssertion(fixture.catalog.scopeIntentRows === itemCount, "catalog.scopeIntentRows must equal catalogItems length.");
   fixtureAssertion(
     fixture.catalog.ownerAssignments === fixture.catalogItems.filter((item) => item.ownerGroup).length,
     "catalog.ownerAssignments must equal populated catalog owner groups."
   );
-  for (const field of ["removedRows", "approvedMappings", "approvedImplementationModes", "sourceTableBlanks", "reviewerBlanks", "resultBlanks", "thresholdGaps"]) {
+  for (const field of ["removedRows", "thresholdGaps"]) {
     fixtureAssertion(Number.isInteger(fixture.catalog[field]) && fixture.catalog[field] >= 0, `catalog.${field} must be a non-negative integer.`);
   }
+  for (const field of ["approvedMappings", "approvedImplementationModes", "sourceTableBlanks", "reviewerBlanks", "resultBlanks"]) {
+    fixtureAssertion(
+      Number.isInteger(fixture.catalog[field]) && fixture.catalog[field] >= 0 && fixture.catalog[field] <= itemCount,
+      `catalog.${field} must be an integer from 0 to ${itemCount}.`
+    );
+  }
+  fixtureAssertion(
+    fixture.catalog.approvedMappings + fixture.catalog.sourceTableBlanks <= itemCount,
+    "catalog approvedMappings and sourceTableBlanks must not exceed catalogItems length."
+  );
   fixtureAssertion(fixture.meta.catalogApprovalStatus === fixture.catalog.approvalStatus, "catalog approval status must reconcile with meta.");
 
   const sourceById = new Map(fixture.sources.map((source) => [source.id, source]));
@@ -82,8 +134,8 @@ function validateFixture(fixture) {
     return item.implementationMode === "governance_first" || sourceStatus === "blocked" || sourceStatus === "governance";
   }).length;
   for (const site of fixture.sites) {
-    fixtureAssertion(typeof site.group === "string" && site.group.length > 0, `site ${site.siteId} requires a group.`);
-    fixtureAssertion(typeof site.region === "string" && site.region.length > 0, `site ${site.siteId} requires a region.`);
+    fixtureAssertion(isNonEmptyString(site.group), `site ${site.siteId} requires a group.`);
+    fixtureAssertion(isNonEmptyString(site.region), `site ${site.siteId} requires a region.`);
     fixtureAssertion(site.results && typeof site.results === "object" && !Array.isArray(site.results), `site ${site.siteId} requires results.`);
     const resultPeriods = Object.keys(site.results);
     fixtureAssertion(
@@ -129,6 +181,9 @@ const ROUTE_CONTRACTS = [
   { path: "/api/v1/reports/export.csv", mediaType: "text/csv", filters: ["period", "region", "group", "site"] },
   { path: "/api/v1/audit-events", mediaType: "application/json", filters: [] }
 ];
+const REPORTING_ROUTE_PATHS = new Set(
+  ROUTE_CONTRACTS.filter((route) => route.path.startsWith("/api/v1/reports/")).map((route) => route.path)
+);
 
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
@@ -680,7 +735,7 @@ function recordAudit({ requestId, pathname, method, statusCode, startedAt, filte
     requestId,
     timestamp: new Date().toISOString(),
     userScope: "mvp-reviewer / fixture",
-    capabilityId: pathname.includes("reports") ? "cap.hrfc.reporting.v1" : "cap.hrfc.cockpit_read.v1",
+    capabilityId: REPORTING_ROUTE_PATHS.has(pathname) ? "cap.hrfc.reporting.v1" : "cap.hrfc.cockpit_read.v1",
     route: pathname,
     method,
     statusCode,
@@ -692,6 +747,11 @@ function recordAudit({ requestId, pathname, method, statusCode, startedAt, filte
     decision: statusCode < 400 ? "answered" : "rejected"
   });
   if (auditEvents.length > 100) auditEvents.length = 100;
+}
+
+function applicableAuditFilters(filters, routeContract) {
+  if (!filters || routeContract.filters.length === 0) return null;
+  return Object.fromEntries(routeContract.filters.map((key) => [key, filters[key]]));
 }
 
 function handleApi(request, response, url, requestId, startedAt) {
@@ -708,9 +768,10 @@ function handleApi(request, response, url, requestId, startedAt) {
     return;
   }
   const filters = queryFilters(url);
+  const auditFilters = applicableAuditFilters(filters, routeContract);
   const filterError = validateFilters(filters);
   if (filterError) {
-    recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode: 400, startedAt, filters });
+    recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode: 400, startedAt, filters: auditFilters });
     sendJson(response, 400, { error: "invalid_filter", message: filterError, requestId }, requestId);
     return;
   }
@@ -765,14 +826,14 @@ function handleApi(request, response, url, requestId, startedAt) {
     payload = buildExecutiveReport(filters);
   } else if (url.pathname === "/api/v1/reports/export.csv") {
     const filename = `hr-fitness-check-${filters.period.replace(/\s+/g, "-").toLowerCase()}.csv`;
-    recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode: 200, startedAt, filters });
+    recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode: 200, startedAt, filters: auditFilters });
     sendCsv(response, filename, buildCsv(filters), requestId);
     return;
   } else if (url.pathname === "/api/v1/audit-events") {
     payload = { status: "ephemeral", rows: auditEvents.slice(0, 50) };
   }
 
-  recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode, startedAt, filters });
+  recordAudit({ requestId, pathname: url.pathname, method: request.method, statusCode, startedAt, filters: auditFilters });
   sendJson(response, statusCode, payload, requestId);
 }
 

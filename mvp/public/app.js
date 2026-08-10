@@ -5,6 +5,7 @@ const state = {
   meta: null,
   filterOptions: null,
   filters: { period: "", region: "All", group: "All" },
+  initialized: false,
   renderToken: 0
 };
 
@@ -46,6 +47,7 @@ const elements = {
   pageEyebrow: document.getElementById("pageEyebrow"),
   pageTitle: document.getElementById("pageTitle"),
   pageDescription: document.getElementById("pageDescription"),
+  refreshButton: document.getElementById("refreshButton"),
   periodFilter: document.getElementById("periodFilter"),
   regionFilter: document.getElementById("regionFilter"),
   groupFilter: document.getElementById("groupFilter"),
@@ -154,7 +156,7 @@ function showLoading() {
   `;
 }
 
-function showError(error) {
+function showError(error, retry = renderCurrentView) {
   elements.content.setAttribute("aria-busy", "false");
   announce(`${views[state.view].title} could not be loaded.`);
   elements.content.innerHTML = `
@@ -166,7 +168,7 @@ function showError(error) {
       </div>
     </div>
   `;
-  document.getElementById("retryViewButton")?.addEventListener("click", renderCurrentView);
+  document.getElementById("retryViewButton")?.addEventListener("click", retry);
 }
 
 function showEmpty(message) {
@@ -182,16 +184,42 @@ function showEmpty(message) {
   `;
 }
 
-function persistUrl() {
+function persistUrl(mode = "replace") {
   const url = new URL(window.location.href);
   url.searchParams.set("view", state.view);
-  url.searchParams.set("period", state.filters.period);
-  url.searchParams.set("region", state.filters.region);
-  url.searchParams.set("group", state.filters.group);
-  window.history.replaceState({}, "", url);
+  if (state.initialized) {
+    url.searchParams.set("period", state.filters.period);
+    url.searchParams.set("region", state.filters.region);
+    url.searchParams.set("group", state.filters.group);
+  }
+  const method = mode === "push" ? "pushState" : "replaceState";
+  window.history[method]({ view: state.view, filters: { ...state.filters } }, "", url);
 }
 
-function updateChrome() {
+function applyUrlState() {
+  const url = new URL(window.location.href);
+  const requestedView = url.searchParams.get("view");
+  state.view = Object.hasOwn(views, requestedView) ? requestedView : "overview";
+  if (!state.meta || !state.filterOptions) return;
+  const requestedPeriod = url.searchParams.get("period");
+  const requestedRegion = url.searchParams.get("region");
+  const requestedGroup = url.searchParams.get("group");
+  state.filters.period = state.filterOptions.periods.includes(requestedPeriod) ? requestedPeriod : state.meta.defaultPeriod;
+  state.filters.region = state.filterOptions.regions.includes(requestedRegion) ? requestedRegion : "All";
+  state.filters.group = state.filterOptions.groups.includes(requestedGroup) ? requestedGroup : "All";
+}
+
+function syncFilterControls() {
+  elements.periodFilter.innerHTML = optionList(state.filterOptions.periods, state.filters.period);
+  elements.regionFilter.innerHTML = optionList(state.filterOptions.regions, state.filters.region);
+  elements.groupFilter.innerHTML = optionList(state.filterOptions.groups, state.filters.group);
+  [elements.periodFilter, elements.regionFilter, elements.groupFilter].forEach((control) => {
+    control.disabled = false;
+  });
+  elements.refreshButton.disabled = false;
+}
+
+function updateChrome({ writeUrl = true } = {}) {
   const copy = views[state.view];
   elements.pageEyebrow.textContent = copy.eyebrow;
   elements.pageTitle.textContent = copy.title;
@@ -207,8 +235,10 @@ function updateChrome() {
     window.requestAnimationFrame(() => activeNavItem.scrollIntoView({ behavior: "auto", block: "nearest", inline: "center" }));
   }
   elements.filterBar.hidden = ["work-queue", "sources", "audit"].includes(state.view);
-  elements.filterContext.textContent = `${state.filters.period} / ${state.filters.region === "All" ? "Network" : state.filters.region} / ${state.filters.group === "All" ? "All site groups" : state.filters.group}`;
-  persistUrl();
+  elements.filterContext.textContent = state.initialized
+    ? `${state.filters.period} / ${state.filters.region === "All" ? "Network" : state.filters.region} / ${state.filters.group === "All" ? "All site groups" : state.filters.group}`
+    : "Loading scope.";
+  if (writeUrl) persistUrl();
 }
 
 function optionList(values, selected) {
@@ -373,6 +403,7 @@ async function renderWorkQueue(token) {
           <label><span>Evidence mode</span><select id="queueEvidence"><option value="All">All modes</option><option value="physical">Physical</option><option value="virtual">Virtual</option><option value="mixed">Mixed</option></select></label>
           <label><span>Readiness</span><select id="queueReadiness"><option value="All">All statuses</option><option value="mapping_required">Mapping required</option><option value="manual_workflow_required">Manual workflow required</option><option value="governance_required">Governance required</option></select></label>
         </div>
+        <div id="queueFilterStatus" class="sr-only" role="status" aria-live="polite"></div>
       </div>
       <div class="table-wrap" role="region" aria-label="Standard Work catalog. Scroll horizontally to review all columns." tabindex="0">
         <table>
@@ -397,6 +428,9 @@ async function renderWorkQueue(token) {
     document.getElementById("queueRows").innerHTML = filtered.length
       ? filtered.map(catalogRow).join("")
       : `<tr><td colspan="8">No catalog items match these filters.</td></tr>`;
+    document.getElementById("queueFilterStatus").textContent = filtered.length
+      ? `${filtered.length} catalog ${filtered.length === 1 ? "item" : "items"} shown.`
+      : "No catalog items match these filters.";
     document.querySelectorAll(".inspect-catalog").forEach((button) => button.addEventListener("click", () => openCatalogItem(items.find((item) => item.demoItemId === button.dataset.itemId))));
   };
   [search, evidence, readiness].forEach((control) => control.addEventListener(control === search ? "input" : "change", renderRows));
@@ -408,6 +442,29 @@ function openDialog(eyebrow, title, body) {
   elements.dialogTitle.textContent = title;
   elements.dialogBody.innerHTML = body;
   elements.dialog.showModal();
+  document.getElementById("closeDialogButton").focus();
+}
+
+function containDialogFocus(event) {
+  if (event.key !== "Tab" || !elements.dialog.open) return;
+  const focusable = [...elements.dialog.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )].filter((element) => element.getClientRects().length > 0);
+  if (!focusable.length) {
+    event.preventDefault();
+    elements.dialog.focus();
+    return;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  const active = document.activeElement;
+  if (event.shiftKey && (active === first || !elements.dialog.contains(active))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && (active === last || !elements.dialog.contains(active))) {
+    event.preventDefault();
+    first.focus();
+  }
 }
 
 function openCatalogItem(item) {
@@ -514,6 +571,7 @@ async function openSiteReview(site) {
         <label><span>Rating / exception</span><select id="itemRating"><option value="All">All results</option><option value="green">Green</option><option value="yellow">Yellow</option><option value="red">Red</option><option value="exception">No rating</option></select></label>
         <label><span>Evidence mode</span><select id="itemEvidence"><option value="All">All modes</option><option value="physical">Physical</option><option value="virtual">Virtual</option><option value="mixed">Mixed</option></select></label>
       </div>
+      <div id="itemFilterStatus" class="sr-only" role="status" aria-live="polite"></div>
       <div class="table-wrap dialog-table" role="region" aria-label="Item results. Scroll horizontally to review all columns." tabindex="0">
         <table><thead><tr><th>Item</th><th>Category</th><th>Owner</th><th>Rating</th><th>Result status</th><th>Evidence</th><th>Accountability</th><th>Source</th></tr></thead><tbody id="itemResultRows"></tbody></table>
       </div>
@@ -531,6 +589,9 @@ async function openSiteReview(site) {
         return true;
       });
       document.getElementById("itemResultRows").innerHTML = filtered.length ? filtered.map(itemResultRow).join("") : `<tr><td colspan="8">No item results match these filters.</td></tr>`;
+      document.getElementById("itemFilterStatus").textContent = filtered.length
+        ? `${filtered.length} item ${filtered.length === 1 ? "result" : "results"} shown.`
+        : "No item results match these filters.";
     };
     search.addEventListener("input", renderRows);
     rating.addEventListener("change", renderRows);
@@ -570,6 +631,7 @@ async function renderSources(token) {
     </div>
     <section class="workspace-panel">
       <div class="panel-header"><div><h2>Source registry discovery</h2><p>Coverage, freshness, owner, and next action are visible before any source is activated.</p></div><label><span class="small-muted">Status filter</span><select id="sourceStatusFilter"><option value="All">All statuses</option>${Object.keys(counts).sort().map((status) => `<option value="${escapeHtml(status)}">${escapeHtml(formatLabel(status))}</option>`).join("")}</select></label></div>
+      <div id="sourceFilterStatus" class="sr-only" role="status" aria-live="polite"></div>
       <div class="table-wrap" role="region" aria-label="Source readiness registry. Scroll horizontally to review all columns." tabindex="0"><table><thead><tr><th>Source family</th><th>Status</th><th>Coverage</th><th>Owner</th><th>Freshness</th><th>Next action</th><th>Action</th></tr></thead><tbody id="sourceRows"></tbody></table></div>
     </section>
     <div class="section-grid equal">
@@ -581,6 +643,7 @@ async function renderSources(token) {
   const renderRows = () => {
     const filtered = filter.value === "All" ? sources : sources.filter((source) => source.status === filter.value);
     document.getElementById("sourceRows").innerHTML = filtered.map(sourceRow).join("");
+    document.getElementById("sourceFilterStatus").textContent = `${filtered.length} source ${filtered.length === 1 ? "record" : "records"} shown.`;
     document.querySelectorAll(".inspect-source").forEach((button) => button.addEventListener("click", () => openSource(sources.find((source) => source.id === button.dataset.sourceId))));
   };
   filter.addEventListener("change", renderRows);
@@ -605,6 +668,20 @@ function openSource(source) {
 
 function reportList(items) {
   return `<ul class="narrative-list">${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>`;
+}
+
+function formatAuditScope(filters) {
+  if (!filters) return "Not applicable";
+  const ordered = [
+    ["period", "Period"],
+    ["region", "Region"],
+    ["group", "Group"],
+    ["site", "Site"]
+  ];
+  const parts = ordered
+    .filter(([key]) => Object.hasOwn(filters, key) && filters[key] !== null)
+    .map(([key, label]) => `${label}: ${filters[key]}`);
+  return parts.length ? parts.join(" / ") : "Not applicable";
 }
 
 async function renderReports(token) {
@@ -659,11 +736,14 @@ async function renderAudit(token) {
   elements.content.innerHTML = `
     <div class="view-intro"><p>This audit trail is memory-only and resets when the local server restarts. It demonstrates the required request envelope without storing user or HR data.</p>${statusBadge("info", "Ephemeral")}</div>
     <section class="workspace-panel">
-      <div class="panel-header"><div><h2>Recent API decisions</h2><p>Every route records scope, catalog, latency, response status, and decision.</p></div><button class="secondary-button" id="refreshAuditButton" type="button">Refresh log</button></div>
-      <div class="table-wrap" role="region" aria-label="Request audit events. Scroll horizontally to review all columns." tabindex="0"><table><thead><tr><th>Timestamp</th><th>Capability</th><th>Route</th><th>Scope</th><th>Status</th><th class="numeric">Latency</th><th>Request ID</th></tr></thead><tbody>${rows.length ? rows.map((row) => `<tr><td>${escapeHtml(new Date(row.timestamp).toLocaleTimeString())}</td><td>${escapeHtml(row.capabilityId)}</td><td>${escapeHtml(row.route)}</td><td>${escapeHtml(row.filters ? `${row.filters.period} / ${row.filters.region} / ${row.filters.group}${row.filters.site ? ` / ${row.filters.site}` : ""}` : "None")}</td><td>${statusBadge(row.statusCode < 400 ? "success" : "danger", `${row.statusCode} ${formatLabel(row.decision)}`)}</td><td class="numeric">${row.latencyMs} ms</td><td><span class="source-ref">${escapeHtml(row.requestId)}</span></td></tr>`).join("") : `<tr><td colspan="7">No requests have been recorded yet.</td></tr>`}</tbody></table></div>
+      <div class="panel-header"><div><h2>Recent API decisions</h2><p>Each event records its applicable scope, catalog, latency, response status, and decision.</p></div><button class="secondary-button" id="refreshAuditButton" type="button">Refresh log</button></div>
+      <div class="table-wrap" role="region" aria-label="Request audit events. Scroll horizontally to review all columns." tabindex="0"><table><thead><tr><th>Timestamp</th><th>Capability</th><th>Route</th><th>Scope</th><th>Status</th><th class="numeric">Latency</th><th>Request ID</th></tr></thead><tbody>${rows.length ? rows.map((row) => `<tr><td>${escapeHtml(new Date(row.timestamp).toLocaleTimeString())}</td><td>${escapeHtml(row.capabilityId)}</td><td>${escapeHtml(row.route)}</td><td>${escapeHtml(formatAuditScope(row.filters))}</td><td>${statusBadge(row.statusCode < 400 ? "success" : "danger", `${row.statusCode} ${formatLabel(row.decision)}`)}</td><td class="numeric">${row.latencyMs} ms</td><td><span class="source-ref">${escapeHtml(row.requestId)}</span></td></tr>`).join("") : `<tr><td colspan="7">No requests have been recorded yet.</td></tr>`}</tbody></table></div>
     </section>
   `;
-  document.getElementById("refreshAuditButton").addEventListener("click", renderCurrentView);
+  document.getElementById("refreshAuditButton").addEventListener("click", async () => {
+    await renderCurrentView();
+    document.getElementById("refreshAuditButton")?.focus();
+  });
 }
 
 async function renderCurrentView() {
@@ -689,16 +769,24 @@ async function renderCurrentView() {
 function bindChrome() {
   document.getElementById("primaryNav").addEventListener("click", (event) => {
     const button = event.target.closest("[data-view]");
-    if (!button) return;
+    if (!button || button.dataset.view === state.view) return;
     state.view = button.dataset.view;
-    renderCurrentView();
+    persistUrl("push");
+    if (state.initialized) renderCurrentView();
+    else {
+      updateChrome({ writeUrl: false });
+      showLoading();
+    }
     document.getElementById("mainContent").focus({ preventScroll: true });
   });
-  document.getElementById("refreshButton").addEventListener("click", renderCurrentView);
+  elements.refreshButton.addEventListener("click", () => {
+    if (state.initialized) renderCurrentView();
+  });
   document.getElementById("closeDialogButton").addEventListener("click", () => elements.dialog.close());
   elements.dialog.addEventListener("click", (event) => {
     if (event.target === elements.dialog) elements.dialog.close();
   });
+  elements.dialog.addEventListener("keydown", containDialogFocus);
   [elements.periodFilter, elements.regionFilter, elements.groupFilter].forEach((control) => {
     control.addEventListener("change", () => {
       state.filters = {
@@ -709,32 +797,39 @@ function bindChrome() {
       renderCurrentView();
     });
   });
+  window.addEventListener("popstate", () => {
+    applyUrlState();
+    if (state.initialized) {
+      syncFilterControls();
+      renderCurrentView();
+    } else {
+      updateChrome({ writeUrl: false });
+      showLoading();
+    }
+    document.getElementById("mainContent").focus({ preventScroll: true });
+  });
 }
 
 async function init() {
-  bindChrome();
+  state.initialized = false;
+  elements.refreshButton.disabled = true;
+  applyUrlState();
+  updateChrome({ writeUrl: false });
+  showLoading();
   try {
     const [meta, filters] = await Promise.all([api("/api/v1/meta", {}, []), api("/api/v1/filters", {}, [])]);
     state.meta = meta;
     state.filterOptions = filters;
-    const url = new URL(window.location.href);
-    const requestedView = url.searchParams.get("view");
-    const requestedPeriod = url.searchParams.get("period");
-    const requestedRegion = url.searchParams.get("region");
-    const requestedGroup = url.searchParams.get("group");
-    state.view = Object.hasOwn(views, requestedView) ? requestedView : "overview";
-    state.filters.period = filters.periods.includes(requestedPeriod) ? requestedPeriod : meta.defaultPeriod;
-    state.filters.region = filters.regions.includes(requestedRegion) ? requestedRegion : "All";
-    state.filters.group = filters.groups.includes(requestedGroup) ? requestedGroup : "All";
-    elements.periodFilter.innerHTML = optionList(filters.periods, state.filters.period);
-    elements.regionFilter.innerHTML = optionList(filters.regions, state.filters.region);
-    elements.groupFilter.innerHTML = optionList(filters.groups, state.filters.group);
+    applyUrlState();
+    state.initialized = true;
+    syncFilterControls();
     elements.catalogStatus.textContent = `${meta.catalog.taskRows}-row catalog / approval pending`;
     elements.truthBanner.innerHTML = `<strong>Validation data</strong><span>${escapeHtml(meta.disclaimer)} Catalog as of ${escapeHtml(new Date(meta.catalogAsOf).toLocaleDateString())}.</span>`;
     await renderCurrentView();
   } catch (error) {
-    showError(error);
+    showError(error, init);
   }
 }
 
+bindChrome();
 init();

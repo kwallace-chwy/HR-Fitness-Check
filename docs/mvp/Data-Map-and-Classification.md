@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-DATA-001` |
-| Version | `0.2` |
+| Version | `0.3` |
 | Status | MVP review draft; not production-ready |
 | Last updated | 2026-08-10 |
 | Evidence cutoff | Repository and connected-source verification on 2026-08-10; working catalog as of 2026-07-29 16:32:27 UTC; synthetic data snapshot as of 2026-08-06 20:00:00 UTC |
@@ -49,8 +49,8 @@ There is no production connector, source query, model call, durable database, ap
 | `DA-003` | Generated item result | Synthetic site x period x catalog item; rating, result status, evidence status, source status, rule version | Generated per request; not persisted | Internal, synthetic validation data |
 | `DA-004` | Source discovery registry | One row per source lead; status, coverage, owner, freshness, next action, evidence reference | JSON in repository | Internal discovery metadata; not an activated-source registry |
 | `DA-005` | Release-gate fixture | Gate ID, name, status, owner role | JSON in repository | Internal planning metadata |
-| `DA-006` | Request audit event | Request ID, timestamp, fixed fixture user scope, capability, route, method, status, filters, catalog, latency, decision | Process memory only; newest 100 retained, API returns newest 50, reset on restart | Internal operational metadata; not a compliant production audit record |
-| `DA-007` | Browser state | View, period, region, group in URL query parameters | Browser history only | Internal; contains no associate record in this MVP |
+| `DA-006` | Request audit event | Request ID, timestamp, fixed fixture user scope, exact registered capability, route, method, status, route-applicable filters or `null`, catalog, latency, decision | Process memory only; newest 100 retained, API returns newest 50, reset on restart | Internal operational metadata; not a compliant production audit record |
+| `DA-007` | Browser state | View, period, region, and group in URL query parameters; view navigation uses session history while filter changes update the current entry | Browser session history only | Internal; contains no associate record in this MVP |
 
 `sites[].results` values are exact post-policy expected distributions. The generator assigns source-blocked and governance-first rows to unavailable results before allocating rated rows, then validates that every generated site-period rollup exactly matches the stored distribution. Any mismatch is a fixture-integrity failure; the stored distribution and API are not competing truths.
 

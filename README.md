@@ -115,6 +115,7 @@ The review-ready MVP is a zero-production-dependency Node application with item-
 ```powershell
 cd mvp
 npm ci
+npm run test:e2e:install
 npm run test:all
 npm start
 ```

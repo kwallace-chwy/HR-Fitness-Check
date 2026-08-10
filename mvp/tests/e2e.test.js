@@ -125,6 +125,30 @@ test.after(async () => {
   }
 });
 
+test("initial bootstrap failure preserves deep-link chrome and recovers in place", { timeout: 30000 }, async (t) => {
+  const { page, errors } = await openPage(t, { width: 390, height: 844 });
+  const bootstrapRoute = "**/api/v1/meta";
+  await page.route(bootstrapRoute, (route) => route.fulfill({
+    status: 503,
+    contentType: "application/json",
+    body: JSON.stringify({ message: "Synthetic bootstrap outage for regression test." })
+  }));
+  await page.goto(`${baseUrl}/?view=work-queue`, { waitUntil: "domcontentloaded" });
+  await page.getByRole("heading", { level: 1, name: "Standard Work queue" }).waitFor();
+  await page.getByRole("heading", { level: 2, name: "Unable to load this view" }).waitFor();
+  assert.equal(await page.locator("#globalFilterBar").isVisible(), false);
+  assert.equal(await page.getByRole("button", { name: "Refresh", exact: true }).isDisabled(), true);
+  assert.match(await page.locator("#appContent").innerText(), /Synthetic bootstrap outage/);
+
+  await page.unroute(bootstrapRoute);
+  await page.getByRole("button", { name: "Try again", exact: true }).click();
+  await page.getByRole("region", { name: "Standard Work catalog. Scroll horizontally to review all columns." }).waitFor();
+  assert.equal(await page.getByRole("button", { name: "Refresh", exact: true }).isEnabled(), true);
+  assert.equal(new URL(page.url()).searchParams.get("period"), "2026 Q3");
+  assert.equal(await page.locator("#viewStatus").innerText(), "Standard Work queue loaded.");
+  assert.deepEqual(errors, []);
+});
+
 test("six views preserve navigation, focus, scope visibility, and recover from an API failure", { timeout: 30000 }, async (t) => {
   const { page, errors } = await openPage(t);
   await gotoView(page, views[0]);
@@ -139,6 +163,14 @@ test("six views preserve navigation, focus, scope visibility, and recover from a
     assert.equal(await page.evaluate(() => document.activeElement?.id), "mainContent");
     assert.equal(await page.locator("#globalFilterBar").isVisible(), view.scoped);
   }
+
+  await page.goBack();
+  await page.getByRole("heading", { level: 1, name: "Request audit" }).waitFor();
+  assert.equal(new URL(page.url()).searchParams.get("view"), "audit");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "mainContent");
+  await page.goForward();
+  await page.getByRole("heading", { level: 1, name: "Network overview" }).waitFor();
+  await page.getByRole("region", { name: "Assessment summary metrics" }).waitFor();
 
   const failingRoute = "**/api/v1/summary*";
   await page.route(failingRoute, (route) => route.fulfill({
@@ -197,7 +229,13 @@ test("row actions have contextual names and dialogs restore focus", { timeout: 3
   const catalogTrigger = page.getByRole("button", { name: "Inspect TM Experience Walk", exact: true });
   await catalogTrigger.click();
   await page.getByRole("heading", { level: 2, name: "TM Experience Walk" }).waitFor();
-  await page.getByRole("button", { name: "Close detail", exact: true }).click();
+  const closeButton = page.getByRole("button", { name: "Close detail", exact: true });
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Close detail");
+  await page.keyboard.press("Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Close detail");
+  await page.keyboard.press("Shift+Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Close detail");
+  await closeButton.click();
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Inspect TM Experience Walk");
 
   await gotoView(page, views.find((view) => view.id === "sites"));
@@ -207,12 +245,22 @@ test("row actions have contextual names and dialogs restore focus", { timeout: 3
   const itemRegion = page.getByRole("region", { name: "Item results. Scroll horizontally to review all columns." });
   await itemRegion.waitFor();
   assert.equal(await itemRegion.getAttribute("tabindex"), "0");
+  await page.locator("#itemSearch").fill("no fixture item matches this value");
+  assert.equal(await page.locator("#itemFilterStatus").innerText(), "No item results match these filters.");
+  await page.locator("#itemSearch").fill("");
+  await itemRegion.focus();
+  await page.keyboard.press("Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Close detail");
+  await page.keyboard.press("Shift+Tab");
+  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Item results. Scroll horizontally to review all columns.");
   await page.keyboard.press("Escape");
   await page.locator("#detailDialog").waitFor({ state: "hidden" });
   assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("aria-label")), "Review synthetic site AVP1");
 
   await gotoView(page, views.find((view) => view.id === "sources"));
   await assertUniqueAccessibleNames(page, ".inspect-source", "Inspect source ");
+  await page.locator("#sourceStatusFilter").selectOption("blocked");
+  assert.equal(await page.locator("#sourceFilterStatus").innerText(), "2 source records shown.");
   assert.deepEqual(errors, []);
 });
 
@@ -241,6 +289,9 @@ test("320px layout contains page overflow and makes wide data regions keyboard-s
   assert.ok(closeSize && closeSize.width >= 44 && closeSize.height >= 44);
 
   await gotoView(page, views.find((view) => view.id === "audit"));
+  await page.getByRole("button", { name: "Refresh log", exact: true }).click();
+  await page.locator('#appContent[aria-busy="false"]').waitFor();
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "refreshAuditButton");
   const auditRegion = page.getByRole("region", { name: "Request audit events. Scroll horizontally to review all columns." });
   const auditGeometry = await auditRegion.evaluate((element) => ({
     clientWidth: element.clientWidth,
@@ -282,6 +333,7 @@ test("320px layout contains page overflow and makes wide data regions keyboard-s
   const queueRegion = page.getByRole("region", { name: "Standard Work catalog. Scroll horizontally to review all columns." });
   assert.equal(await page.locator("#queueRows .inspect-catalog").count(), 0);
   assert.match(await page.locator("#queueRows").innerText(), /No catalog items match/i);
+  assert.equal(await page.locator("#queueFilterStatus").innerText(), "No catalog items match these filters.");
   assert.equal(await queueRegion.getAttribute("tabindex"), "0");
   await queueRegion.focus();
   await page.keyboard.press("ArrowRight");

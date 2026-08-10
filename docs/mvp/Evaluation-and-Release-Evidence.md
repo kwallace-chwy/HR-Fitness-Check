@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-EVAL-001` |
-| Version | `0.2` |
+| Version | `0.3` |
 | Status | MVP review evidence; production release blocked |
 | Last updated | 2026-08-10 |
 | Evaluation target | Local read-only ORBIT HR Fitness Check MVP `0.1.0` |
@@ -41,13 +41,14 @@ npm run test:all
 
 | Evidence ID | Command | Result |
 | --- | --- | --- |
-| `EVID-001` | `npm test` | PASS: 42 Node contract tests across reporting, API/UI static contracts, scope matrix, and fixture validation; 0 failures, 0 skipped, 0 cancelled |
+| `EVID-001` | `npm test` | PASS: 46 Node contract tests across reporting, API/UI static contracts, audit scope/capability, scope matrix, and fail-closed fixture validation; 0 failures, 0 skipped, 0 cancelled |
 | `EVID-002` | `npm run check` | PASS: Node syntax checks for `server.js` and `public/app.js` |
-| `EVID-003` | `npm run test:e2e` | PASS: 5 Microsoft Edge Playwright/Axe tests, 0 failures; six views, API recovery, reporting/CSV, dialogs/focus, exact-320px reflow/overflow, and serious/critical accessibility rules |
-| `EVID-004` | `npm run test:all` | PASS: syntax, 42 core tests, and 5 browser/accessibility tests in one command |
-| `EVID-005` | Independent adversarial QA | Found crash, route-contract, rounding, fixture-integrity, provenance, report-schema, mobile, and accessibility defects; each confirmed issue was corrected and regression-checked before handoff |
+| `EVID-003` | `npm run test:e2e` | PASS: 6 Microsoft Edge Playwright/Axe tests, 0 failures; stable bootstrap/deep-link recovery, six views with Back/Forward, reporting/CSV, modal/refresh focus, local announcements, exact-320px reflow/overflow, and serious/critical accessibility rules |
+| `EVID-004` | `npm run test:all` | PASS: syntax, 46 core tests, and 6 browser/accessibility tests in one command |
+| `EVID-005` | Independent adversarial QA | Found crash, route-contract, rounding, fixture-integrity, provenance, report-schema, audit-classification/scope, bootstrap/history/focus, mobile, and accessibility defects; each confirmed issue was corrected and regression-checked before handoff |
 | `EVID-006` | Dependency audit | PASS: 0 known vulnerabilities reported after installing the locked development dependencies; production dependencies remain 0 |
 | `EVID-007` | Connected-source currency check | Slack exact searches found no newer HRFC decision; the 2026-08-07 ORBIT update still names scope, source mapping, and data readiness as next steps; the SharePoint matrix remains modified 2026-07-29 with mapping/reviewer/result blanks; Confluence PRD remains version 15 and approval-pending |
+| `EVID-008` | Supported-runtime replay | PASS: checksum-verified official Node 22.22.3 and Node 24.18.0 LTS runtimes each passed syntax, all 46 Node tests, and all 6 Edge/Axe tests; the locked install dry-run also passed on both runtimes |
 
 Current tests cover:
 
@@ -56,9 +57,10 @@ Current tests cover:
 - Oldest-period API and builder behavior when no prior period exists.
 - Invalid-filter fail-closed behavior.
 - Route-specific query allowlists, duplicate/unknown parameter rejection, and machine-readable contracts.
+- Exact audit capability classification and route-applicable filter projection, including null scope for unscoped or pre-resolution rejection events.
 - Required-site behavior for item detail.
 - CSV scope reconciliation, separate data/catalog provenance, metric/contract versions, and formula neutralization.
-- Static app delivery with no external asset URL.
+- Static app delivery with no external asset URL and a locally served favicon.
 - Reconciled Confluence history labeling in the Data Readiness UI.
 - Neutral exception styling for unrated, blocked, missing, and unmapped evidence.
 - Mobile active-tab visibility, visible overflow affordance, fixed-size brand mark, and keyboard-scrollable item results.
@@ -76,8 +78,8 @@ Current tests cover:
 - Uniform numeric report metric schema plus presentation-only display values.
 - Stable semantic report content keys and scoped data fingerprints, independent from volatile request trace fields.
 - Exact reconciliation across all 64 period/region/group scopes and all 1,056 site-period-item observations.
-- Fail-fast fixture validation for IDs, references, enums, periods, catalog counts, distributions, and unavailable-source handling.
-- Six-view browser navigation, state/focus behavior, report/CSV download, failure recovery, dialogs, exact-320px reflow/keyboard overflow, and Axe serious/critical scans.
+- Fail-fast fixture validation for every published metadata/source/gate field, nonblank rendered dimensions, exact safety statuses, canonical UTC provenance, newest-to-oldest contiguous quarters, IDs, references, enums, bounded catalog counts, distributions, and unavailable-source handling.
+- Stable boot-shell/deep-link initialization, bootstrap and initialized-view recovery, six-view Back/Forward navigation, modal/refresh focus behavior, local-filter announcements, report/CSV download, exact-320px reflow/keyboard overflow, and Axe serious/critical scans.
 
 ## Reference fixture outputs
 
@@ -159,7 +161,7 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-REQ-005` | Release evidence shall keep MVP review, alpha, pilot, and production decisions separate and shall fail closed while `RC-001` through `RC-005` remain blocked. |
 | `EVAL-REQ-006` | Confluence sync evidence shall record page ID, before/after version, source revision, verification, and rollback target; GitHub shall remain canonical. |
 | `EVAL-REQ-007` | Production evaluation shall include approved source truth, access isolation, privacy, accessibility, reliability, persistent audit, and rollback evidence before any readiness claim. |
-| `EVAL-REQ-008` | The checked-in browser suite shall pass all six views, reporting/CSV reconciliation, error recovery, dialog focus, mobile overflow, and Axe serious/critical checks before MVP review handoff. |
+| `EVAL-REQ-008` | The checked-in browser suite shall pass all six views, bootstrap/view recovery, Back/Forward state, reporting/CSV reconciliation, modal/refresh focus, local announcements, mobile overflow, and Axe serious/critical checks before MVP review handoff. |
 
 ## Assumptions
 

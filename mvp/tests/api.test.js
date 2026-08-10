@@ -140,7 +140,12 @@ test("static app is served with no external asset dependency", async () => {
   assert.equal(response.status, 200);
   assert.match(html, /ORBIT HR Fitness Check MVP/);
   assert.match(html, /src="\/app\.js"/);
+  assert.match(html, /rel="icon" href="\/favicon\.svg"/);
   assert.equal(/https?:\/\//.test(html), false);
+
+  const favicon = await fetch(`${baseUrl}/favicon.svg`);
+  assert.equal(favicon.status, 200);
+  assert.match(favicon.headers.get("content-type"), /^image\/svg\+xml/);
 });
 
 test("frontend uses route-specific filters and focused accessibility status", async () => {
@@ -234,4 +239,33 @@ test("unknown API route returns JSON 404", async () => {
   const body = await response.json();
   assert.equal(response.status, 404);
   assert.equal(body.error, "not_found");
+});
+
+test("audit events use exact capabilities and only route-applicable filters", async () => {
+  const probes = [
+    ["/api/health", "health"],
+    ["/api/v1/trends?region=West&group=1G", "trends"],
+    ["/api/v1/item-results?period=2026%20Q2&site=AVP1", "items"],
+    ["/api/v1/reports/executive?period=2026%20Q3&region=West&group=1G", "report"],
+    ["/api/v1/not-reports", "unknown"]
+  ];
+  const requestIds = {};
+  for (const [path, key] of probes) {
+    const response = await fetch(`${baseUrl}${path}`);
+    requestIds[key] = response.headers.get("x-request-id");
+  }
+  const audit = await (await fetch(`${baseUrl}/api/v1/audit-events`)).json();
+  const byKey = Object.fromEntries(Object.entries(requestIds).map(([key, requestId]) => [
+    key,
+    audit.rows.find((row) => row.requestId === requestId)
+  ]));
+
+  assert.equal(byKey.health.capabilityId, "cap.hrfc.cockpit_read.v1");
+  assert.equal(byKey.health.filters, null);
+  assert.deepEqual(byKey.trends.filters, { region: "West", group: "1G", site: null });
+  assert.deepEqual(byKey.items.filters, { period: "2026 Q2", site: "AVP1" });
+  assert.equal(byKey.report.capabilityId, "cap.hrfc.reporting.v1");
+  assert.deepEqual(byKey.report.filters, { period: "2026 Q3", region: "West", group: "1G", site: null });
+  assert.equal(byKey.unknown.capabilityId, "cap.hrfc.cockpit_read.v1");
+  assert.equal(byKey.unknown.filters, null);
 });

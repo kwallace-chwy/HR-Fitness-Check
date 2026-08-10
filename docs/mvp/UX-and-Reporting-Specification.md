@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-UX-001` |
-| Version | `0.2` |
+| Version | `0.3` |
 | Status | Implemented MVP review specification; not production-approved |
 | Last updated | 2026-08-10 |
 | Primary users | HR Fitness Check product reviewers, HR Operations SMEs, Engineering, Data Governance |
@@ -35,16 +35,17 @@
 | Reports | Executive draft, summary metrics, strengths, opportunities, interpretation, caveats, decisions, source refs, trace, CSV/copy/print actions | Executive report, CSV export |
 | Audit | Recent in-memory request decisions and manual refresh | Audit events |
 
-The active view and global filter values are preserved in URL query parameters for refresh and review handoff.
+The active view and global filter values are preserved in URL query parameters for refresh and review handoff. View changes create browser history entries; Back and Forward restore the prior view, while filter changes canonicalize the current entry.
 
 ## Global interaction model
 
 - Global filters are quarter, rollup/region, and site group. They remain in URL state across views and are visible only where the backing API contract applies them; global catalog, source-readiness, and audit views hide the scope bar.
 - Filter changes and Refresh re-fetch the current view.
+- The requested deep-link view is applied before bootstrap requests complete. The boot shell uses disabled loading controls and stable fixture/approval boundaries; a bootstrap failure retries metadata and filter initialization rather than issuing an uninitialized view request.
 - The truth banner always identifies validation data, approval status, and catalog date.
 - Navigation is persistent on desktop and becomes a horizontally scrollable bar on narrower screens.
-- Catalog/source inspection and site item review open a right-side modal dialog.
-- Loading, empty, error/retry, and toast feedback are implemented.
+- Catalog/source inspection and site item review open a right-side modal dialog with explicit Tab/Shift+Tab focus containment and focus return.
+- Loading, empty, bootstrap/view error retry, local filter result counts, and toast feedback are implemented. Audit refresh restores focus to the refreshed control.
 - Site rows are alphabetical. The product does not rank sites or infer individual blame.
 - Missing or blocked evidence is shown separately from red.
 
@@ -88,27 +89,27 @@ There is no Confluence Publish, Approve, Send, Edit Source, Write Back, or model
 - At 1180px or below, metrics become two columns and paired panels stack.
 - At 860px or below, navigation becomes horizontal and the report body becomes one column.
 - At 640px or below, filters, metrics, summaries, headings, and dialog detail fields become one column; the dialog becomes full width.
-- Tables remain horizontally scrollable at narrow widths. Item-result overflow is a labeled, keyboard-focusable region with a visible mobile scroll affordance.
+- Tables remain horizontally scrollable at narrow widths. Item-result overflow is a labeled, keyboard-focusable region with a visible mobile scroll affordance. The trend-data disclosure has a stable 44px activation target.
 - Print hides navigation, filters, banners, and report actions while retaining the report sheet.
 
 ## Accessibility contract
 
-Implemented foundations include a skip link, semantic header/navigation/main regions, labeled form controls, `aria-current`, a concise dedicated status live region, `aria-busy` loading state, a native dialog with focus return, contextual accessible names for repeated row actions, keyboard-operable native controls, a keyboard-focusable overflow region, chart `role=img`, a disclosure table for chart data, a high-contrast focus indicator, and reduced-motion support.
+Implemented foundations include a skip link, semantic header/navigation/main regions, labeled form controls, `aria-current`, concise dedicated status live regions, `aria-busy` loading state, a native dialog with Tab/Shift+Tab containment and focus return, contextual accessible names for repeated row actions, keyboard-operable native controls, keyboard-focusable overflow regions, chart `role=img`, a 44px disclosure control with a data table, a high-contrast focus indicator, refresh-focus restoration, and reduced-motion support.
 
-Checked-in Playwright coverage exercises the six top-level views, report/CSV scope, error recovery, dialogs/focus return, exact-320px reflow, keyboard access to item, audit, and expanded trend-table overflow, and Axe serious/critical rules in the review browser. Production accessibility approval is not claimed: human screen-reader testing, supported-browser coverage, 200%/400% zoom, and formal WCAG review remain required.
+Checked-in Playwright coverage exercises the six top-level views, bootstrap and initialized-view recovery, Back/Forward state, report/CSV scope, modal focus containment/return, refresh focus, local-filter announcements, exact-320px reflow, keyboard access to item, audit, and expanded trend-table overflow, and Axe serious/critical rules in the review browser. Production accessibility approval is not claimed: human screen-reader testing, supported-browser coverage, 200%/400% zoom, and formal WCAG review remain required.
 
 ## Testable UX and reporting requirements
 
 | Requirement ID | Requirement and acceptance test |
 | --- | --- |
-| `UX-REQ-001` | Every view shall retain the selected period, region, and group and shall use those filters for all dependent API calls. Refresh/deep-link tests must preserve state. |
+| `UX-REQ-001` | Every view shall retain the selected period, region, and group and shall use those filters for all dependent API calls. Refresh, deep-link, and Back/Forward tests must preserve state. |
 | `UX-REQ-002` | The fixture/approval/non-comparability posture shall be visible before metrics and in the report; no reviewer action may dismiss it. |
 | `UX-REQ-003` | Metric cards shall display numerator and denominator context, definition version, and a whole-percent value or `Not available`. |
 | `UX-REQ-004` | Missing/blocked evidence shall be visually and textually distinct from red ratings in overview, site, and item detail. |
 | `UX-REQ-005` | Sites shall be alphabetical and shall not be assigned ranks, causal claims, or individual blame. |
-| `UX-REQ-006` | Work-queue search/filter and site item-result search/filter shall update visible rows without changing source data. |
+| `UX-REQ-006` | Work-queue, source, and site item-result filters shall update visible rows without changing source data and shall announce the resulting count or empty state. |
 | `UX-REQ-007` | The executive draft, CSV, copied summary, and print view shall resolve from the same selected filter scope and carry synthetic/approval caveats. |
-| `UX-REQ-008` | Empty, loading, recoverable API error, clipboard denial, and no-audit-event states shall provide explicit feedback without corrupting navigation/filter state. |
+| `UX-REQ-008` | Empty, loading, recoverable bootstrap/view API error, clipboard denial, and no-audit-event states shall provide explicit feedback without corrupting navigation/filter state. |
 | `UX-REQ-009` | All core review paths shall be usable at desktop and mobile widths without incoherent overlap; wide tables may scroll horizontally. |
 | `UX-REQ-010` | Keyboard-only and screen-reader review shall cover navigation, filters, dialogs, chart alternative data, report actions, and retry behavior before pilot. |
 | `UX-REQ-011` | The MVP shall expose no production write, approval, publish, or model action. |

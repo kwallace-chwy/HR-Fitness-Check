@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Read-only ORBIT HR Fitness Check MVP for quarterly assessment review and reporting." />
     <title>ORBIT HR Fitness Check MVP</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
@@ -20,7 +21,7 @@
         </div>
         <div class="topbar-status">
           <span class="status-badge status-info">MVP review</span>
-          <span class="status-badge status-warning" id="catalogStatus">Catalog loading</span>
+          <span class="status-badge status-warning" id="catalogStatus">33-row catalog / approval pending</span>
           <span class="user-badge" aria-label="Review user">KW</span>
         </div>
       </header>
@@ -61,29 +62,29 @@
               <p class="page-description" id="pageDescription">Decision-ready reporting with coverage and result status kept separate.</p>
             </div>
             <div class="header-actions">
-              <button class="secondary-button" id="refreshButton" type="button">Refresh</button>
+              <button class="secondary-button" id="refreshButton" type="button" disabled>Refresh</button>
             </div>
           </div>
 
           <section class="filter-bar" id="globalFilterBar" aria-label="Report scope filters">
             <label>
               <span>Quarter</span>
-              <select id="periodFilter"></select>
+              <select id="periodFilter" disabled><option>Loading</option></select>
             </label>
             <label>
               <span>Rollup</span>
-              <select id="regionFilter"></select>
+              <select id="regionFilter" disabled><option>Loading</option></select>
             </label>
             <label>
               <span>Site group</span>
-              <select id="groupFilter"></select>
+              <select id="groupFilter" disabled><option>Loading</option></select>
             </label>
             <div class="filter-context" id="filterContext" aria-live="polite"></div>
           </section>
 
           <div class="truth-banner" id="truthBanner" role="note">
             <strong>Validation data</strong>
-            <span>Loading provenance.</span>
+            <span>Site and item results are synthetic product-validation data. The 33-row July 29 working catalog is the latest evidence but remains unfinished and is not an approved production scoring denominator. Catalog as of 7/29/2026.</span>
           </div>
 
           <div id="viewStatus" class="sr-only" role="status" aria-live="polite"></div>

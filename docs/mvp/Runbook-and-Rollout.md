@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-OPS-001` |
-| Version | `0.2` |
+| Version | `0.3` |
 | Status | Local MVP review runbook; production rollout prohibited |
 | Last updated | 2026-08-10 |
 | Supported stage | Local prototype / product review |
@@ -31,10 +31,11 @@ From the repository root:
 Set-Location .\mvp
 node --version
 npm ci
+npm run test:e2e:install
 npm run test:all
 ```
 
-Expected evidence is a successful syntax check, 42 passing Node contract tests across reporting, API/UI static contracts, scope matrix, and fixture validation, plus 5 passing Edge Playwright/Axe tests. Stop the review if any test fails or if the catalog contract is not 33 rows with `approval_pending`. Browser launch may require the workstation's normal application-execution permission.
+Expected evidence is a successful syntax check, 46 passing Node contract tests across reporting, API/UI static contracts, audit scope/capability, scope matrix, and fixture validation, plus 6 passing Edge Playwright/Axe tests. Stop the review if any test fails or if the catalog contract is not 33 rows with `approval_pending`. Browser launch may require the workstation's normal application-execution permission.
 
 ## Start and stop
 
@@ -70,7 +71,7 @@ Expected health fields are `status=ok`, `version=0.1.0`, and `dataStatus=fixture
 ## Reviewer walkthrough
 
 1. Open the local endpoint and confirm the Validation data banner and approval-pending catalog badge.
-2. Change quarter, rollup, and site-group filters; confirm all views keep the selected scope.
+2. Change quarter, rollup, and site-group filters; navigate between views; then use browser Back/Forward and confirm the prior view and selected scope return.
 3. Review Overview metric numerators/denominators, exception separation, non-comparable trend, and release gates.
 4. Search/filter the Work queue and inspect at least one automated, manual/hybrid, and governance-first item.
 5. Open Site review and confirm alphabetical ordering, item-level drilldown, and no-rating exceptions distinct from red.
@@ -84,8 +85,8 @@ Expected health fields are `status=ok`, `version=0.1.0`, and `dataStatus=fixture
 | Indicator | Implemented signal | Review response |
 | --- | --- | --- |
 | Server availability | `/api/health` returns 200 and fixture status | Restart local process; re-run checks |
-| Contract integrity | `npm test` (42 tests) | Stop review on failure; inspect the failing test before changing expected values |
-| Browser/accessibility regression | `npm run test:e2e` (5 tests) | Stop review on failure; retain the failing route, viewport, and Axe result |
+| Contract integrity | `npm test` (46 tests) | Stop review on failure; inspect the failing test before changing expected values |
+| Browser/accessibility regression | `npm run test:e2e` (6 tests) | Stop review on failure; retain the failing route, viewport, and Axe result |
 | Syntax integrity | `npm run check` | Stop review; correct syntax before restart |
 | Request behavior | Audit view / `/api/v1/audit-events` | Correlate by request ID; remember events reset on restart |
 | Catalog posture | Header/truth banner/meta response | Stop if status is not approval-pending or if fixture labeling disappears |
@@ -98,11 +99,11 @@ There is no implemented alerting, SLO monitor, durable log, paging, backup, or d
 | Symptom | Likely cause | Response |
 | --- | --- | --- |
 | Port already in use | Another local process owns 8800 | Set another `PORT`; keep loopback host |
-| Page shows Unable to load | Server stopped, API error, or invalid deep-link state | Use Try again; verify health; reload with valid filters |
+| Page shows Unable to load | Server stopped, bootstrap/view API error, or invalid deep-link state | Use Try again; bootstrap failures re-request metadata/filters, while initialized-view failures re-request the view; verify health if retry fails |
 | No results in scope | Valid filters have an empty intersection | Select a compatible region/group combination |
 | Item results return `site_required` | Site omitted | Open from Site review or add a valid `site` query parameter |
 | Audit appears empty | Server restarted or no earlier request was returned | Exercise another API/view, then refresh Audit |
-| Server fails during fixture load | Startup fixture validation found ID, reference, enum, period, count, distribution, or status drift | Correct the fixture and expected contract together; do not bypass validation |
+| Server fails during fixture load | Startup fixture validation found published-field, rendered-dimension, safety-status, provenance, quarter-order, ID, reference, enum, count, distribution, or status drift | Correct the fixture and expected contract together; do not bypass validation |
 | Copy summary fails | Browser clipboard permission unavailable | Use the displayed report; do not add an external clipboard service |
 | Trend appears positive/negative | Fixture delta is illustrative | Retain non-comparability warning; do not interpret business movement |
 
