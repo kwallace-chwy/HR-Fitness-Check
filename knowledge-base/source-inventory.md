@@ -1,7 +1,7 @@
 # Source Inventory
 
 Status: Draft discovery artifact
-Last updated: 2026-06-20
+Last updated: 2026-08-10
 
 ## Source Status Legend
 
@@ -37,6 +37,7 @@ Last updated: 2026-06-20
 | Workday current feed | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` | Confluence: Workday HRDM page; HRDM metadata output | Current employee details. Useful fields include employee, worker, location, hire, manager, and LOA fields. Beneficiary and emergency-contact fields were not found by obvious names. |
 | Workday trended feed | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED_TRENDED`, `D_HRDATAMART.S_WORKDAY.WORKDAY_TRENDED`, `D_HRDATAMART.S_WORKDAY.V_WORKDAY_TRENDED` | Confluence: Workday HRDM page; HRDM metadata output | Historical employee details. Use for quarter snapshots if needed. Beneficiary and emergency-contact fields were not found by obvious names. |
 | HR analytics roster | `D_HRDATAMART.S_ANALYTICS.ROSTER_DAY_END`, `ROSTER_WEEK_END`, `ROSTER_PERIOD_END`; `D_HRDATAMART.S_CURATED.ROSTER_WEEK_END`, `ROSTER_PERIOD_END` | Confluence: EPA HR Datamart overview; HRDM metadata output | Useful for site roster denominator, location/site mapping, LOA flags, worker attributes, and rollup context. |
+| HRDM employee badging | `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING` | User-discovered HRDM badge scan worksheet and SQL seed, 2026-07-07 | Candidate corroborating source for directional IN/OUT badge scans by employee, site, and date. Useful for MAIA missed-punch recommendation research for BNA1, DFW8, SDF2, and SDF4 after governance approval. Badge scans are not payroll punches. |
 | ServiceNow case | `sn_hr_core_case` expected, not found | Confluence: ServiceNow Data Replication into HR DataMart; HRDM metadata output | Unique key is case number per source page. HRDM first-pass search returned zero matching tables; source owner must provide actual production schema or alternate database. |
 | ServiceNow task | `sn_hr_core_task` expected, not found | Confluence: ServiceNow Data Replication into HR DataMart; HRDM metadata output | Unique key is task number per source page. HRDM first-pass search returned zero matching tables; source owner must provide actual production schema or alternate database. |
 
@@ -60,7 +61,7 @@ Last updated: 2026-06-20
 | Artifact | Status | Location / URL | Useful facts |
 |---|---|---|---|
 | HR Standard Work Fitness Check SOP | Located | `https://chewycomllc.sharepoint.com/sites/OperationsHR/Shared Documents/HRM/HR Standard Work Fitness Check - SOP.pdf?web=1` | Confirms FC and Rx scope, quarterly cadence, HRM accountability, HRD review, Smartsheet folders, and archive practice. |
-| ORBIT - HR Fitness Check Matrix.xlsx | Located | User OneDrive/SharePoint workbook URL from prompt | Reviewed source checklist. Contains V1 dispositions and source leads but no populated Snowflake table/current owner/reviewer fields. |
+| ORBIT - HR Fitness Check Matrix.xlsx | Located | User OneDrive/SharePoint workbook URL; latest verified copy last modified 2026-07-29 16:32:27 UTC | Current working discovery evidence: 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. The catalog is approval-pending; source-table, reviewer, and result fields remain blank. Five June 30 rows are absent without an approved removal decision. |
 | Fulfillment Center & Pharmacy Human Resources Reporting Job Aid | Located | `https://chewycomllc.sharepoint.com/sites/OperationsHR/Shared Documents/HR Reports/Fulfillment Center & Pharmacy Human Resources Reporting Job Aid.pdf?web=1` | Lists HR Daily Packet, Roster Health, Site Summary, ECHO, VOC, New Hire Experience, OTMP, PAWS, and other report sources. |
 | Chewy Locations.csv | Located | OperationsHR HR Reports / FC Reports | Site/location reference with location code, type, region, active flag, and ECHO/PLLC/STAND_UPS/LEW/QUALITY_ONE columns. Contact columns exist but should not be copied into this KB. |
 | HR Daily Packet handbook page | Located | HR Reports / FC Reports / FC and Rx Reporting Handbook / `2 - HR Daily Packet.pdf` | Daily Tableau report with Summary, Attendance Detail, Labor Plan Attendance, REG-VET-MET Summary, Over 12 or 13 Hours, and other views. |

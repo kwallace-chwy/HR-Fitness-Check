@@ -1,328 +1,236 @@
 # ORBIT HR Fitness Check
 
-**HR Fitness Check** gives Fulfillment Center HR Operations Teams an objective, repeatable, and evidence-backed quarterly assessment of Standard Work. The quarter ends with clear strengths, opportunities, and action plans rather than a manual workbook exercise.
+Status: MVP review build; working catalog approval pending
+Source of truth: Reviewed repository content; GitHub becomes authoritative after approved changes are committed and pushed
+Current PRD: docs/HR-Fitness-Check-PRD.md
+Last updated: 2026-08-10
 
-Powered by **ORBIT**, Chewy's AI-powered HR operating layer, HR Fitness Check automates the collection, analysis, and visualization of Standard Work compliance data across your network.
+## Purpose
 
----
+HR Fitness Check is an ORBIT product for quarterly FC HR Standard Work assessment. It is designed to help HRMs and HRDs understand whether required Standard Work is being followed, where source evidence is strong, where manual validation is required, and where action planning should focus.
 
-## What is HR Fitness Check?
+The current repository preserves the existing product intent while aligning the work to reusable Agentic HRA Agent Protocol and RAG Protocol patterns. The product should remain a governed HR operations cockpit, not a marketing page and not an unconstrained chatbot.
 
-HR Fitness Check is a quarterly assessment tool that evaluates how well your HR operations team executes Standard Work across all fulfillment centers. It provides:
+## Current Assessment
 
-- **Objective Evidence**: Data-driven assessments based on automated metrics and manual validation
-- **Repeatable Process**: Standardized evaluation framework that runs consistently each quarter
-- **Actionable Insights**: Clear identification of strengths, opportunities, and specific action items
-- **Network Visibility**: Site-level, region-level, and network-wide rollup views
+HR Fitness Check is directionally aligned with the target Agent/RAG architecture because the PRD already protects deterministic scoring, manual evidence, missing data, stale data, and human review. It is not yet pilot-ready as a governed agent/RAG implementation because source registry, canonical knowledge objects, route policy, tool boundaries, eval gates, observability, audit, rollout, and supervision controls still need approval and implementation.
 
-### Key Features
+The latest audit-sheet disposition is:
 
-- **Site Assessment View**: Detailed workbook baseline counts, Quality Index preview, strengths, opportunities, lineage flags, and line-item evidence
-- **Region Rollups**: Aggregated views for 1G, 2G, Rx, and network averages
-- **Manual Input Queue**: Simulates physical inspection or hybrid validation ratings while preserving data lineage
-- **Catalog Workbench**: Stable Standard Work IDs, source families, automation status, aliases, and reconciliation risks
-- **Readiness Board**: Governance and launch-scope decision tracking
+| Disposition | Count | Meaning |
+| --- | ---: | --- |
+| Working in-scope intent | 33 | Business intent only; not an approved production denominator. |
+| Current owner role populated | 33 | Named accountability and approval remain open. |
+| Snowflake table / reviewer / result populated | 0 | Source and scoring readiness remain incomplete. |
 
----
+Q3 2025 baseline percentages remain discovery evidence only until the approved V1 denominator, implementation modes, source mappings, and missing-data policy are finalized.
 
-## Getting Started
+## Repository
 
-### Prerequisites
+Canonical repository:
 
-- Python 3.8+
-- Modern web browser (Chrome, Firefox, Safari, Edge)
-- Access to source workbooks (see below)
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone https://github.com/kennywallace990-maker/ORBIT-HR-Fitness-Check.git
-cd ORBIT-HR-Fitness-Check
+```text
+https://github.com/kwallace-chwy/HR-Fitness-Check
 ```
 
-2. Install Python dependencies (if regenerating data):
-```bash
-pip install openpyxl pandas
+Local project folder:
+
+```text
+C:\Users\kwallace12\OneDrive - Chewy.com, LLC\Documents\Agentic HR Fitness Check
 ```
 
-### Quick Start
-
-#### View the Prototype
-
-Open the POC interface in your browser:
-
-```
-./poc/index.html
-```
-
-This displays the static Phoenix-style ORBIT workspace with pre-loaded Q3 assessment data.
-
-#### Regenerate Data
-
-To update the assessment with new workbook data:
-
-1. Place your source workbooks in `C:\Users\kwallace12\Downloads\`:
-   - `2025 Q3 HR Fitness Check.xlsx`
-   - `2025 Q3 SW Quality Index.xlsx`
-   - `2025 Q3 Fitness Assessment (based on NEW metrics).xlsx`
-
-2. Run the extraction script from the project root:
-```powershell
-python .\poc\scripts\extract_workbook_data.py
-```
-
-3. Refresh `./poc/index.html` in your browser to see updated data
-
----
+Confluence is a downstream publishing surface. Requirements, architecture contracts, source decisions, and implementation guidance should be updated and reviewed in the repository first, committed and pushed through the governed Git workflow, and only then published to Confluence from that exact revision.
 
 ## Project Structure
 
-```
-ORBIT-HR-Fitness-Check/
-|-- poc/                          # Proof of Concept - Static ORBIT workspace
-|   |-- index.html                # Main entry point
-|   |-- app.js                    # Core application logic
-|   |-- styles.css                # Styling
-|   |-- README.md                 # POC-specific documentation
-|   |-- assets/                   # Images, icons, logos
-|   |-- data/                     # Generated assessment data
-|   `-- scripts/
-|       `-- extract_workbook_data.py  # Data extraction from Excel workbooks
-|-- docs/                         # Discovery PRD and checklist disposition
-|-- knowledge-base/               # Source discovery and ingestion planning
-|-- outputs/                      # Generated grounding partner workbook
-|-- output/                       # Generated POC outputs and reports
-|-- LICENSE                       # License information
-`-- README.md                     # This file
-```
-
----
-
-## Data Flow
-
-```
-Source Workbooks (Excel)
-    ->
-extract_workbook_data.py
-    ->
-data.json (Generated assessment data)
-    ->
-app.js (Client-side processing)
-    ->
-Browser UI (Phoenix-style ORBIT workspace)
-```
-
-### Data Sources
-
-The assessment pulls from three primary workbooks:
-
-1. **HR Fitness Check Workbook**: Baseline counts and manual assessments
-2. **SW Quality Index**: Canonical quality metrics for Standard Work items
-3. **Fitness Assessment**: NEW metrics-based evaluation framework
-
----
-
-## Features & Views
-
-### Site Assessment
-Drill into individual fulfillment center performance with:
-- Workbook baseline counts
-- Quality Index preview
-- Strengths and opportunities
-- Lineage flags for data provenance
-- Line-item evidence supporting each assessment
-
-### Region Views
-Aggregate performance across:
-- 1G (Single-generation) sites
-- 2G (Two-generation) sites
-- Rx (Specialty) sites
-- Network totals and averages
-
-### Manual Input Queue
-Manage hybrid validation workflows:
-- Queue items for physical inspection or manual review
-- Preserve data lineage (track `manual_input` source)
-- Simulate validation ratings before committing to assessment
-
-### Catalog Workbench
-Maintain Standard Work governance:
-- Stable Standard Work IDs and aliases
-- Source family classification
-- Automation status tracking
-- Reconciliation risk identification
-
-### Readiness Board
-Track assessment governance:
-- Launch scope decisions
-- Stakeholder sign-off status
-- Dependency tracking
-- Timeline management
-
----
-
-## Configuration
-
-### Updating Source Paths
-
-Edit the paths in `poc/scripts/extract_workbook_data.py` to point to your workbook locations:
-
-```python
-WORKBOOK_PATHS = {
-    'fitness_check': r'C:\Users\kwallace12\Downloads\2025 Q3 HR Fitness Check.xlsx',
-    'quality_index': r'C:\Users\kwallace12\Downloads\2025 Q3 SW Quality Index.xlsx',
-    'fitness_assessment': r'C:\Users\kwallace12\Downloads\2025 Q3 Fitness Assessment (based on NEW metrics).xlsx',
-}
+```text
+HR-Fitness-Check/
+|-- mvp/
+|   |-- public/
+|   |-- data/
+|   |-- tests/
+|   `-- server.js
+|-- poc/
+|   |-- index.html
+|   |-- app.js
+|   |-- styles.css
+|   `-- README.md
+|-- docs/
+|   |-- HR-Fitness-Check-PRD.md
+|   |-- Reviewed-Checklist-Disposition.md
+|   |-- Architecture-Alignment-Assessment.md
+|   |-- Agent-RAG-Alignment-Plan.md
+|   |-- Capability-Registry-and-Route-Policy.md
+|   |-- Tool-Action-Governance.md
+|   |-- Evaluation-Observability-Audit.md
+|   |-- Rollout-and-Operating-Model.md
+|   |-- mvp/
+|   |   |-- Data-Map-and-Classification.md
+|   |   |-- Technical-Design-and-Scoring-Contract.md
+|   |   |-- UX-and-Reporting-Specification.md
+|   |   |-- Evaluation-and-Release-Evidence.md
+|   |   `-- Runbook-and-Rollout.md
+|   |-- Confluence-PRD-Publishing-Copy.md (retired tombstone)
+|   `-- Confluence-PRD-Structure-Preserving-Fact-Check.md (retired tombstone)
+|-- knowledge-base/
+|   |-- README.md
+|   |-- source-inventory.md
+|   |-- source-registry.md
+|   |-- canonical-knowledge-objects.md
+|   |-- retrieval-context-assembly.md
+|   |-- ingestion-backlog.md
+|   |-- snowflake-discovery-playbook.md
+|   |-- snowflake-discovery-results.md
+|   |-- research-log.md
+|   |-- voc-pulse-action-roadmap.md
+|   |-- discovery-output/
+|   `-- discovery-sql/
+|-- outputs/
+|-- LICENSE
+`-- README.md
 ```
 
-### Customizing Site Groups
+## Key Artifacts
 
-Modify site groupings in the data extraction script or directly in the generated `data.json`:
+| Artifact | Purpose |
+| --- | --- |
+| docs/HR-Fitness-Check-PRD.md | Current product requirements and source-of-truth publishing model. |
+| docs/Reviewed-Checklist-Disposition.md | Latest 33-task-row working catalog and reconciliation notes. |
+| docs/Architecture-Alignment-Assessment.md | Gap assessment against Agent Protocol and RAG Protocol. |
+| docs/Agent-RAG-Alignment-Plan.md | Practical product-preserving architecture alignment plan. |
+| knowledge-base/source-registry.md | Governed source registry contract and source-to-workflow rules. |
+| knowledge-base/canonical-knowledge-objects.md | Standard Work, mapping, rating, result, manual evidence, and recommendation object model. |
+| knowledge-base/retrieval-context-assembly.md | Route-before-retrieval context assembly, access filters, citations, and failure behavior. |
+| docs/Capability-Registry-and-Route-Policy.md | Registered capabilities, routes, autonomy levels, and fallback behavior. |
+| docs/Tool-Action-Governance.md | Tool boundaries, action classes, approvals, and disabled write controls. |
+| docs/Evaluation-Observability-Audit.md | Eval gates, gold cases, trace fields, audit envelope, and release thresholds. |
+| docs/Rollout-and-Operating-Model.md | Pilot gates, operating reviews, rollback, incidents, and ownership. |
+| docs/Confluence-PRD-Publishing-Copy.md | Retired tombstone that prohibits reuse of the superseded June 30 replacement body. |
+| docs/Confluence-PRD-Structure-Preserving-Fact-Check.md | Retired tombstone for the superseded version 14 / June 30 fact-check instructions. |
 
-```json
-{
-  "site_groups": {
-    "1G": ["HOU1", "PHX1", ...],
-    "2G": ["DEN1", "ATL1", ...],
-    "Rx": ["RXC1", ...],
-    "TOTAL AVGs": [...]
-  }
-}
+## MVP Review Build
+
+The review-ready MVP is a zero-production-dependency Node application with item-derived reporting, read-only APIs, a responsive operational interface, explicit provenance, and synthetic site results. Locked Playwright and Axe development dependencies provide real-browser regression coverage.
+
+```powershell
+cd mvp
+npm ci
+npm run test:all
+npm start
 ```
 
----
+Open:
 
-## Development
-
-### Running Locally
-
-The POC is a static HTML/CSS/JavaScript application with no build step required. Simply open `poc/index.html` in your browser.
-
-For development with live reload, use a local HTTP server:
-
-```bash
-# Python 3
-python -m http.server 8000
-
-# Then visit http://localhost:8000/poc/index.html
+```text
+http://127.0.0.1:8800/
 ```
 
-### Modifying the UI
+The MVP includes Overview, Work queue, Site review, Data readiness, Reports, and Audit views. Its reporting contract uses green share and evidence coverage with explicit numerators and denominators. Missing, stale, blocked, manual-required, and unmapped evidence is never converted to a red rating. Quarter comparisons are disabled when catalog versions are not comparable.
 
-- **Layout & Components**: Edit `poc/app.js` (view rendering logic)
-- **Styling**: Update `poc/styles.css`
-- **Data**: Regenerate via `extract_workbook_data.py` or edit `poc/data/data.json` directly
+The review build is not a production system: it has no live HR-system connection, production authorization, write-back, or approved scoring denominator.
 
-### Adding New Views
+## Archived Static POC
 
-1. Add a new navigation item in `app.js`:
-```javascript
-{ id: "myview", label: "My View", icon: "V" }
+The earlier static POC remains checked in at:
+
+```text
+poc/index.html
 ```
 
-2. Implement the render function:
-```javascript
-function renderMyView() {
-  // Return HTML for your view
-}
+Open directly in a browser, or serve it from the repo root:
+
+```powershell
+python -m http.server 8800
 ```
 
-3. Add a case in the main render switch statement
+Then open:
 
----
+```text
+http://127.0.0.1:8800/poc/
+```
 
-## Data Lineage & Governance
+The POC mirrors the local ORBIT operational cockpit reference at:
 
-HR Fitness Check tracks the provenance of every assessment metric:
+```text
+http://127.0.0.1:8790/
+```
 
-- **`workbook`**: Data sourced from manual workbook entry
-- **`quality_index`**: Derived from canonical SW Quality Index
-- **`manual_input`**: Result of physical inspection or hybrid validation
-- **`computed`**: Calculated from other metrics (e.g., rollups, averages)
+The interface is intentionally dense and operational: readiness metrics, source queue, illustrative site review, route policy, eval/audit controls, and a supervised assistant pane. Readiness counts come from the documented workbook review; site-level performance values are synthetic demo data only.
 
-This lineage is visible in the UI and preserved through all transformations.
+## Current Source Discovery
 
----
+Source discovery and ingestion planning are captured in knowledge-base. Important current facts:
 
-## Discovery Knowledge Base
+- No populated Snowflake table values exist in the reviewed workbook yet.
+- Current owner roles are populated for all 33 working rows; named accountability and approval are still required.
+- ServiceNow HR case/task source discovery remains blocked by schema/source confirmation.
+- Workday beneficiary and emergency contact fields were not found in the first HRDM metadata pass.
+- Talent Management source fields for Quality 1:1 and LEW are not yet located.
+- Investigations-related rows require governance review before field-level mapping.
+- VOC Pulse action roadmap content is recommendation context only, not V1 scoring input.
 
-The current discovery package is in the root documentation and knowledge-base folders:
+## Agent/RAG Alignment Rules
 
-- `docs/HR-Fitness-Check-PRD.md`
-- `docs/Reviewed-Checklist-Disposition.md`
-- `knowledge-base/README.md`
-- `knowledge-base/source-inventory.md`
-- `knowledge-base/voc-pulse-action-roadmap.md`
-- `knowledge-base/ingestion-backlog.md`
-- `knowledge-base/snowflake-discovery-playbook.md`
-- `knowledge-base/snowflake-discovery-results.md`
-- `knowledge-base/research-log.md`
+For MVP, HR Fitness Check should operate at L0-L3:
 
-The VOC Pulse action roadmap is action-loop and recommendation-library context. It should not be treated as direct Fitness Check scoring input unless a specific approved metric, source field, and rule are added to the catalog.
+- L0/L1 for approved knowledge and source lookup.
+- L2 for deterministic status classification and readiness analysis.
+- L3 for supervised narrative recommendations grounded in scored results and caveats.
+- L4 only for exact manual input or publishing previews.
+- L5 disabled until manual input and publishing action classes have explicit approval records.
+- L6 out of scope.
 
----
+Required pilot controls:
 
-## Troubleshooting
+- Source registry approval before indexing or retrieval.
+- Canonical knowledge objects before implementation.
+- Route policy before retrieval, tools, or model calls.
+- Access filtering before context assembly.
+- Deterministic scoring outside the model.
+- Output validation for caveats, citations, unsupported claims, and action boundaries.
+- Eval gates before pilot.
+- Audit envelope for every run, tool call, model call, and publishing event.
 
-### Data Not Updating
+## Data Flow Target
 
-1. Verify source workbook paths in `extract_workbook_data.py`
-2. Check that workbooks are closed (not locked by Excel)
-3. Run the extraction script and check for error messages
-4. Refresh the browser (Ctrl+Shift+R for hard refresh)
+```text
+Approved source registry
+  -> canonical source mappings
+  -> deterministic extraction or query
+  -> rating rules
+  -> fact_fitness_check_result
+  -> rollups and exceptions
+  -> supervised narrative context package
+  -> validated UI and downstream publishing
+```
 
-### Missing Sites or Metrics
+The repo does not currently include a workbook extraction script or production scoring service. Those should be implemented only after V1 denominator, owners, source mappings, rating rules, classification, and governance approvals are complete.
 
-1. Confirm source workbooks contain the expected data
-2. Check site IDs match between workbooks
-3. Verify Standard Work item IDs are consistent
-4. Review the generated `data.json` for completeness
+## Confluence Publishing
 
-### Browser Compatibility
+The live HR Fitness Check PRD is Confluence page `5006537577`. It was re-verified on 2026-08-10 at version 15 with the reconciled 33-row working-catalog and synthetic MVP review boundaries. The five MVP support pages are downstream copies under the same HR Fitness Check product folder.
 
-- Chrome/Chromium: Full support
-- Firefox: Full support
-- Safari: Full support
-- Edge: Full support
-- IE11: Not supported
+The two older publishing-helper files are tombstones only:
 
----
+```text
+docs/Confluence-PRD-Publishing-Copy.md
+docs/Confluence-PRD-Structure-Preserving-Fact-Check.md
+```
 
-## Contributing
+They must never be used as publishing payloads. Future Confluence updates must be prepared from the reviewed repository PRD and support documents, tied to a committed revision, approved through the supervised publishing process, and verified by re-reading the resulting page version.
 
-To contribute improvements or fixes:
+## Development Notes
 
-1. Create a feature branch: `git checkout -b feature/my-feature`
-2. Make your changes and test locally
-3. Commit with clear messages: `git commit -m "Add feature description"`
-4. Push to your fork and submit a pull request
+The checked-in POC is static HTML, CSS, and JavaScript. It has no build step and no package install requirement.
 
----
+When production implementation begins, create explicit contracts before adding automation:
 
-## Support & Documentation
-
-For more information, see:
-
-- **Product Requirements**: `01 - PRD, HR Fitness Check.md`
-- **Data Dictionary**: `03 - Data Dictionary, HR Fitness Check.md`
-- **Technical Design**: `04 - Technical Design Doc, HR Fitness Check.md`
-- **Test Plan**: `06 - Test Plan, HR Fitness Check.md`
-- **Runbook**: `07 - Runbook, HR Fitness Check.md`
-
----
+- Source contracts in knowledge-base/source-registry.md.
+- Canonical object schemas in knowledge-base/canonical-knowledge-objects.md.
+- Route and capability contracts in docs/Capability-Registry-and-Route-Policy.md.
+- Tool approval and audit contracts in docs/Tool-Action-Governance.md.
+- Eval and release gates in docs/Evaluation-Observability-Audit.md.
 
 ## License
 
-This project is licensed under the terms specified in the LICENSE file.
-
----
-
-## Questions?
-
-Contact the ORBIT product team or refer to the comprehensive documentation in the `99 - Program Docs/` directory.
-
----
-
-**Last Updated**: June 2026  
-**Version**: 1.0 POC
+This project is licensed under the terms specified in LICENSE.

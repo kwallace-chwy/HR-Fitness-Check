@@ -1,0 +1,184 @@
+{
+  "meta": {
+    "product": "ORBIT HR Fitness Check",
+    "version": "0.1.0",
+    "generatedAt": "2026-08-06T20:00:00Z",
+    "defaultPeriod": "2026 Q3",
+    "dataStatus": "fixture",
+    "catalogVersion": "working-2026-07-29",
+    "catalogAsOf": "2026-07-29T16:32:27Z",
+    "catalogApprovalStatus": "approval_pending",
+    "comparisonStatus": "illustrative_not_recast",
+    "disclaimer": "Site and item results are synthetic product-validation data. The 33-row July 29 working catalog is the latest evidence but remains unfinished and is not an approved production scoring denominator.",
+    "sourceOfTruth": "GitHub repository",
+    "sourceRefs": [
+      "docs/HR-Fitness-Check-PRD.md",
+      "docs/Reviewed-Checklist-Disposition.md",
+      "knowledge-base/source-inventory.md",
+      "knowledge-base/snowflake-discovery-results.md",
+      "knowledge-base/research-log.md"
+    ]
+  },
+  "periods": ["2026 Q3", "2026 Q2", "2026 Q1", "2025 Q4"],
+  "catalog": {
+    "status": "latest_working_approval_pending",
+    "taskRows": 33,
+    "scopeIntentRows": 33,
+    "removedRows": 0,
+    "ownerAssignments": 33,
+    "approvedMappings": 0,
+    "approvedImplementationModes": 0,
+    "workbookVersion": "unverified_current",
+    "workbookModifiedAt": "2026-07-29T16:32:27Z",
+    "approvalStatus": "approval_pending",
+    "sourceTableBlanks": 33,
+    "reviewerBlanks": 33,
+    "resultBlanks": 33,
+    "thresholdGaps": 1
+  },
+  "sites": [
+    {
+      "siteId": "HOU1",
+      "group": "1G",
+      "region": "West",
+      "results": {
+        "2026 Q3": {"green": 11, "yellow": 8, "red": 5, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 12, "yellow": 7, "red": 5, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 12, "yellow": 5, "red": 6, "missing": 10, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 10, "yellow": 6, "red": 8, "missing": 9, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "AVP1",
+      "group": "1G",
+      "region": "East",
+      "results": {
+        "2026 Q3": {"green": 15, "yellow": 4, "red": 5, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 13, "yellow": 5, "red": 6, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 11, "yellow": 6, "red": 6, "missing": 10, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 9, "yellow": 8, "red": 6, "missing": 10, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "RNO1",
+      "group": "1G",
+      "region": "West",
+      "results": {
+        "2026 Q3": {"green": 12, "yellow": 4, "red": 8, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 10, "yellow": 6, "red": 8, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 10, "yellow": 6, "red": 8, "missing": 9, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 10, "yellow": 6, "red": 8, "missing": 9, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "DAY1",
+      "group": "2G",
+      "region": "East",
+      "results": {
+        "2026 Q3": {"green": 13, "yellow": 5, "red": 5, "missing": 10, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 13, "yellow": 6, "red": 5, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 13, "yellow": 7, "red": 4, "missing": 9, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 13, "yellow": 6, "red": 4, "missing": 10, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "AVP2",
+      "group": "2G",
+      "region": "East",
+      "results": {
+        "2026 Q3": {"green": 15, "yellow": 6, "red": 2, "missing": 10, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 17, "yellow": 5, "red": 2, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 16, "yellow": 4, "red": 3, "missing": 10, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 14, "yellow": 5, "red": 4, "missing": 10, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "DFW1",
+      "group": "2G",
+      "region": "West",
+      "results": {
+        "2026 Q3": {"green": 16, "yellow": 4, "red": 4, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 14, "yellow": 5, "red": 5, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 13, "yellow": 5, "red": 6, "missing": 9, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 11, "yellow": 7, "red": 6, "missing": 9, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "MCO1",
+      "group": "2G",
+      "region": "East",
+      "results": {
+        "2026 Q3": {"green": 16, "yellow": 4, "red": 3, "missing": 10, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 15, "yellow": 5, "red": 4, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 13, "yellow": 6, "red": 4, "missing": 10, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 12, "yellow": 7, "red": 4, "missing": 10, "resultStatus": "fixture_partial"}
+      }
+    },
+    {
+      "siteId": "RXC1",
+      "group": "Rx",
+      "region": "Rx",
+      "results": {
+        "2026 Q3": {"green": 20, "yellow": 3, "red": 1, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q2": {"green": 18, "yellow": 5, "red": 1, "missing": 9, "resultStatus": "fixture_partial"},
+        "2026 Q1": {"green": 19, "yellow": 4, "red": 1, "missing": 9, "resultStatus": "fixture_partial"},
+        "2025 Q4": {"green": 19, "yellow": 4, "red": 1, "missing": 9, "resultStatus": "fixture_partial"}
+      }
+    }
+  ],
+  "catalogItems": [
+    {"demoItemId": "demo-sw-001", "task": "TM Experience Walk", "category": "Leader routines", "ownerGroup": "HRA", "implementationMode": "manual", "evidenceMode": "physical", "accountabilityScope": "shared_control", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-002", "task": "Standup Audits", "category": "Engagement", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "site_controlled", "sourceId": "src.echo"},
+    {"demoItemId": "demo-sw-003", "task": "New Hire Orientation", "category": "Onboarding", "ownerGroup": "HRA", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-004", "task": "HR Metrics & Roster Health", "category": "Roster health", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "enterprise_dependency", "sourceId": "src.hrdm"},
+    {"demoItemId": "demo-sw-005", "task": "HR ServiceNow (SNOW) Tickets", "category": "Case management", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_service", "sourceId": "src.snow"},
+    {"demoItemId": "demo-sw-006", "task": "VET Process", "category": "Staffing", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-007", "task": "VTO Process", "category": "Staffing", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-008", "task": "Shift Transfers / Includes site-to-site transfers", "category": "Scheduling", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-009", "task": "FLO Certification management", "category": "Onboarding", "ownerGroup": "HRA", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "site_controlled", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-010", "task": "Missing Time Stamps", "category": "Timekeeping", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-011", "task": "Unscheduled but Working", "category": "Timekeeping", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-012", "task": "13h Day (or +1h over scheduled shift) Risk Assessment", "category": "Timekeeping", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-013", "task": "60h Week Risk Assessment", "category": "Timekeeping", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-014", "task": "Locker Management", "category": "Onboarding", "ownerGroup": "HRA", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "shared_control", "sourceId": "src.tableau"},
+    {"demoItemId": "demo-sw-015", "task": "Badge Management", "category": "Onboarding", "ownerGroup": "HRA", "implementationMode": "manual", "evidenceMode": "physical", "accountabilityScope": "shared_control", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-016", "task": "Swag Management", "category": "Engagement", "ownerGroup": "HRA", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "site_controlled", "sourceId": "src.echo"},
+    {"demoItemId": "demo-sw-017", "task": "Audit schedule groups", "category": "Scheduling", "ownerGroup": "HRA", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-018", "task": "Review Temporary Schedule Adjustments", "category": "Scheduling", "ownerGroup": "HRA", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "shared_control", "sourceId": "src.ukg"},
+    {"demoItemId": "demo-sw-019", "task": "Attendance Management", "category": "Roster health", "ownerGroup": "HRBP", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.hrdm"},
+    {"demoItemId": "demo-sw-020", "task": "Ensure site TMs have listed beneficiaries", "category": "Workforce records", "ownerGroup": "HRBP", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "enterprise_dependency", "sourceId": "src.workday"},
+    {"demoItemId": "demo-sw-021", "task": "Ensure site TMs have listed emergency contacts", "category": "Workforce records", "ownerGroup": "HRBP", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "enterprise_dependency", "sourceId": "src.workday"},
+    {"demoItemId": "demo-sw-022", "task": "Quality 1:1", "category": "Leader routines", "ownerGroup": "HRBP", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.tableau"},
+    {"demoItemId": "demo-sw-023", "task": "LEWs", "category": "Leader routines", "ownerGroup": "HRBP", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.tableau"},
+    {"demoItemId": "demo-sw-024", "task": "Investigations", "category": "Case management", "ownerGroup": "HRBP", "implementationMode": "governance_first", "evidenceMode": "virtual", "accountabilityScope": "governance_dependency", "sourceId": "src.investigations"},
+    {"demoItemId": "demo-sw-025", "task": "LOAA Management", "category": "Case management", "ownerGroup": "HRG", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_service", "sourceId": "src.snow"},
+    {"demoItemId": "demo-sw-026", "task": "CAT Tracker", "category": "Engagement", "ownerGroup": "HRM", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "site_controlled", "sourceId": "src.echo"},
+    {"demoItemId": "demo-sw-027", "task": "Fishbowl Display", "category": "Engagement", "ownerGroup": "HRM", "implementationMode": "manual", "evidenceMode": "physical", "accountabilityScope": "site_controlled", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-028", "task": "VOC Board Management", "category": "Engagement", "ownerGroup": "HRM", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "site_controlled", "sourceId": "src.echo"},
+    {"demoItemId": "demo-sw-029", "task": "Roundtables", "category": "Engagement", "ownerGroup": "HRM", "implementationMode": "hybrid", "evidenceMode": "mixed", "accountabilityScope": "site_controlled", "sourceId": "src.echo"},
+    {"demoItemId": "demo-sw-030", "task": "Chewtopian of the Month/Leader of the Pack", "category": "Engagement", "ownerGroup": "HRM", "implementationMode": "manual", "evidenceMode": "physical", "accountabilityScope": "site_controlled", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-031", "task": "Audit exempt HR Standard Work", "category": "Leader routines", "ownerGroup": "HRM", "implementationMode": "derived", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.hrdm"},
+    {"demoItemId": "demo-sw-032", "task": "Site communication & signage", "category": "Leader routines", "ownerGroup": "HRM", "implementationMode": "manual", "evidenceMode": "physical", "accountabilityScope": "site_controlled", "sourceId": "src.manual"},
+    {"demoItemId": "demo-sw-033", "task": "Labor Planning", "category": "Staffing", "ownerGroup": "HRM", "implementationMode": "automatable", "evidenceMode": "virtual", "accountabilityScope": "shared_control", "sourceId": "src.hrdm"}
+  ],
+  "sources": [
+    {"id": "src.ukg", "family": "UKG Pro / Snowflake", "status": "located", "coverage": "Timecard, schedule, accrual, punch, and exception metadata", "owner": "TBD", "freshness": "Reported source lag about 5 hours; validation required", "nextAction": "Approve field mappings and rating examples for timekeeping items.", "evidence": "knowledge-base/snowflake-discovery-results.md"},
+    {"id": "src.hrdm", "family": "HR DataMart", "status": "located", "coverage": "Roster and Workday current/trended objects", "owner": "TBD", "freshness": "TBD by source owner", "nextAction": "Approve roster grain, site key, snapshot window, and access model.", "evidence": "knowledge-base/source-inventory.md"},
+    {"id": "src.workday", "family": "Workday to HRDM", "status": "candidate", "coverage": "Worker, location, hire, manager, and LOA fields", "owner": "TBD", "freshness": "TBD", "nextAction": "Locate beneficiary and emergency-contact fields or governed reports.", "evidence": "knowledge-base/snowflake-discovery-results.md"},
+    {"id": "src.snow", "family": "ServiceNow / SNOW", "status": "blocked", "coverage": "HR cases and tasks", "owner": "TBD", "freshness": "Unknown", "nextAction": "Confirm the production replication database and schema.", "evidence": "knowledge-base/source-inventory.md"},
+    {"id": "src.fc-analytics", "family": "FC HR Analytics", "status": "located", "coverage": "HR Packet, Roster Health, ECHO, survey, VET/VTO, and CAT pipeline leads", "owner": "TBD", "freshness": "Pipeline-specific", "nextAction": "Confirm repository access and inspect source SQL.", "evidence": "knowledge-base/research-log.md"},
+    {"id": "src.sharepoint", "family": "SharePoint / OperationsHR", "status": "located", "coverage": "SOPs, process definitions, trackers, and workbook evidence", "owner": "TBD", "freshness": "Artifact-specific", "nextAction": "Classify approved evidence versus discovery-only artifacts.", "evidence": "knowledge-base/source-inventory.md"},
+    {"id": "src.tableau", "family": "Tableau", "status": "candidate", "coverage": "HR Daily Packet, Roster Health, ECHO, VOC, surveys, and Talent Management", "owner": "TBD", "freshness": "Workbook-specific", "nextAction": "Map underlying governed tables and reconcile dashboard definitions.", "evidence": "knowledge-base/source-inventory.md"},
+    {"id": "src.echo", "family": "ECHO / CAT", "status": "located", "coverage": "VOC, standup audits, CAT, and roundtable source leads", "owner": "TBD", "freshness": "TBD", "nextAction": "Map site, period, completion, score, and dwell fields.", "evidence": "knowledge-base/ingestion-backlog.md"},
+    {"id": "src.manual", "family": "Manual evidence workflow", "status": "blocked", "coverage": "Physical and judgment-based Standard Work", "owner": "TBD", "freshness": "Quarterly", "nextAction": "Approve evidence home, required fields, approver, correction, and retention.", "evidence": "docs/Tool-Action-Governance.md"},
+    {"id": "src.investigations", "family": "Investigations", "status": "governance", "coverage": "Aggregate SLA metadata only, if approved", "owner": "TBD", "freshness": "TBD", "nextAction": "Obtain legal, governance, privacy, and source-owner approval before mapping.", "evidence": "knowledge-base/ingestion-backlog.md"}
+  ],
+  "releaseGates": [
+    {"id": "RC-001", "name": "Stable catalog IDs", "status": "blocked", "owner": "Product / SME"},
+    {"id": "RC-002", "name": "Current owner assigned for every V1 item", "status": "blocked", "owner": "HR Operations"},
+    {"id": "RC-003", "name": "Implementation mode approved", "status": "blocked", "owner": "Product / Source owners"},
+    {"id": "RC-004", "name": "Source mappings and rating rules approved", "status": "blocked", "owner": "Data engineering / SME"},
+    {"id": "RC-005", "name": "Manual evidence workflow approved", "status": "blocked", "owner": "Product / Governance"},
+    {"id": "RC-010", "name": "MVP backend and reporting workflow validated", "status": "review", "owner": "Engineering / Product"}
+  ]
+}

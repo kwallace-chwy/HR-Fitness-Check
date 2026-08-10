@@ -1,24 +1,38 @@
 # Research Log
 
 Status: Draft discovery log
-Last updated: 2026-06-20
+Last updated: 2026-08-10
 
-## Local Repository And Workbook
+## Current Reconciliation - 2026-08-10
+
+- The latest verified SharePoint workbook copy was last modified 2026-07-29 16:32:27 UTC.
+- Its working catalog contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33.
+- The catalog remains approval-pending. Source-table, reviewer, and result fields are blank, stable IDs and implementation modes are unapproved, and `HR Metrics & Roster Health` has no approved threshold.
+- Five June 30 rows are absent. Absence is not interpreted as an approved removal, consolidation, or retirement decision.
+- Confluence PRD page `5006537577` was re-verified on 2026-08-10 at version 15 with the reconciled 33-row and synthetic/read-only MVP boundaries.
+- The local MVP is a review-only, read-only application using synthetic fixture results. It does not connect to production HR systems or approve a scoring denominator.
+
+The dated sections below preserve what was known during the June 30 through July 7 discovery work. References to the "latest" workbook, blank owner fields, Confluence version 14, or a required PRD replacement are historical statements and must not be treated as current.
+
+## Historical Discovery Log - June 30 Through July 7
 
 Actions completed:
 
-- Connected the local repo to `https://github.com/kennywallace990-maker/ORBIT-HR-Fitness-Check`.
+- Confirmed the user-provided GitHub repository `https://github.com/kwallace-chwy/HR-Fitness-Check` matches the local HEAD, then realigned local `origin` to that canonical repository.
+- Prepared a repo-aligned replacement body for Confluence page `5006537577`.
+- Verified through the Atlassian connector that the live Confluence page still contains stale May 2026 PRD content and requires replacement from the repo copy.
 - Read the reviewed workbook content via SharePoint and local workbook inspection.
 - Confirmed reviewed workbook gaps: blank Snowflake table, current owner, and reviewer cells.
 - Created draft PRD and reviewed checklist disposition docs.
 
-Key output:
+June 30 audit-sheet output, superseded by the July 29 working copy:
 
-- 27 V1 in-scope items.
-- 5 remove/out-of-scope items.
-- 13 research-before-scope items.
-- 3 future candidates.
-- 1 manual/physical-check research item.
+- SharePoint workbook version 22.0, last modified 2026-06-30 14:43:58 UTC.
+- 38 task rows.
+- 37 in-scope intent rows.
+- 1 remove/out-of-scope row.
+- 0 explicit research, future, or manual/physical status rows in the latest sheet.
+- Current Owner, Snowflake Table, Reviewer(s), and Fitness Level are blank for all 38 task rows.
 
 ## Local Snowflake Capability Check
 
@@ -35,6 +49,7 @@ Actions completed:
 - Tested `D_HRDATAMART` through the working Workload Lens `EDLDB` profile and searched locally for a separate HRDM profile.
 - Created a separate local HRDM Snowflake profile outside this repository using approved browser SSO values.
 - Ran HRDM smoke test, schema inventory, candidate table search, candidate column search, ServiceNow table-name search, and priority object column inventory.
+- Captured 2026-07-07 user discovery for MAIA missed-punch correction research using UKG Dataview 965, individual UKG timecards, and HRDM `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING` directional badge scans.
 
 Result:
 
@@ -51,6 +66,7 @@ Result:
 - HRDM candidate column discovery succeeded with 1307 metadata rows.
 - HRDM priority object column inventory succeeded with 879 metadata rows.
 - HRDM ServiceNow table-name search returned zero expected case/task table matches.
+- HRDM employee badge scan source lead is now documented as a candidate corroborating source for HRA-reviewed missed-punch recommendations.
 - First-pass HRDM metadata did not find obvious beneficiary, emergency-contact, dependent, benefit-completeness, Quality 1:1, LEW, or Talent table/field names.
 - The connector warns that `keyring` is not installed, causing repeated browser SSO prompts.
 
@@ -161,9 +177,11 @@ Use source docs for context, but perform ingestion work only through approved go
 
 1. Install Snowflake connector secure local storage in the existing Workload Lens venv if repeated browser prompts become disruptive.
 2. Continue EDLDB/UKG discovery using the generated metadata outputs.
-3. Ask Workday/HRDM owners to identify the exact beneficiary and emergency-contact report/table/fields because HRDM first-pass metadata did not reveal obvious columns.
-4. Confirm the actual ServiceNow production connector schema/database because HRDM first-pass search did not reveal `sn_hr_core_case` or `sn_hr_core_task`.
-5. Confirm whether the FC HR Analytics GitHub repo is accessible and inspect source SQL for the HR Packet, Roster Health, ECHO, CAT, VOC, and survey pipelines.
-6. Ask EPA/Talent Management owners for Quality 1:1 and LEW source tables or Tableau workbook metadata.
-7. Ask Governance/Legal whether Investigations can be measured using aggregate SLA metadata only.
-8. Confirm which 2026 TM Experience Roadmap workstream artifacts are approved for ORBIT citation and which are still draft planning material.
+3. Confirm UKG Dataview 965 name, owner, field list, filters, and intended missed-punch use.
+4. Run the HRDM employee badging SQL seed for BNA1, DFW8, SDF2, and SDF4 and compare against a labelled HRA sample.
+5. Ask Workday/HRDM owners to identify the exact beneficiary and emergency-contact report/table/fields because HRDM first-pass metadata did not reveal obvious columns.
+6. Confirm the actual ServiceNow production connector schema/database because HRDM first-pass search did not reveal `sn_hr_core_case` or `sn_hr_core_task`.
+7. Confirm whether the FC HR Analytics GitHub repo is accessible and inspect source SQL for the HR Packet, Roster Health, ECHO, CAT, VOC, and survey pipelines.
+8. Ask EPA/Talent Management owners for Quality 1:1 and LEW source tables or Tableau workbook metadata.
+9. Ask Governance/Legal whether Investigations can be measured using aggregate SLA metadata only.
+10. Confirm which 2026 TM Experience Roadmap workstream artifacts are approved for ORBIT citation and which are still draft planning material.

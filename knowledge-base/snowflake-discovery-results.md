@@ -1,7 +1,9 @@
 # Snowflake Discovery Results
 
 Status: Draft discovery results
-Last updated: 2026-06-19
+Last updated: 2026-07-15
+
+Identifier note: `V1-###` references below are legacy discovery IDs from the older 27-row snapshot. Use the crosswalk in `knowledge-base/ingestion-backlog.md`; do not use legacy or current draft IDs for production joins until the stable catalog is approved.
 
 ## Working Local Solution
 
@@ -135,6 +137,14 @@ High-value HRDM objects found for Fitness Check source mapping:
 - `D_HRDATAMART.S_ANALYTICS.WORKDAY_TRENDED_MANAGER_HIERARCHY`
 - `D_HRDATAMART.S_WORKDAY.WD_LOCATION`
 - `D_HRDATAMART.S_WORKDAY.WD_SECURITY`
+
+## User-Discovered HRDM Object Lead
+
+The 2026-07-07 MAIA missed-punch correction discovery added this HRDM source lead:
+
+- `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING`
+
+Use case: directional badge IN/OUT scans by employee, site, and date for HRA-reviewed missed-punch recommendation research. This should be treated as corroborating evidence only. Badge scans are access events, not payroll punches, and must not drive autonomous UKG edits.
 
 Useful LOA fields were found in Workday/roster objects:
 

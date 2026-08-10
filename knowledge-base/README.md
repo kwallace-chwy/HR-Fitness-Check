@@ -1,7 +1,7 @@
 # HR Fitness Check Knowledge Base
 
 Status: Draft discovery knowledge base
-Last updated: 2026-06-20
+Last updated: 2026-08-10
 Product: ORBIT HR Fitness Check
 
 ## Purpose
@@ -16,11 +16,13 @@ Start with these files:
 
 - `knowledge-base/source-inventory.md` for the located systems, documents, dashboards, data marts, and pipeline leads.
 - `knowledge-base/voc-pulse-action-roadmap.md` for the 2025 VOC Pulse action-loop context and 2026 TM Experience roadmap workstreams.
-- `knowledge-base/ingestion-backlog.md` for the 27 V1 in-scope checklist items and their current ingestion status.
+- `knowledge-base/ingestion-backlog.md` for the first source-mapping tranche, the current 33-row working-catalog boundary, and explicitly historical June 30 crosswalks.
 - `knowledge-base/snowflake-discovery-playbook.md` for SQL templates and access checks to run once Snowflake access is available.
 - `knowledge-base/research-log.md` for what has already been searched and what was not found.
 
 ## Current Discovery Summary
+
+The latest verified workbook copy was last modified 2026-07-29 16:32:27 UTC. It contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. The catalog remains approval-pending: source-table, reviewer, and result fields are blank, stable IDs and implementation modes are unapproved, and five June 30 rows are absent without an approved removal decision. The local MVP is read-only and uses synthetic fixture results.
 
 Most V1 data appears to sit in one of these source families:
 

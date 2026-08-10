@@ -1,5 +1,7 @@
 # Snowflake Discovery Playbook
 
+Identifier note: any `V1-###` references in this playbook are legacy discovery IDs. Reconcile through `knowledge-base/ingestion-backlog.md` and the future approved catalog before implementation.
+
 Status: Draft technical discovery guide
 Last updated: 2026-06-19
 

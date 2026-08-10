@@ -1,9 +1,47 @@
-# V1 Ingestion Backlog
+# HR Fitness Check ingestion backlog
 
 Status: Draft source-mapping backlog
-Last updated: 2026-06-20
+Last updated: 2026-08-10
 
-This backlog starts from the 27 V1 in-scope items in `docs/Reviewed-Checklist-Disposition.md`. A row is not ingestion-ready until source fields, date windows, site keys, owner, and validation examples are approved.
+This backlog was originally seeded from an older 27-row V1 snapshot and then reconciled to the June 30 38-row / 37-intent snapshot. Both identifier mappings are historical. The latest verified SharePoint workbook copy was last modified 2026-07-29 16:32:27 UTC and contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. The catalog remains approval-pending: source-table, reviewer, and result fields are blank, implementation modes and stable IDs are unapproved, and five June 30 rows are absent without an approved removal decision.
+
+The backlog rows below are source-discovery leads, not a complete or approved current V1 scope. The current working task list is maintained in `docs/Reviewed-Checklist-Disposition.md`. The local MVP is read-only and uses synthetic fixture results.
+
+> **PROHIBITED FOR JOINS:** Every `V1-###` and `A-###` mapping in the historical sections below is superseded and may point to a different business task than the July 29 draft list. Do not use either namespace for source joins, scoring, ownership, results, or historical recasts. Approve stable IDs and an explicit crosswalk first.
+
+## Historical June 30 draft-ID crosswalk - superseded
+
+| Legacy ID | June 30 draft ID | Item | Historical reconciliation note |
+| --- | --- | --- | --- |
+| V1-001 | A-005 | HR ServiceNow (SNOW) Tickets | Renamed in the June 30 snapshot. |
+| V1-002 | A-016 | LOAA Management | Same business item. |
+| V1-003 | A-010 | Missing Time Stamps | Same business item. |
+| V1-004 | A-011 | Unscheduled but Working | Display name shortened. |
+| V1-005 | A-012 | 13h Day risk assessment | Expanded display name. |
+| V1-006 | A-013 | 60h Week risk assessment | Expanded display name. |
+| V1-007 | None | Lunch Punch review | Not a separate row in the June 30 38-task-row list; product decision required before reuse. |
+| V1-008 | A-002 | Standup Audits | Same business item. |
+| V1-009 | A-019 | VOC Board Management | Same business item. |
+| V1-010 | A-001 | TM Experience Walk | Same business item. |
+| V1-011 | A-020 | Attendance Management | Same business item. |
+| V1-012 | A-014 | Locker Management | Same business item. |
+| V1-013 | A-015 | Badge Management | Same business item. |
+| V1-014 | A-021 | Swag Management | Same business item. |
+| V1-015 | A-007 | VTO Process | Same business item. |
+| V1-016 | A-022 | Beneficiary completion | Expanded display name. |
+| V1-017 | A-023 | Emergency-contact completion | Expanded display name. |
+| V1-018 | A-024 | Audit exempt HR Standard Work | Same business item. |
+| V1-019 | A-025 | Quality 1:1 | Same business item. |
+| V1-020 | A-026 | LEWs | Same business item. |
+| V1-021 | A-027 | Site communication and signage | Same business item. |
+| V1-022 | A-028 | Review and answer VOC board daily | Expanded display name. |
+| V1-023 | A-017 | CAT Tracker | Same business item. |
+| V1-024 | A-018 | Roundtables | Same business item. |
+| V1-025 | A-029 | Audit schedule groups | Same business item. |
+| V1-026 | A-030 | Investigations | Same business item. |
+| V1-027 | A-009 | FLO Certification management | Same business item. |
+
+This table preserves June 30 lineage only. Its `A-###` values do not match the July 29 draft ordering and must never be treated as current IDs. The approved catalog must assign stable IDs to the effective task set and document how older identifiers map, split, merge, retire, or remain unresolved.
 
 ## Status Legend
 
@@ -21,7 +59,7 @@ This backlog starts from the 27 V1 in-scope items in `docs/Reviewed-Checklist-Di
 |---|---|---|---|---|---|
 | V1-001 | SNOW Tickets | ServiceNow / HR DataMart | ServiceNow SOPs; ServiceNow replication pages; expected tables `sn_hr_core_case`, `sn_hr_core_task`; HRDM first-pass metadata search returned zero matching tables | Blocked | Confirm actual ServiceNow production database/schema with HRDM or ServiceNow owner, then map SLA breach formula, HR service/category filters, suspend handling, assignment group/site key, and production connector status. |
 | V1-002 | LOAA Management | ServiceNow / AbsenceOne / HR DataMart | SNOW Case & Task SOP; ServiceNow replication pages; HRDM first-pass metadata search returned zero expected case/task tables | Blocked | Confirm actual ServiceNow production schema/database before defining LOAA case/task filters, AbsenceOne handoff treatment, SLA breach numerator/denominator, and yellow/red threshold overlap. |
-| V1-003 | Missing Time Stamps | UKG / Snowflake | UKG Data Pipeline; UKG missed punch job aid; workbook references Punch Lunch Audit | Source located | Test `EDLDB.UKG.GOLD_V_TIMECARD_TRANSACTIONS` and exception tables for missing-punch signals in last 48 hours excluding current shift. |
+| V1-003 | Missing Time Stamps | UKG / Snowflake / HRDM employee badging | UKG Data Pipeline; UKG missed punch job aid; workbook references Punch Lunch Audit; user-discovered UKG Dataview 965 and HRDM `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING` badge scan query | Source located | Test UKG Dataview 965, `EDLDB.UKG.GOLD_V_TIMECARD_TRANSACTIONS`, UKG exception tables, and HRDM badge first-in/last-out evidence for missed-punch recommendation candidates. Define current-shift grace period and HRA approval boundary. |
 | V1-004 | Unscheduled (Not Scheduled but Working) | Roster Health / UKG / CLMS / Workday | Roster Health docs and SQL; `hr_fulfillment_roster_health_0830` pipeline | Source located | Confirm whether Roster Health source has NSBW/UBW site counts by 7-day window and reconcile to Tableau. |
 | V1-005 | 13h Report | HR Packet / UKG / Snowflake | HR Daily Packet handbook; UKG timecard/schedule tables; HR Packet pipeline | Source located | Confirm Over 12 or 13 Hours view logic, scheduled-shift adjustment, and workbook-noted roster flaw. |
 | V1-006 | 60h Report | HR Packet / UKG / Snowflake | HR Daily Packet handbook; `EDLDB.UKG.GOLD_V_TIMECARD_TOTAL` | Source located | Define prior-week week boundary, employee/site grain, and 60-hour calculation from timecard totals. |
@@ -46,6 +84,24 @@ This backlog starts from the 27 V1 in-scope items in `docs/Reviewed-Checklist-Di
 | V1-025 | Audit schedule groups | UKG / Snowflake | UKG schedule-group job aid; UKG schedule tables; Roster Health missing schedule category | Source located | Identify missing schedule group field/table and decide if Roster Health missing schedule is the official source. |
 | V1-026 | Investigations | Workday / Ethicspoint/OpenBark / ER Dashboard | Investigations SOP; EPA inventory has OpenBark Dashboard; Workday Investigation Documents | Blocked by sensitivity | Governance/legal must approve inclusion rules, aggregate-only fields, and whether SLA completion average can be used without case detail exposure. |
 | V1-027 | FLO Certification management | Smartsheet / Workday / UKG | FLO Certification SOP; site FLO pending/completed Smartsheet workflow; Workday/Kronos verification | Hybrid/manual | Locate FLO Smartsheet master/site sheets or pipeline. Define how to sample five most recent offer letters without exposing individual details. |
+
+## Historical June 30 additional rows - superseded
+
+The June 30 snapshot marked the following additional rows as in-scope intent or materially renamed older research rows. Preserve these entries for reconciliation only. Several IDs changed in the July 29 33-row list, and three listed business rows are among the five now absent. Use task names and an approved stable-ID crosswalk, never the draft IDs below, when deciding whether a source lead remains relevant.
+
+| June 30 draft ID | Item | June 30 evidence | Initial posture | Next discovery step |
+|---|---|---|---|---|
+| A-003 | New Hire Orientation | UKG and CCure DNS status review for prior 3 NHO groups | Candidate | Confirm DNS status source, CCure access path, site key, date window, and mismatch definition. |
+| A-004 | HR Metrics & Roster Health | Roster Health Report | Candidate | Define the exact metric because the health barometer was blank in the June 30 workbook and remains unapproved in the July 29 working copy. |
+| A-006 | VET Process | Site VET No-Match Sheet | Candidate | Locate governed sheet/table and define no-match numerator and window. |
+| A-008 | Shift Transfers / Includes site-to-site transfers | UKG Pro FC MET Scheduled report | Source located | Map MET cohort and schedule group mismatch logic. |
+| A-031 | Fishbowl Display | Fishbowl SOP and current display review | Hybrid/manual | Decide whether this remains a manual display check or has durable evidence. |
+| A-032 | Chewtopian of the Month/Leader of the Pack | Recognition boards | Hybrid/manual | Decide whether board evidence can be captured in an approved manual workflow. |
+| A-033 | Labor Planning | Labor Planning Metrics; prior-week planned vs actual variance | Candidate | Identify authoritative planned/actual source and decide LOA/attrition treatment. |
+| A-034 | Prepare Ops training/development (such as in AMMs) | Check-in with five Area Managers | Hybrid/manual | Decide whether interview/check-in evidence can be captured in a governed manual workflow. |
+| A-035 | Review Temporary Schedule Adjustments | Approved temporary accommodations tracker and UKG profile review | Candidate | Locate approved tracker, define five-most-recent sampling rule, and map UKG schedule fields. |
+| A-036 | Monthly Engagement Calendar | Public forum postings | Hybrid/manual | Decide evidence home and freshness rule for calendar postings. |
+| A-037 | HR Floor Engagement & Follow-Ups | HR calendar/scheduled floor engagement percentage | Candidate / governance review | Confirm whether calendar data can be used for this HR measurement and define aggregation/privacy rules. |
 
 ## Recommended Ingestion Order
 
