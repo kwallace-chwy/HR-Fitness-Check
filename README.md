@@ -26,7 +26,11 @@ The latest audit-sheet disposition is:
 | --- | ---: | --- |
 | Working in-scope intent | 33 | Business intent only; not an approved production denominator. |
 | Current owner role populated | 33 | Named accountability and approval remain open. |
-| Snowflake table / reviewer / result populated | 0 | Source and scoring readiness remain incomplete. |
+| Draft Column G dispositions in the preservation-safe local mapped derivative | 33 | 19 candidate; 8 blocked; 4 manual/hybrid; 1 validated-object/rule-pending; 1 derived. |
+| Production-approved source mappings | 0 | Source and scoring readiness remain incomplete. |
+| Reviewer / result populated in the July 29 SharePoint baseline | 0 | Review and scoring evidence remain incomplete. |
+
+The original SharePoint workbook baseline, last modified 2026-07-29, retains `Resource to Check` in Column F and has a blank `Snowflake Table` mapping target in Column G. Live Snowflake metadata validation on 2026-08-11 produced the preservation-safe local mapped derivative summarized above. Many candidates are sandbox-only, the derivative has not been connector-verified as published to SharePoint, and none of its mappings is production-approved.
 
 Q3 2025 baseline percentages remain discovery evidence only until the approved V1 denominator, implementation modes, source mappings, and missing-data policy are finalized.
 
@@ -169,11 +173,13 @@ The interface is intentionally dense and operational: readiness metrics, source 
 
 Source discovery and ingestion planning are captured in knowledge-base. Important current facts:
 
-- No populated Snowflake table values exist in the reviewed workbook yet.
+- The original July 29 SharePoint workbook has blank Column G values; Column F remains `Resource to Check`.
+- The 2026-08-11 preservation-safe local mapped derivative contains draft Column G dispositions for all 33 rows: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived.
+- Many candidate mappings are sandbox-only; zero mappings are production-approved, and SharePoint publication remains pending connector verification.
 - Current owner roles are populated for all 33 working rows; named accountability and approval are still required.
 - ServiceNow HR case/task source discovery remains blocked by schema/source confirmation.
 - Workday beneficiary and emergency contact fields were not found in the first HRDM metadata pass.
-- Talent Management source fields for Quality 1:1 and LEW are not yet located.
+- Quality 1:1 and LEW have candidate sandbox objects, but field, rule, source-owner, and production approvals remain open.
 - Investigations-related rows require governance review before field-level mapping.
 - VOC Pulse action roadmap content is recommendation context only, not V1 scoring input.
 

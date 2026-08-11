@@ -1,15 +1,16 @@
 # Reviewed Checklist Disposition
 
-Version: 0.3
+Version: 0.4
 Status: Working catalog, approval pending
 Source workbook: ORBIT - HR Fitness Check Matrix.xlsx
 SharePoint last modified: 2026-07-29 16:32:27 UTC
-Reviewed by: Repository research pass; workbook reviewer fields are blank
-Last Updated: 2026-08-06
+Local mapped derivative: ORBIT - HR Fitness Check Matrix.preserved.xlsx, generated 2026-08-11; SharePoint connector verification pending
+Reviewed by: Repository research and live Snowflake metadata validation; workbook reviewer fields are blank
+Last Updated: 2026-08-11
 
 ## Purpose
 
-This file translates the latest available SharePoint workbook into product-scope language. It is not an approved denominator, source-to-target map, or scoring contract. `In Scope.` means business intent only. Every item still requires stable identity, implementation mode, source or manual-evidence mapping, rating rules, named accountability, validation, and approval before production use.
+This file translates the latest available SharePoint workbook and the 2026-08-11 preservation-safe local mapped derivative into product-scope language. It is not an approved denominator, source-to-target map, or scoring contract. `In Scope.` means business intent only. Every item still requires stable identity, implementation mode, source or manual-evidence mapping, rating rules, named accountability, validation, and approval before production use.
 
 The latest workbook supersedes the 49-row discovery snapshot and the June 30 38-row / 37-intent snapshot.
 
@@ -20,13 +21,15 @@ The latest workbook supersedes the 49-row discovery snapshot and the June 30 38-
 | Working task rows | 33 |
 | Rows marked in scope | 33 |
 | Current owner role populated | 33 |
-| Snowflake table populated | 0 |
+| Column F | `Resource to Check`; preserved from the July 29 SharePoint baseline and not the Snowflake mapping target |
+| Draft Column G dispositions in local derivative | 33: 19 candidate; 8 blocked; 4 manual/hybrid; 1 validated-object/rule-pending; 1 derived |
+| Production-approved source mappings | 0 |
 | Reviewer populated | 0 |
 | Result / fitness value populated | 0 |
 | Approved production denominator | Not established |
 | Approval status | Unfinished / approval pending |
 
-`HR Metrics & Roster Health` also has no populated threshold. Slack updates on 2026-07-28 and 2026-08-04 described the matrix work as unfinished while backend work was beginning.
+The original July 29 SharePoint workbook has blank `Snowflake Table` values in Column G. The local derivative preserves workbook structure while recording draft mapping dispositions; many candidates are sandbox-only, and the file has not been connector-verified as published to SharePoint. `HR Metrics & Roster Health` also has no populated threshold. Slack updates on 2026-07-28 and 2026-08-04 described the matrix work as unfinished while backend work was beginning.
 
 ## Current Working Catalog
 

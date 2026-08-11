@@ -5,7 +5,7 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-EVAL-001` |
-| Version | `0.4` |
+| Version | `0.5` |
 | Status | MVP review evidence; production release blocked |
 | Last updated | 2026-08-11 |
 | Evaluation target | Local read-only ORBIT HR Fitness Check MVP `0.1.0` |
@@ -26,7 +26,8 @@
 | `FACT-005` | Site and item results are synthetic and read-only. | Fixture disclaimer, static app boundary, server method guard, tests | Confirmed |
 | `FACT-006` | No model produces the executive narrative. | Report builder uses fixed templates; report caveat states no model-generated causality | Confirmed |
 | `FACT-007` | No Quality Index is emitted. | Trend/report contract test and server response inspection | Confirmed |
-| `FACT-008` | No newer recorded approval closes the catalog/denominator, access-list, named-owner, source-mapping, or MVP-acceptance gates. | Read-only Slack, Outlook, SharePoint, and Confluence recheck on 2026-08-10; PRD inline comment 5217812622 remains open | No approval evidence found after the 2026-08-07 publication set; absence of a search result is not treated as approval |
+| `FACT-008` | No recorded approval closes the catalog/denominator, access-list, source-mapping, scoring-rule, or MVP-acceptance gates. | Current PRD/release gates plus the 33 draft Column G dispositions and six read-only query IDs | Confirmed: 0 production-approved mappings; draft queryability and dispositions are not approvals. |
+| `FACT-009` | A locally verified Column G publication candidate covers all 33 working rows. | Workbook verification plus Column G disposition artifact | Confirmed locally: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Fifteen candidate rows depend on sandbox objects. Live SharePoint publication remains pending because of a workbook resource lock. |
 
 ## Executed automated evidence
 
@@ -47,8 +48,9 @@ npm run test:all
 | `EVID-004` | `npm run test:all` | PASS: syntax, 46 core tests, and 6 browser/accessibility tests in one command |
 | `EVID-005` | Independent adversarial QA | Found crash, route-contract, rounding, fixture-integrity, provenance, report-schema, audit-classification/scope, bootstrap/history/focus, mobile, and accessibility defects; each confirmed issue was corrected and regression-checked before handoff |
 | `EVID-006` | Dependency audit | PASS: 0 known vulnerabilities reported after installing the locked development dependencies; production dependencies remain 0 |
-| `EVID-007` | Connected-source currency check | Slack exact searches found no newer HRFC decision; the 2026-08-07 ORBIT update still names scope, source mapping, and data readiness as next steps; the SharePoint matrix remains modified 2026-07-29 with mapping/reviewer/result blanks; Confluence PRD remains version 15 and approval-pending |
+| `EVID-007` | Connected-source currency check | PASS for discovery evidence only: the locally verified Column G candidate contains 33/33 draft dispositions (19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, 1 derived); 15 candidate rows depend on sandbox objects; 0 mappings are production-approved. Evidence query IDs: EDLDB inventory `01c652ca-071c-ed42-00a0-2d04d51ded47`; UKG priority columns `01c652cb-071c-eb73-00a0-2d04d51eeba3`; HRDM tables `01c652cc-0420-bdd7-0066-27031a10b762`; HRDM priority columns `01c652cc-0420-b7c9-0066-27031a1059f2`; People HRFC columns `01c652cf-071c-eb73-00a0-2d04d5224267`; HRDM ServiceNow zero-match `01c652c8-0420-b62d-0066-27031a1068ee`. Live SharePoint publication is pending because of a workbook resource lock; PRD v18 is the pre-sync baseline. |
 | `EVID-008` | Supported-runtime replay | PASS: checksum-verified official Node 22.22.3 and Node 24.18.0 LTS runtimes each passed syntax, all 46 Node tests, and all 6 Edge/Axe tests; the locked install dry-run also passed on both runtimes |
+| `EVID-009` | 2026-08-11 Snowflake metadata validation and local mapping | Produced a preservation-safe local mapped derivative with draft Column G dispositions for all 33 rows while preserving Column F as `Resource to Check`; many candidates are sandbox-only, 0 mappings are production-approved, and live SharePoint publication is not claimed pending connector verification |
 
 Current tests cover:
 
@@ -111,7 +113,7 @@ For the network fixture, the executive report displays 62% green share, 72% evid
 | `RC-001` Stable catalog IDs | Blocked | Approved stable IDs and legacy crosswalk |
 | `RC-002` Current owner for every V1 item | Blocked | Named/current-owner approvals, not only owner-group roles |
 | `RC-003` Implementation mode approved | Blocked | Product, SME, and source-owner decision per row |
-| `RC-004` Source mappings and rating rules approved | Blocked | Field/filter/window/key/lineage contracts and SME examples |
+| `RC-004` Source mappings and rating rules approved | Blocked | Draft Column G discovery covers 33 rows, but 15 candidate rows depend on sandbox objects, 8 are blocked, 4 are manual/hybrid, 1 has its rule pending, and 0 mappings are production-approved. Close only with approved production objects, fields, filters, joins, site keys, windows, freshness, owners, lineage, access, reconciliation examples, and SME-approved rules. |
 | `RC-005` Manual evidence workflow approved | Blocked | System of record, access, approval, correction, and retention |
 | `RC-010` MVP backend/reporting validated | Review | Automated contract tests and manual browser checks pass; product/UX acceptance remains |
 
@@ -122,7 +124,7 @@ No gate in this document approves a production scoring denominator.
 | Gap ID | Missing evidence | Release impact |
 | --- | --- | --- |
 | `EVAL-GAP-001` | Stable catalog and SME-approved expected ratings | Blocks scoring validation |
-| `EVAL-GAP-002` | Production source samples and source-owner reconciliation | Blocks factual/source correctness claims |
+| `EVAL-GAP-002` | Production-accessible source samples, sandbox-promotion decisions, row-level field/filter/window/site-key contracts, source-owner reconciliation, and SME-approved rules | Blocks factual/source correctness and scoring claims; the six query IDs and 33 draft dispositions establish discovery evidence only. |
 | `EVAL-GAP-003` | Identity, RBAC, site/rollup isolation, and unauthorized access tests | Blocks pilot |
 | `EVAL-GAP-004` | Human screen-reader review, full keyboard-only workflow, zoom/reflow, formal color-contrast evidence, and supported-browser matrix | Blocks UX/accessibility approval |
 | `EVAL-GAP-005` | Load, concurrency, soak, restart, backup, recovery, and observability tests | Blocks operational readiness |

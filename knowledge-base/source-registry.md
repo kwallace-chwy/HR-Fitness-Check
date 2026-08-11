@@ -1,6 +1,6 @@
 # HR Fitness Check Source Registry
 
-Version: 0.4
+Version: 0.5
 Status: Draft source registry
 Last updated: 2026-08-11
 
@@ -30,11 +30,13 @@ This file complements:
 
 | Source ID | Title | System | Owner | Steward | Classification | Allowed audiences | Allowed workflows | Freshness SLA | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `src.hrfc.catalog.reviewed_matrix.v1` | Reviewed HR Fitness Check matrix | Excel / SharePoint / local workbook evidence | Kenny Wallace / Weipan Le | ORBIT product | Internal, review required | Product, process owner, data engineering | Catalog readiness, source mapping, scoring design | Review per scope decision | Candidate; 33-row July 29 working catalog, approval pending |
+| `src.hrfc.catalog.reviewed_matrix.v1` | Reviewed HR Fitness Check matrix | Excel / SharePoint / local workbook evidence | Kenny Wallace / Weipan Le | ORBIT product | Internal, review required | Product, process owner, data engineering | Catalog readiness, source mapping, scoring design | Review per scope decision | Candidate; 33-row July 29 source copy, approval pending; Snowflake Table cells were blank when fetched |
+| `src.hrfc.catalog.column_g.local.v1` | Local 2026-08-11 Column-G mapped derivative | Local Excel derivative plus Snowflake metadata evidence | Kenny Wallace / ORBIT product | ORBIT product / data engineering, TBD | Internal, review required | Product, process owner, data engineering | Source-map review only; no runtime scoring | Rebuild after approved source/version change | Candidate; 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, 1 derived; connector/version verification pending and not confirmed published to SharePoint |
 | `src.hrfc.prd.github.v1` | GitHub PRD and repo docs | GitHub | ORBIT product | ORBIT product | Internal | Product, engineering, governance, Confluence publishers | Requirements, publishing, capability governance | On commit | Candidate |
 | `src.hrfc.ukg.edldb.v1` | UKG Pro Snowflake objects | EDLDB.UKG | TBD UKG/data owner | Data engineering | Confidential until classified | Approved HR/data users | UKG-derived metrics | TBD by object | Candidate |
+| `src.hrfc.people_analytics_sandbox.v1` | HRFC-relevant People Analytics sandbox objects | EDLDB.PEOPLE_ANALYTICS_SANDBOX and fulfillment sandbox schemas | TBD EPA/data owners | Data engineering | Internal / confidential review; associate and comment data possible | Approved HR/data users only | Source and rule discovery; Tableau reconciliation | TBD by object | Candidate; sandbox only, not production-certified or approved for scoring |
 | `src.hrfc.hrdm.workday.v1` | Workday HRDM roster and worker objects | D_HRDATAMART | TBD HRDM/Workday owner | Data engineering | Confidential / regulated review | Approved HR/data users | Workday-derived aggregate metrics | TBD by object | Candidate |
-| `src.hrfc.hrdm.employee_badging.v1` | HRDM employee badge scan records | D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING | TBD HRDM/badging owner | Data engineering | Restricted / associate-level time and access data review | Approved HR/data users only | Badge Management source-feasibility research only | TBD by object | Candidate |
+| `src.hrfc.hrdm.employee_badging.v1` | HRDM employee badge scan records | D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING | TBD HRDM/badging owner | Data engineering | Restricted / associate-level time and access data review | Approved HR/data users only | Missed-punch corroborating research only; not Badge Management inventory scoring | TBD by object | Candidate |
 | `src.hrfc.servicenow.hrdm.v1` | ServiceNow HR case/task replication | HRDM or alternate Snowflake schema | TBD ServiceNow/HRDM owner | Data engineering | Confidential / case-level review | Approved HR/data users | SNOW Tickets, LOAA | TBD | Blocked |
 | `src.hrfc.fc_hr_analytics.v1` | FC HR Analytics pipeline outputs | GitHub / Snowflake / Tableau pipeline | TBD EPA/FC HR Analytics owner | Data engineering | Internal / confidential review | Product, data engineering, approved HR | Roster Health, HR Packet, ECHO, CAT, VOC, surveys | TBD by pipeline | Candidate |
 | `src.hrfc.tableau.reconciliation.v1` | Tableau dashboards for reconciliation | Tableau | TBD dashboard owners | Data engineering | Internal / confidential review | Product, source owners, QA | Reconciliation only | Dashboard dependent | Candidate |
@@ -73,7 +75,9 @@ Each registry row must be completed before pilot use:
 | Source family | Scoring input | Recommendation context | Notes |
 | --- | --- | --- | --- |
 | Reviewed matrix | Yes, after catalog approval | Yes | Discovery workbook is evidence, not durable runtime source. |
+| Local Column-G derivative | No | No | Mapping review artifact only. It does not prove SharePoint publication, source approval, or production readiness. |
 | UKG / EDLDB | Yes, for approved aggregate metrics | Limited | Avoid raw associate-level data in shared outputs. |
+| People Analytics and fulfillment sandbox objects | No until production source approval | Limited, after classification | Sandbox names/columns support discovery and reconciliation only. Do not describe them as production-certified or use them for reported site ratings. |
 | HRDM / Workday | Yes, after owner mapping | Limited | Benefits/emergency contact fields are not yet located. |
 | HRDM employee badging | No, unless approved as a specific aggregate Badge Management metric | Limited | Badge scans are access events, not badge-inventory evidence or payroll punches. Keep associate-level events out of shared Fitness Check context. |
 | ServiceNow | Yes, after schema and governance approval | Limited | Case/task schema is blocked; avoid case narratives. |
@@ -118,10 +122,10 @@ Each registry row must be completed before pilot use:
 | Gap | Impact |
 | --- | --- |
 | Owner roles are populated for all 33 working rows, but named accountability and approval are incomplete | Blocks approved catalog identity, business accountability, and source-owner validation. |
-| No populated workbook Snowflake table values | Blocks engineering from writing deterministic queries. |
-| ServiceNow schema not found in first-pass HRDM discovery | Blocks SNOW Tickets and LOAA Management automation. |
+| SharePoint source workbook Snowflake Table cells were blank when fetched; a local mapped derivative exists but connector/version verification is pending | Allows structured review to begin, but blocks treating the live workbook as synchronized or the mappings as approved. |
+| ServiceNow schema not found in the first-pass or 2026-08-11 live HRDM discovery | Blocks SNOW Tickets and LOAA Management automation. |
 | Beneficiary and emergency-contact fields not found in HRDM metadata search | Blocks Workday-derived rows until source owner identifies field/report. |
-| Talent Management source fields not found | Blocks Quality 1:1 and LEW automation. |
+| Quality 1:1 and LEW candidates were found only in EDLDB sandbox objects | Enables field/rule reconciliation, but owner, denominator, Tableau reconciliation, and production-certified source decisions still block automation. |
 | Investigations source is sensitive | Requires legal/governance approval before any field-level mapping. |
 | Manual input home undecided | Blocks manual/physical evidence workflow. |
 | SharePoint decision/action tracker target and schema are unapproved | Blocks durable disposition, rationale, owner, target-date, completion, and outcome-link writes. |

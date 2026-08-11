@@ -1,18 +1,49 @@
 # Research Log
 
 Status: Draft discovery log
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
-## Current Reconciliation - 2026-08-10
+## Current Reconciliation - 2026-08-11
 
 - The latest verified SharePoint workbook copy was last modified 2026-07-29 16:32:27 UTC.
 - Its working catalog contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33.
-- The catalog remains approval-pending. Source-table, reviewer, and result fields are blank, stable IDs and implementation modes are unapproved, and `HR Metrics & Roster Health` has no approved threshold.
+- The SharePoint source workbook's source-table, reviewer, and result fields were blank when fetched. A local mapped derivative was prepared on 2026-08-11, but SharePoint connector/version verification is pending; no live publication claim is made.
+- The local derivative classifies the 33 rows as 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Zero rows are approved for pilot or production. Stable IDs, implementation modes, source contracts, and rating rules remain unapproved, and `HR Metrics & Roster Health` still has no approved threshold.
 - Five June 30 rows are absent. Absence is not interpreted as an approved removal, consolidation, or retirement decision.
 - Confluence PRD page `5006537577` was re-verified on 2026-08-10 at version 15 with the reconciled 33-row and synthetic/read-only MVP boundaries.
 - The local MVP is a review-only, read-only application using synthetic fixture results. It does not connect to production HR systems or approve a scoring denominator.
 
 The dated sections below preserve what was known during the June 30 through July 7 discovery work. References to the "latest" workbook, blank owner fields, Confluence version 14, or a required PRD replacement are historical statements and must not be treated as current.
+
+## Targeted Snowflake Refresh - 2026-08-11
+
+Actions completed:
+
+- Revalidated the separate EDLDB and HRDM browser-SSO profiles using the read-only query runner.
+- Ran targeted object and column discovery for UKG, People Analytics sandbox, fulfillment sandbox, HRDM roster/Workday, ServiceNow names, surveys, ECHO/CAT/VOC, Talent Management candidates, and labor planning.
+- Matched the accessible metadata to all 33 working workbook task names and created a local Column-G derivative.
+- Ran metadata queries only. No DML, DDL, record-level sampling, source-system write, credential change, or live SharePoint update was performed.
+
+Results:
+
+| Query | Rows | Snowflake query ID |
+|---|---:|---|
+| EDLDB HRFC table candidates | 3,206 | `01c652ca-071c-ed42-00a0-2d04d51ded47` |
+| EDLDB UKG priority columns | 710 | `01c652cb-071c-eb73-00a0-2d04d51eeba3` |
+| HRDM HRFC table candidates | 101 | `01c652cc-0420-bdd7-0066-27031a10b762` |
+| HRDM priority columns | 1,066 | `01c652cc-0420-b7c9-0066-27031a1059f2` |
+| EDLDB People Analytics HRFC columns | 738 | `01c652cf-071c-eb73-00a0-2d04d5224267` |
+| Local EDLDB labor-plan column output | 103 | Not captured; producing query ID was not retained |
+| HRDM ServiceNow candidate names | 0 | `01c652c8-0420-b62d-0066-27031a1068ee` |
+
+Key findings:
+
+- `EDLDB.UKG.GOLD_V_TIMECARD_EXCEPTION` and `EDLDB.UKG.GOLD_V_TIMECARD_PUNCH` contain the relevant Missing Time Stamps object/column evidence. This is the single `validated objects; rule pending` row; the executable rule and source contract remain unapproved.
+- EDLDB sandbox candidates were found for Roster Health, Standup Audits, New Hire surveys, Quality 1:1, LEWs, CAT, ECHO, VOC, VET/VTO, and Labor Planning. Sandbox discovery is not production certification.
+- The HRDM-only no-match for Quality 1:1 and LEWs is now qualified: HRDM did not expose obvious names, but EDLDB sandbox objects `QUALITY_ONE_ON_ONE`, `FULFILLMENT_QUALITY`, and `FULFILLMENT_LEW` were found later.
+- No ServiceNow HR case/task object was found in the live HRDM name search. Beneficiary and emergency-contact fields also remain undiscovered.
+- `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING` is badge-scan evidence, not badge inventory and not a payroll punch source.
+- The local mapped workbook derivative remains pending connector/version verification and source-owner review.
 
 ## Historical Discovery Log - June 30 Through July 7
 
@@ -67,7 +98,7 @@ Result:
 - HRDM priority object column inventory succeeded with 879 metadata rows.
 - HRDM ServiceNow table-name search returned zero expected case/task table matches.
 - HRDM employee badge scan source lead is now documented as a candidate corroborating source for HRA-reviewed missed-punch recommendations.
-- First-pass HRDM metadata did not find obvious beneficiary, emergency-contact, dependent, benefit-completeness, Quality 1:1, LEW, or Talent table/field names.
+- First-pass HRDM metadata did not find obvious beneficiary, emergency-contact, dependent, benefit-completeness, Quality 1:1, LEW, or Talent table/field names. The later EDLDB refresh found Quality 1:1 and LEW sandbox candidates; the historical statement remains true only for HRDM.
 - The connector warns that `keyring` is not installed, causing repeated browser SSO prompts.
 
 ## SharePoint Searches And Fetches
@@ -139,9 +170,9 @@ Important source leads:
 - `D_HRDATAMART.S_WORKDAY`
 - `EDLDB.UKG`
 - `EDLDB.UKG.GOLD_V_TIMECARD_TOTAL`
-- `EDLDB.UKG.GOLD_V_TIMECARD_TRANSACTIONS`
+- `EDLDB.UKG.GOLD_V_TIMECARD_TRANSACTION`
 - `EDLDB.UKG.GOLD_V_SCHEDULE_TOTAL`
-- `EDLDB.UKG.GOLD_V_SCHEDULE_TRANSACTIONS`
+- `EDLDB.UKG.GOLD_V_SCHEDULE_TRANSACTION`
 - `EDLDB.UKG.GOLD_V_ACCRUAL_BALANCE_SUMMARY`
 - `sn_hr_core_case`
 - `sn_hr_core_task`
@@ -167,6 +198,8 @@ Snowflake output files created:
 - `knowledge-base/discovery-output/hrdm_key_object_columns.csv`
 - `knowledge-base/discovery-output/hrdm_servicenow_candidate_tables.csv`
 
+The 2026-08-11 refresh outputs are local work artifacts under `outputs/019ff1d5-e2d8-76b1-8f5b-ea0500b454ce/` and have not yet replaced the maintained discovery-output baseline.
+
 ## Privacy And Sensitive-Data Handling Notes
 
 The research surfaced some source content that may include direct contacts, case details, employee-level fields, or credential-adjacent material. This knowledge base intentionally does not copy personal contact values, credentials, passcodes, raw employee data, case narratives, or work notes.
@@ -176,12 +209,13 @@ Use source docs for context, but perform ingestion work only through approved go
 ## Next Research Actions
 
 1. Install Snowflake connector secure local storage in the existing Workload Lens venv if repeated browser prompts become disruptive.
-2. Continue EDLDB/UKG discovery using the generated metadata outputs.
+2. Reconcile the 19 candidate mappings to source owners, Tableau definitions, and production-certified objects; do not promote sandbox names directly into scoring contracts.
 3. Confirm UKG Dataview 965 name, owner, field list, filters, and intended missed-punch use.
 4. Run the HRDM employee badging SQL seed for BNA1, DFW8, SDF2, and SDF4 and compare against a labelled HRA sample.
 5. Ask Workday/HRDM owners to identify the exact beneficiary and emergency-contact report/table/fields because HRDM first-pass metadata did not reveal obvious columns.
 6. Confirm the actual ServiceNow production connector schema/database because HRDM first-pass search did not reveal `sn_hr_core_case` or `sn_hr_core_task`.
 7. Confirm whether the FC HR Analytics GitHub repo is accessible and inspect source SQL for the HR Packet, Roster Health, ECHO, CAT, VOC, and survey pipelines.
-8. Ask EPA/Talent Management owners for Quality 1:1 and LEW source tables or Tableau workbook metadata.
+8. Ask EPA/Talent Management owners to validate the discovered sandbox Quality 1:1 and LEW objects, completion denominators, Tableau reconciliation, and production targets.
 9. Ask Governance/Legal whether Investigations can be measured using aggregate SLA metadata only.
-10. Confirm which 2026 TM Experience Roadmap workstream artifacts are approved for ORBIT citation and which are still draft planning material.
+10. Verify the live SharePoint workbook version and connector result before claiming the local Column-G derivative was published.
+11. Confirm which 2026 TM Experience Roadmap workstream artifacts are approved for ORBIT citation and which are still draft planning material.
