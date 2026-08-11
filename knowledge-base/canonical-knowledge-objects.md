@@ -1,12 +1,12 @@
 # HR Fitness Check Canonical Knowledge Objects
 
-Version: 0.2
+Version: 0.3
 Status: Draft knowledge model
-Last updated: 2026-07-15
+Last updated: 2026-08-11
 
 ## Purpose
 
-This file defines the canonical objects HR Fitness Check should use for governed retrieval, scoring, audit, and narrative generation. Source evidence remains provenance. Canonical objects define authority. Chunks or blocks support retrieval and citation.
+This file defines the canonical objects HR Fitness Check should use for governed retrieval, scoring, audit, narrative generation, recommendation review, action tracking, and outcome measurement. Source evidence remains provenance. Canonical objects define authority. Chunks or blocks support retrieval and citation.
 
 ## Object Layers
 
@@ -32,6 +32,11 @@ This file defines the canonical objects HR Fitness Check should use for governed
 | `approval_record` | Human approval for manual input, publishing, or future writes. |
 | `eval_case` | Gold case and expected behavior. |
 | `intervention_reference` | Approved recommendation or action-plan context. |
+| `recommendation` | Grounded, reviewable path-to-green recommendation tied to approved results and intervention references. |
+| `recommendation_decision` | Regional HR disposition of `accepted`, `modified`, `declined`, or `deferred`, with required rationale. |
+| `action_record` | User-confirmed action, owner, target date, execution state, and SharePoint receipt for an accepted or modified decision. |
+| `followup_measurement` | Link between a completed action and the next approved comparable Fitness Check measurement. |
+| `quality_outcome` | Verified quality movement and later sustained-result state without an unsupported causal claim. |
 | `publishing_artifact` | Downstream Confluence or presentation artifact generated from GitHub. |
 
 ## Standard Work Item Schema
@@ -156,6 +161,130 @@ This file defines the canonical objects HR Fitness Check should use for governed
 }
 ```
 
+## Recommendation Schema
+
+```json
+{
+  "content_id": "recommendation.hrfc.site.quarter.item.sequence",
+  "object_type": "recommendation",
+  "recommendation_id": "rec.hrfc.hou1.2026_q3.a_005.001",
+  "site_id": "HOU1",
+  "quarter": "2026-Q3",
+  "sw_item_ids": ["A-005"],
+  "finding_result_ids": ["result.hrfc.hou1.2026_q3.a_005"],
+  "intervention_reference_ids": [],
+  "recommendation_text": null,
+  "evidence_summary": [],
+  "caveats": [],
+  "generation_method": "supervised_grounded_summary",
+  "model_profile_id": "model.hrfc.supervised_summary.v1",
+  "prompt_package_version": "prompt.hrfc.v1",
+  "status": "draft_pending_regional_hr_review",
+  "generated_at": null,
+  "requires_human_review": true
+}
+```
+
+The recommendation is immutable after review begins. A modification is stored in the decision and action records so the generated recommendation and the human-approved change remain distinguishable.
+
+## Recommendation Decision Schema
+
+```json
+{
+  "content_id": "decision.hrfc.recommendation.sequence",
+  "object_type": "recommendation_decision",
+  "decision_id": "decision.hrfc.rec.001",
+  "recommendation_id": "rec.hrfc.hou1.2026_q3.a_005.001",
+  "reviewer_role": "regional_hr_reviewer",
+  "reviewer_scope": "approved_region_or_site_scope",
+  "disposition": "accepted",
+  "rationale": null,
+  "modified_recommendation_text": null,
+  "decided_at": null,
+  "approval_record_id": null,
+  "write_status": "preview_only",
+  "target_record_id": null,
+  "execution_receipt_id": null
+}
+```
+
+Allowed dispositions are `accepted`, `modified`, `declined`, and `deferred`. Rationale is required for all four. `modified_recommendation_text` is required when disposition is `modified`. A durable decision write remains disabled until the target, action class, access, retention, correction, and evaluation contracts are approved.
+
+## Action Record Schema
+
+```json
+{
+  "content_id": "action.hrfc.decision.sequence",
+  "object_type": "action_record",
+  "action_record_id": "action.hrfc.decision.001",
+  "decision_id": "decision.hrfc.rec.001",
+  "recommendation_id": "rec.hrfc.hou1.2026_q3.a_005.001",
+  "action_text": null,
+  "action_owner": null,
+  "target_date": null,
+  "execution_status": "planned",
+  "completion_date": null,
+  "completion_evidence_reference": null,
+  "sharepoint_target_id": null,
+  "sharepoint_record_id": null,
+  "approval_record_id": null,
+  "confirmation_timestamp": null,
+  "write_status": "preview_only",
+  "execution_receipt_id": null
+}
+```
+
+An action record may be created only from an `accepted` or `modified` decision. Exact action text, owner, target date, target record, and explicit user confirmation are required immediately before the approved SharePoint write. Allowed execution states are `planned`, `in_progress`, `completed`, `cancelled`, and `overdue`.
+
+## Follow-up Measurement Schema
+
+```json
+{
+  "content_id": "measurement.hrfc.action.sequence",
+  "object_type": "followup_measurement",
+  "measurement_id": "measurement.hrfc.action.001",
+  "action_record_id": "action.hrfc.decision.001",
+  "site_id": "HOU1",
+  "sw_item_ids": ["A-005"],
+  "baseline_result_ids": ["result.hrfc.hou1.2026_q3.a_005"],
+  "followup_result_ids": [],
+  "expected_followup_window": "next_comparable_measurement",
+  "comparison_rule_version": null,
+  "comparability_status": "pending_measurement",
+  "comparability_reasons": [],
+  "measured_at": null
+}
+```
+
+Allowed comparability states are `pending_measurement`, `comparable`, and `not_comparable`. A measurement is comparable only when the approved site/item scope, rule, denominator, measurement window, and source basis satisfy the applicable comparison contract.
+
+## Quality Outcome Schema
+
+```json
+{
+  "content_id": "outcome.hrfc.measurement.sequence",
+  "object_type": "quality_outcome",
+  "outcome_id": "outcome.hrfc.measurement.001",
+  "measurement_id": "measurement.hrfc.action.001",
+  "action_record_id": "action.hrfc.decision.001",
+  "verified_movement_status": "pending_measurement",
+  "baseline_value": null,
+  "followup_value": null,
+  "movement_value": null,
+  "movement_unit": null,
+  "verification_method": null,
+  "verified_at": null,
+  "verified_by_role": null,
+  "sustained_status": "pending_recheck",
+  "sustained_recheck_due": null,
+  "sustained_recheck_result_ids": [],
+  "causal_claim_status": "association_only",
+  "caveats": []
+}
+```
+
+Allowed verified movement states are `pending_measurement`, `verified_improvement`, `verified_no_change`, `verified_decline`, and `not_comparable`. Allowed sustained states are `pending_recheck`, `sustained`, `not_sustained`, and `not_applicable`. A verified improvement means quality improved after the recorded action under an approved comparison; it does not by itself prove causation.
+
 ## Relationship Types
 
 | Relationship | Meaning |
@@ -171,6 +300,12 @@ This file defines the canonical objects HR Fitness Check should use for governed
 | `BLOCKED_BY_DECISION` | Governance or product decision is required. |
 | `REQUIRES_PERMISSION` | Access condition applies. |
 | `SUPPORTS_RECOMMENDATION` | Intervention context supports narrative recommendations. |
+| `GROUNDED_IN_RESULT` | Recommendation is grounded in one or more approved Fitness Check results. |
+| `HAS_DECISION` | Recommendation has a Regional HR disposition and rationale. |
+| `CREATES_ACTION` | An accepted or modified decision creates a confirmed action record. |
+| `HAS_FOLLOWUP_MEASUREMENT` | Completed action is linked to the next approved comparable measurement. |
+| `HAS_VERIFIED_OUTCOME` | Comparable measurement produces a verified quality-movement status. |
+| `HAS_SUSTAINED_RESULT` | Verified outcome has a later sustained-result determination. |
 
 ## ID Rules
 
@@ -183,6 +318,11 @@ This file defines the canonical objects HR Fitness Check should use for governed
 | `route_plan_id` | Runtime route ID tied to request ID. |
 | `run_id` | Assessment run ID tied to quarter and execution. |
 | `approval_record_id` | Human approval record ID. |
+| `recommendation_id` | Stable recommendation ID tied to site, assessment period, relevant items, and sequence. |
+| `decision_id` | Immutable human decision record ID tied to one recommendation version. |
+| `action_record_id` | Stable action record ID tied to an accepted or modified decision. |
+| `measurement_id` | Stable comparison record ID tying an action to baseline and follow-up result IDs. |
+| `outcome_id` | Stable verified/sustained quality-outcome record ID tied to one measurement. |
 
 ## Canonical Object Readiness Gates
 
@@ -194,4 +334,9 @@ This file defines the canonical objects HR Fitness Check should use for governed
 - [ ] Each scored item has rating rule version and SME example.
 - [ ] Each result status has product behavior.
 - [ ] Each recommendation uses approved intervention references only.
+- [ ] Each recommendation is grounded in approved result IDs, carries caveats, and is immutable after review begins.
+- [ ] Each durable recommendation decision uses an allowed disposition, required rationale, reviewer scope, approval record, and execution receipt.
+- [ ] Each accepted or modified action includes exact action text, owner, target date, explicit confirmation, SharePoint target, and correction path.
+- [ ] Each follow-up measurement records baseline/follow-up result IDs, comparison-rule version, and comparability state.
+- [ ] Each quality outcome separates verified movement from sustained status and uses `association_only` unless a separately approved causal method exists.
 - [ ] Each canonical object carries source evidence and citation policy.

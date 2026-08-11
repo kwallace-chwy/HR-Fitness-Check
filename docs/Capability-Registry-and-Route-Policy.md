@@ -1,8 +1,8 @@
 # HR Fitness Check Capability Registry And Route Policy
 
-Version: 0.2
+Version: 0.3
 Status: Draft control artifact
-Last updated: 2026-07-15
+Last updated: 2026-08-11
 
 ## Purpose
 
@@ -18,6 +18,11 @@ This file defines the initial governed capabilities and route policy for HR Fitn
 | `cap.hrfc.source_mapping_review.v1` | Source mapping readiness | Data engineering / source owners | Draft | L2 Analyze | Product, data engineering, governance | Source registry, ingestion backlog, discovery outputs | Read-only | `eval.hrfc.source_mapping.v1` |
 | `cap.hrfc.manual_input_preview.v1` | Manual input preview | Product / Phoenix / HR Ops | Draft | L4 Preview | Authorized HR user | Manual input requirements, catalog, rating rules | Preview only | `eval.hrfc.manual_input.v1` |
 | `cap.hrfc.narrative_summary.v1` | Supervised narrative summary | ORBIT product / HR Ops | Draft | L3 Recommend | HRM, HRD, HR leadership | Scored results, caveats, approved intervention registry when available | Draft-only | `eval.hrfc.narrative.v1` |
+| `cap.hrfc.recommendation_review.v1` | Recommendation review and disposition preview | ORBIT product / Regional HR | Draft | L4 Preview | Authorized Regional HR reviewer, HRD | Grounded recommendation, scored results, caveats, approved intervention references | Read-only plus preview; no durable decision write | `eval.hrfc.recommendation_review.v1` |
+| `cap.hrfc.recommendation_decision_write.v1` | Confirmed recommendation decision recording | ORBIT product / Regional HR | Disabled | L5 Supervised write | Authorized Regional HR reviewer | Exact reviewed recommendation, disposition preview, rationale, approval record | Disabled supervised write | `eval.hrfc.recommendation_decision_write.v1` |
+| `cap.hrfc.action_tracker_write.v1` | Confirmed SharePoint action recording | ORBIT product / Regional HR | Disabled | L5 Supervised write | Authorized Regional HR reviewer | Accepted or modified decision, confirmed action text, owner, target date | Disabled supervised write | `eval.hrfc.action_tracker_write.v1` |
+| `cap.hrfc.outcome_review.v1` | Comparable-measurement and quality-outcome review | ORBIT product / HR Ops | Draft | L2 Analyze | HRM, HRD, Regional HR, approved HR leadership | Completed action records, approved current and follow-up results, rule and denominator versions | Read-only; outcome-link preview only | `eval.hrfc.outcome_review.v1` |
+| `cap.hrfc.outcome_link_write.v1` | Confirmed quality-outcome link recording | ORBIT product / data engineering | Disabled | L5 Supervised write | Authorized outcome reviewer | Completed action, approved comparable results, comparison decision, verification record, sustained-window policy | Disabled supervised write | `eval.hrfc.outcome_link_write.v1` |
 | `cap.hrfc.confluence_publish_preview.v1` | Confluence publishing preview | ORBIT product | Disabled | L4 Preview | Product owner, approved publisher | GitHub PRD and approved docs | Preview only | `eval.hrfc.publish.v1` |
 
 ## Capability Contract Defaults
@@ -75,6 +80,11 @@ This file defines the initial governed capabilities and route policy for HR Fitn
 6. No route may authorize a write or publish action by itself.
 7. Low-confidence or unsupported requests must clarify, refuse, or escalate.
 8. Route decisions must be recorded with policy version and confidence.
+9. Recommendation dispositions are limited to `accepted`, `modified`, `declined`, or `deferred`, and every durable decision requires reviewer rationale.
+10. Only an `accepted` or `modified` decision may proceed to an action-record preview, which must include exact action text, owner, and target date.
+11. SharePoint decision, action, or outcome writes require an enabled write capability, approved action class, exact preview, explicit user confirmation, approval record, and execution receipt. Registration alone does not enable a write.
+12. Outcome review must use the next approved comparable measurement. A later score is not comparable when the site/item scope, rule, denominator, measurement window, or source basis is materially different.
+13. Verified quality movement is an observed association after an action, not proof that the action caused the change. Sustained status requires a separately approved recheck window.
 
 ## Request Routing Matrix
 
@@ -86,6 +96,11 @@ This file defines the initial governed capabilities and route policy for HR Fitn
 | "Why is SNOW Tickets red?" | `cap.hrfc.site_assessment.v1` | Source mapping approved; result has source/citation; no case-level leakage. | Say evidence is missing or blocked. |
 | "Submit manual result for TM Experience Walk" | `cap.hrfc.manual_input_preview.v1` | User authorized; item requires manual input; exact fields previewed. | Stop until manual workflow is approved. |
 | "Draft strengths and opportunities" | `cap.hrfc.narrative_summary.v1` | Scored results, caveats, and source IDs available. | Draft caveat-only summary or ask for evidence. |
+| "Review this recommendation" | `cap.hrfc.recommendation_review.v1` | Recommendation is grounded in approved results and intervention references; user is an authorized Regional HR reviewer. | Show evidence and caveats; do not capture a durable decision. |
+| "Accept this recommendation" | `cap.hrfc.recommendation_decision_write.v1` | Exact recommendation shown; disposition and rationale supplied; write capability and action class approved; explicit confirmation captured. | Prepare a preview only or stop if the write remains disabled. |
+| "Record this accepted action with an owner and target date" | `cap.hrfc.action_tracker_write.v1` | Decision is `accepted` or `modified`; exact action, owner, target date, target record, and confirmation are present. | Do not write; return missing fields or disabled-state explanation. |
+| "Did the completed action improve quality?" | `cap.hrfc.outcome_review.v1` | Completed action and next comparable approved measurement exist; comparison rule and sustained window are identified. | Return pending or not-comparable status without a causal claim. |
+| "Record this verified outcome" | `cap.hrfc.outcome_link_write.v1` | Outcome reviewer is authorized; action is completed; comparison is approved; exact result IDs, movement state, caveats, and confirmation are present. | Prepare a preview only or stop if the write remains disabled. |
 | "Publish this to Confluence" | `cap.hrfc.confluence_publish_preview.v1` | Publishing action class approved; audience/retention approved; approval record captured. | Prepare preview only. |
 
 ## Feature Flags
@@ -98,6 +113,11 @@ This file defines the initial governed capabilities and route policy for HR Fitn
 | `hrfc.cap.source_mapping_review` | Off | Enables source mapping capability. |
 | `hrfc.cap.manual_input_preview` | Off | Enables manual-input preview. |
 | `hrfc.cap.narrative_summary` | Off | Enables supervised AI narrative drafting. |
+| `hrfc.cap.recommendation_review` | Off | Enables grounded recommendation review and disposition preview. |
+| `hrfc.cap.recommendation_decision_write` | Off | Enables an approved, explicitly confirmed durable recommendation decision write. |
+| `hrfc.cap.action_tracker_write` | Off | Enables an approved, explicitly confirmed SharePoint action-record write. |
+| `hrfc.cap.outcome_review` | Off | Enables comparable-measurement and verified/sustained outcome review. |
+| `hrfc.cap.outcome_link_write` | Off | Enables an approved, explicitly confirmed durable quality-outcome link write. |
 | `hrfc.cap.confluence_publish_preview` | Off | Enables publishing preview. |
 
 All flags fail closed.
@@ -116,6 +136,9 @@ Every routed answer must include:
 - Confidence and caveats.
 - Action boundary.
 - Escalation state.
+- Recommendation ID, disposition, rationale, and decision record ID where applicable.
+- Action record ID, action owner, target date, write status, and execution receipt where applicable.
+- Baseline and follow-up result IDs, comparability status, verified quality-movement status, and sustained-result status where applicable.
 
 ## Open Decisions
 
@@ -125,3 +148,6 @@ Every routed answer must include:
 | CR-002 | Confirm user roles and site/rollup scope rules. | Product / Security / HR Ops |
 | CR-003 | Approve model profile for supervised summaries. | Phoenix / AI Engineering / Governance |
 | CR-004 | Approve whether Confluence publishing is a product capability or manual release task. | Product / Governance |
+| CR-005 | Approve Regional HR reviewer roles, site/region scope, and who may confirm recommendation decisions. | Product / HR Ops / Security |
+| CR-006 | Approve the SharePoint site, list, schema, permissions, retention, correction, and rollback contract for decision and action records. | Product / Regional HR / SharePoint owner / Governance |
+| CR-007 | Define next-comparable-measurement rules and the sustained-improvement recheck window for each supported measure. | Process owner / Data engineering / Evaluation |

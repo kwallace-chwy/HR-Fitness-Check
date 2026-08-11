@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-TECH-001` |
-| Version | `0.3` |
+| Version | `0.4` |
 | Status | Implemented MVP contract; not a production architecture approval |
-| Last updated | 2026-08-10 |
+| Last updated | 2026-08-11 |
 | Runtime | Node.js 22 or newer; use a supported LTS line; built-in production modules only; Playwright/Axe are development test dependencies |
 | Product version | `0.1.0` |
 | Catalog version | `working-2026-07-29`, approval pending |
@@ -201,6 +201,7 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | `TECH-REQ-010` | Production runtime shall not reuse the fixed fixture user scope or memory audit as an authorization/audit control. |
 | `TECH-REQ-011` | Startup shall validate every published fixture metadata/source/gate field, nonblank rendered dimensions, exact safety statuses, canonical UTC provenance, newest-to-oldest contiguous quarters, referential integrity, enumerations, bounded catalog counts, and distributions before accepting a request. |
 | `TECH-REQ-012` | Report content identity shall be deterministic over semantic report content and scoped results while request ID and generation time remain volatile. |
+| `TECH-REQ-013` | The current MVP shall remain read-only; target-state recommendation, decision, SharePoint action, and outcome endpoints shall not be added to this runtime without approved contracts and release evidence. |
 
 ## Future production work
 
@@ -212,7 +213,11 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | Scoring | Synthetic generator | Executable SME-approved rules, missing policy, reconciliation fixtures, run IDs |
 | Storage | Repository JSON and process memory | Governed result, lineage, report, approval, and append-only audit stores |
 | Narrative | Static templates | Optional supervised model gateway only after data handling, grounding, citation, validation, eval, cost, and rollback approval |
-| Actions | None | Explicit preview/approve/execute receipts for each approved action class; autonomous operation remains out of scope |
+| Recommendations | None | Grounded immutable recommendation records tied to result IDs, caveats, and approved intervention references |
+| Decisions | None | Authorized Regional HR review with `accepted`, `modified`, `declined`, or `deferred`, required rationale, immutable generated recommendation, and durable audit |
+| SharePoint actions | None | Exact action/owner/target-date preview, explicit user confirmation, broker authorization, idempotent write, receipt, correction, and rollback; autonomous operation remains out of scope |
+| Outcomes | None | Completed-action linkage to the next approved comparable measurement, verified movement, sustained-result policy, and association-only language |
+| Value measurement | Synthetic review metrics only | Approved effort baseline and pilot method before the 540-hour and $33,123 estimates may be reported as validated or realized |
 | Operations | Local health and audit view | SLOs, alerting, incident runbooks, support ownership, backup, retention, DR, and capacity tests |
 
 ## Assumptions

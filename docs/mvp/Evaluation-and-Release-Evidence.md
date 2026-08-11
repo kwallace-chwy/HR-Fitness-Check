@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-EVAL-001` |
-| Version | `0.3` |
+| Version | `0.4` |
 | Status | MVP review evidence; production release blocked |
-| Last updated | 2026-08-10 |
+| Last updated | 2026-08-11 |
 | Evaluation target | Local read-only ORBIT HR Fitness Check MVP `0.1.0` |
 | Catalog under test | `working-2026-07-29`, approval pending |
 | Decision supported | Ready for product/UX review only |
@@ -21,7 +21,7 @@
 | --- | --- | --- | --- |
 | `FACT-001` | Latest working catalog evidence has 33 rows as of July 29. | MVP metadata/catalog fixture and catalog test | Confirmed for implemented MVP |
 | `FACT-002` | The 33 rows are approval-pending, not an approved denominator. | `catalogApprovalStatus=approval_pending`; approved mappings/modes both 0; disclaimer | Confirmed |
-| `FACT-003` | The live Confluence PRD previously contained stale May 2026 / 49-item content and required replacement. | Pre-publish page version 14 plus repository fact-check; page 5006537577 was then refreshed from the reconciled repo PRD | Resolved downstream at Confluence version 15 and re-verified on 2026-08-10; the MVP Data Readiness panel intentionally preserves the discovered conflict as reconciliation history |
+| `FACT-003` | The live Confluence PRD previously contained stale May 2026 / 49-item content and later received stakeholder edits. | Pre-publish page version 14, version 15 refresh evidence, and pre-August 11 update version 17 | The stale catalog content was resolved at version 15; version 17 stakeholder edits were reconciled into the repository before the Q3 target-state publication. The MVP Data Readiness panel intentionally preserves the older conflict as reconciliation history. |
 | `FACT-004` | The June 30 repository/workbook snapshot was 38 rows / 37 scope-intent / 1 removal. | PRD and reviewed disposition | Confirmed as superseded discovery evidence |
 | `FACT-005` | Site and item results are synthetic and read-only. | Fixture disclaimer, static app boundary, server method guard, tests | Confirmed |
 | `FACT-006` | No model produces the executive narrative. | Report builder uses fixed templates; report caveat states no model-generated causality | Confirmed |
@@ -129,6 +129,10 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-GAP-006` | Persistent audit integrity, retention, redaction, and access review | Blocks compliance/audit readiness |
 | `EVAL-GAP-007` | Automated Confluence publish/rollback validation and long-term drift detection | Does not block this verified documentation refresh; required before recurring automated publishing |
 | `EVAL-GAP-008` | Privacy, Security, Legal, Data Governance, HR Operations, Architecture, and Change approvals | Blocks pilot/production |
+| `EVAL-GAP-009` | Grounded recommendation gold cases and accepted/modified/declined/deferred decision tests | Blocks recommendation workflow |
+| `EVAL-GAP-010` | SharePoint target/schema, authorization, exact confirmation, idempotency, receipt, correction, rollback, and denial tests | Blocks any action write |
+| `EVAL-GAP-011` | Comparable-measurement, verified-improvement, sustained-result, and no-causality test cases | Blocks outcome reporting |
+| `EVAL-GAP-012` | Approved current-state effort baseline and capacity-value methodology | Blocks validation of the 540-hour and $33,123 estimates |
 
 ## Required pre-pilot evaluation plan
 
@@ -140,6 +144,10 @@ No gate in this document approves a production scoring denominator.
 6. Extend the Edge review suite with human assistive-technology testing and the approved browser/device matrix.
 7. Run failure, retry, timeout, restart, capacity, and rollback exercises.
 8. If supervised AI narrative is proposed, separately test grounding, citation, unsupported claims, privacy, latency, cost, consistency, and human acceptance/edit rates.
+9. Test recommendation review for all four dispositions, required rationale, immutable generated recommendations, reviewer scope, and disabled-write behavior.
+10. Before any SharePoint pilot, test exact preview and confirmation, missing owner/date, unauthorized reviewer, duplicate retry, target failure, receipt validation, correction, and rollback.
+11. Test missing, changed, and comparable follow-up measurements; verified improvement/no change/regression; pending and sustained rechecks; and zero unsupported causal claims.
+12. Validate the 540-hour and $33,123 planning estimates against an approved timed baseline and pilot method before any realized-value claim.
 
 ## Release decision rubric
 
@@ -162,13 +170,16 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-REQ-006` | Confluence sync evidence shall record page ID, before/after version, source revision, verification, and rollback target; GitHub shall remain canonical. |
 | `EVAL-REQ-007` | Production evaluation shall include approved source truth, access isolation, privacy, accessibility, reliability, persistent audit, and rollback evidence before any readiness claim. |
 | `EVAL-REQ-008` | The checked-in browser suite shall pass all six views, bootstrap/view recovery, Back/Forward state, reporting/CSV reconciliation, modal/refresh focus, local announcements, mobile overflow, and Axe serious/critical checks before MVP review handoff. |
+| `EVAL-REQ-009` | Enabling recommendation decisions, SharePoint actions, or outcome links shall require separate versioned eval gates with zero unauthorized or unconfirmed successful writes. |
+| `EVAL-REQ-010` | Outcome evaluation shall preserve not-comparable and pending states and shall record zero unsupported causal claims. |
+| `EVAL-REQ-011` | Value reporting shall identify 540 hours and $33,123 as planning estimates until baseline and pilot evidence are approved. |
 
 ## Assumptions
 
 | ID | Type | Statement / response |
 | --- | --- | --- |
 | `EVAL-A-001` | Assumption | The test run used the same working tree submitted for review; re-run after any code/data change. |
-| `EVAL-A-002` | Assumption | Confluence page bodies and versions recorded in this evidence match the post-publish verification performed on 2026-08-10. |
+| `EVAL-A-002` | Assumption | Confluence page bodies and versions must be re-fetched and recorded after the 2026-08-11 publication; no static version in this document substitutes for post-write verification. |
 
 ## Risks
 

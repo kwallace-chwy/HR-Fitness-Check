@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-OPS-001` |
-| Version | `0.3` |
+| Version | `0.4` |
 | Status | Local MVP review runbook; production rollout prohibited |
-| Last updated | 2026-08-10 |
+| Last updated | 2026-08-11 |
 | Supported stage | Local prototype / product review |
 | Default endpoint | `http://127.0.0.1:8800` |
 | Operational owner | Engineering / Product, formal owner TBD |
@@ -120,7 +120,7 @@ There is no implemented alerting, SLO monitor, durable log, paging, backup, or d
 
 ## Confluence documentation update procedure
 
-The HR Fitness Check PRD at page ID `5006537577` was refreshed from the reconciled repository PRD to version 15 and re-verified on 2026-08-10. GitHub remains canonical. Re-verify the current page version and editor state immediately before any later write.
+The HR Fitness Check PRD is Confluence page `5006537577`. Its pre-update baseline was live version 17 on 2026-08-11. Do not rely on a version recorded in this runbook: GitHub remains canonical, and the live page version, body, restrictions, and editor state must be re-fetched immediately before every write.
 
 1. Re-run tests and confirm the five `docs/mvp` pages share version, date, 33-row truth, approval status, and cross-references.
 2. Re-open the live Confluence page and record page ID, current version, title, published body, editor-draft state, audience, and restrictions.
@@ -154,6 +154,10 @@ Do not publish the synthetic metric examples as an assessment result. Do not ove
 - [ ] Browser, accessibility, schema, security, reliability, capacity, recovery, and rollback tests pass.
 - [ ] Legal, Data Governance, Security, HR Operations, Architecture, Change, source-owner, and product approvals recorded.
 - [ ] Confluence publishing preview/update/verification/rollback is approved and proven.
+- [ ] Grounded recommendation review passes all four dispositions with rationale, immutable source recommendation, and authorized reviewer scope.
+- [ ] SharePoint action recording has an approved target/schema, action class, exact preview, explicit confirmation, idempotency, receipt, correction, rollback, and audit evidence.
+- [ ] Comparable-measurement, verified-improvement, sustained-result, and association-only policies pass approved eval cases.
+- [ ] The 540-hour and $33,123 planning estimates have an approved baseline, pilot method, and reporting treatment before validated or realized value is claimed.
 
 ## Rollback posture
 
@@ -171,6 +175,7 @@ Production rollback is not implemented. A future design must independently roll 
 | `OPS-REQ-004` | Confluence shall be updated only from an approved GitHub-derived preview with before/after version and rollback evidence. |
 | `OPS-REQ-005` | Any production-data introduction or non-loopback exposure shall stop the MVP review and trigger approved Security/Privacy handling. |
 | `OPS-REQ-006` | Promotion beyond MVP review shall remain blocked until every stage-specific gate is supported by recorded evidence. |
+| `OPS-REQ-007` | Recommendation, SharePoint action, and outcome-link writes shall remain disabled until their individual capability, action-class, target, confirmation, audit, correction, rollback, and eval gates pass. |
 
 ## Assumptions
 

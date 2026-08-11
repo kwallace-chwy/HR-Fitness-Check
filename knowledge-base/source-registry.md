@@ -1,12 +1,12 @@
 # HR Fitness Check Source Registry
 
-Version: 0.3
+Version: 0.4
 Status: Draft source registry
-Last updated: 2026-08-10
+Last updated: 2026-08-11
 
 ## Purpose
 
-This registry turns discovered source leads into governed source candidates. No source is ingestion-ready until owner, steward, classification, audience, workflow scope, freshness, retention, citation, access, and approval records are complete.
+This registry turns discovered source leads and planned write targets into governed candidates. No source or write target is ingestion- or action-ready until owner, steward, classification, audience, workflow scope, freshness, retention, citation, access, approval, correction, and rollback records are complete.
 
 This file complements:
 
@@ -41,6 +41,7 @@ This file complements:
 | `src.hrfc.echo_cat_voc.v1` | ECHO, CAT, VOC, Stand Ups, survey pipeline family | FC HR Analytics / Smartsheet / Tableau | TBD EPA/ECHO owner | Data engineering | Internal / confidential review | Approved HR/data users | ECHO, CAT, VOC, surveys, standups | TBD by pipeline | Candidate |
 | `src.hrfc.manual_input.v1` | Manual and physical validation workflow | Phoenix, Forms, Confluence, or replacement TBD | HR Ops / Product | Phoenix / ORBIT | Internal / confidential review | Authorized HR users | Manual evidence capture | Per quarter and evidence rule | Draft |
 | `src.hrfc.voc_action_roadmap.v1` | 2026 TM Experience Roadmap action context | SharePoint | TBD TM Experience roadmap owners | ORBIT product | Internal / listening-data review | HRM, HRD, leadership after approval | Recommendation context only | Review before citation | Candidate |
+| `src.hrfc.sharepoint.action_tracker.v1` | HR Fitness Check recommendation, decision, action, and outcome tracker | SharePoint, exact site/list pending approval | Regional HR / ORBIT product, approval pending | SharePoint owner / ORBIT product, TBD | Internal / confidential review | Authorized Regional HR reviewers, product, approved HR leadership | Recommendation decision recording, accepted-action tracking, action completion, outcome review | On confirmed decision/action and each approved follow-up measurement | Draft; all writes disabled |
 | `src.hrfc.confluence.prd.v1` | Downstream Confluence PRD page | Confluence | ORBIT product | ORBIT product | Internal | Product, stakeholders | Publishing mirror | Refresh after approved GitHub change | Candidate |
 
 ## Source Governance Requirements
@@ -62,6 +63,10 @@ Each registry row must be completed before pilot use:
 | Redaction policy | Ingest, retrieval, model-context, display, trace, and Confluence rules. |
 | Citation policy | What title/system/version/block metadata can be shown to each audience. |
 | Approval record | Ticket, PR, review, decision record, or governance approval. |
+| Write posture | Read-only, preview-only, disabled supervised write, or approved supervised write. |
+| Supported action classes | Exact actions that may target the system; no implicit write authority. |
+| Confirmation and idempotency | Exact confirmation payload, confirmation freshness, and duplicate-write prevention. |
+| Correction and rollback | How an incorrect decision, action, completion, or outcome link is corrected without erasing audit history. |
 
 ## Source-To-Workflow Rules
 
@@ -76,7 +81,18 @@ Each registry row must be completed before pilot use:
 | Tableau | Reconciliation only by default | Limited | Use dashboards to validate, not as first durable source. |
 | Manual input | Yes, only through approved manual workflow | Yes | Must preserve owner, timestamp, evidence reference, and result status. |
 | VOC action roadmap | No V1 scoring | Yes, if approved | Use as approved intervention context only. |
+| SharePoint action tracker | No | Yes, after approval | Planned durable record for recommendation dispositions, rationale, confirmed accepted/modified actions, owners, target dates, completion, and outcome links. It is not a scoring source. All writes remain disabled pending target, access, retention, correction, rollback, and eval approval. |
 | Confluence PRD | No scoring | Publishing mirror | Must match the approved repository content at a committed, pushed revision. |
+
+## SharePoint Action Tracker Contract Boundary
+
+- The exact SharePoint site, list, list ID, field schema, content types, access groups, retention label, API path, and owning team are not yet approved.
+- A recommendation decision record must preserve the immutable recommendation ID, disposition of `accepted`, `modified`, `declined`, or `deferred`, reviewer scope, rationale, timestamp, approval record, and execution receipt.
+- `declined` and `deferred` decisions do not create an active action record. An action record may be created only from an `accepted` or `modified` decision.
+- The accepted-action write requires an exact preview of action text, owner, target date, and target record plus explicit user confirmation immediately before execution.
+- The tracker write is bounded to the approved HR Fitness Check record. It does not authorize an upstream HR system write, notification, or assignment outside the approved tracker workflow.
+- At the next approved comparable measurement, the product may preview a link between the completed action and subsequent quality movement. Persisting that link remains disabled until the outcome action class and target contract are approved.
+- Outcome records must distinguish `pending_measurement`, `not_comparable`, verified movement, `pending_recheck`, `sustained`, and `not_sustained`. Observed movement must not be described as proof of causation.
 
 ## Ingestion Control Checklist
 
@@ -108,3 +124,5 @@ Each registry row must be completed before pilot use:
 | Talent Management source fields not found | Blocks Quality 1:1 and LEW automation. |
 | Investigations source is sensitive | Requires legal/governance approval before any field-level mapping. |
 | Manual input home undecided | Blocks manual/physical evidence workflow. |
+| SharePoint decision/action tracker target and schema are unapproved | Blocks durable disposition, rationale, owner, target-date, completion, and outcome-link writes. |
+| Comparable-measurement and sustained-result policies are undefined | Blocks verified and sustained quality-outcome reporting even after actions are completed. |

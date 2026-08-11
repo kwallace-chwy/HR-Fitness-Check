@@ -5,10 +5,10 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-DATA-001` |
-| Version | `0.3` |
+| Version | `0.4` |
 | Status | MVP review draft; not production-ready |
-| Last updated | 2026-08-10 |
-| Evidence cutoff | Repository and connected-source verification on 2026-08-10; working catalog as of 2026-07-29 16:32:27 UTC; synthetic data snapshot as of 2026-08-06 20:00:00 UTC |
+| Last updated | 2026-08-11 |
+| Evidence cutoff | Implemented-MVP and connected-source verification through 2026-08-10; Q3 target-state contract update on 2026-08-11; working catalog as of 2026-07-29 16:32:27 UTC; synthetic data snapshot as of 2026-08-06 20:00:00 UTC |
 | Accountable owner | ORBIT Product, approval pending |
 | Intended audience | Product, HR Operations, Engineering, Data Governance, Security, Evaluation |
 | Source of truth | GitHub repository; Confluence is a downstream publishing copy |
@@ -21,7 +21,7 @@
 | --- | --- | --- |
 | 1 | `mvp/data/mvp-data.json`, catalog version `working-2026-07-29` | Latest working evidence: 33 scope-intent rows, owner-group roles populated, 0 approved source mappings, 0 approved implementation modes, 33 blank source-table fields, 33 blank reviewer fields, and 33 blank result fields. |
 | 2 | Historical June 30 workbook snapshot, retained in repository reconciliation notes | Superseded discovery snapshot: 38 task rows, 37 scope-intent rows, and 1 removal. Retain for reconciliation history; do not use as the current working denominator. |
-| 3 | Live Confluence PRD, page 5006537577 | Downstream copy at version 15 was re-verified on 2026-08-10 against the reconciled repository PRD. It must not override GitHub or the July 29 working evidence. |
+| 3 | Live Confluence PRD, page 5006537577 | The pre-update baseline was live version 17 on 2026-08-11 and contained stakeholder edits that were reconciled into the repository. Re-fetch the current version before every write. It must not override GitHub or the July 29 working evidence. |
 
 Any conflict must be shown, not silently resolved. A product/process-owner decision is required before a stable V1 catalog or denominator can be declared.
 
@@ -111,6 +111,19 @@ The MVP rule version is `demo-policy-v1-unapproved`. No value emitted under that
 | Manual evidence | Synthetic status only | Store approver, timestamp, evidence reference, correction history, retention, and access controls in an approved system of record |
 | Audit and traces | Ephemeral request metadata only | Persist append-only records with identity, authorization, source/rule versions, redaction, retention, alerts, and access review |
 
+## Q3 2026 Target-State Data Contracts
+
+These contracts are planned and are not implemented in the synthetic MVP.
+
+| Contract | Required grain and linkage | Approval boundary |
+| --- | --- | --- |
+| Recommendation | One immutable recommendation version per site, period, and grounded result set; includes result/evidence references, caveats, and approved intervention references | Recommendation schema, audience, grounding, and retention approved |
+| Recommendation decision | One authorized Regional HR disposition per reviewed recommendation version: `accepted`, `modified`, `declined`, or `deferred`, with rationale and reviewer scope | Durable decision write remains disabled until its action class and target are approved |
+| Accepted action | One confirmed action per accepted or modified decision; includes action text, owner, target date, SharePoint target, confirmation record, status, and receipt | No SharePoint write without exact preview, explicit confirmation, authorization, idempotency, correction, and rollback |
+| Follow-up outcome | One comparison record linking a completed action, baseline result, and next approved comparable result | Comparability, verified-improvement, and sustained-result policies approved; observed movement is not proof of causality |
+
+Decision and outcome records may support governed evaluation. They do not authorize automatic model training or policy changes. The estimated 540 annual hours and $33,123 annual capacity value remain planning estimates until the baseline, live pilot, and reporting treatment are approved.
+
 ## Testable data requirements
 
 | Requirement ID | Requirement and acceptance test |
@@ -123,6 +136,12 @@ The MVP rule version is `demo-policy-v1-unapproved`. No value emitted under that
 | `DATA-REQ-006` | The MVP shall reject non-GET/HEAD methods and shall make no external source, model, approval, publishing, or system-write call. |
 | `DATA-REQ-007` | Production activation of any source shall fail closed until owner, steward, classification, audience, workflow, freshness, retention, redaction, citation, field mapping, approval, and access tests are complete. |
 | `DATA-REQ-008` | Associate-level, case-level, investigation-narrative, benefits, contact, badge, and raw time data shall not appear in shared UI, report, CSV, model context, trace, or Confluence output. |
+| `DATA-REQ-009` | Every target-state recommendation, decision, action, follow-up measurement, and outcome shall use stable identifiers and pass referential-integrity tests. |
+| `DATA-REQ-010` | A durable recommendation decision shall accept only `accepted`, `modified`, `declined`, or `deferred` and shall retain reviewer scope, rationale, timestamp, and immutable recommendation version. |
+| `DATA-REQ-011` | An action record shall originate only from an accepted or modified decision and shall retain exact confirmation, owner, target date, SharePoint target, execution receipt, and correction history. |
+| `DATA-REQ-012` | Outcome data shall preserve baseline/follow-up result versions, comparability status and reason, observed movement, verified-improvement status, and sustained-result status without an unsupported causal claim. |
+| `DATA-REQ-013` | Decision and outcome data shall not be used for automatic model training or policy updates; any product change shall follow a versioned, approved evaluation process. |
+| `DATA-REQ-014` | Capacity reporting shall label 540 hours and $33,123 as estimates until an approved baseline, pilot method, and Finance treatment exist. |
 
 ## Assumptions
 

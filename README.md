@@ -1,19 +1,24 @@
 # ORBIT HR Fitness Check
 
-Status: MVP review build; working catalog approval pending
+Status: Q3 2026 launch planning; MVP review build available; approval gates remain open
 Source of truth: Reviewed repository content; GitHub becomes authoritative after approved changes are committed and pushed
 Current PRD: docs/HR-Fitness-Check-PRD.md
-Last updated: 2026-08-10
+Target launch: 2026-09-28
+Last updated: 2026-08-11
 
 ## Purpose
 
-HR Fitness Check is an ORBIT product for quarterly FC HR Standard Work assessment. It is designed to help HRMs and HRDs understand whether required Standard Work is being followed, where source evidence is strong, where manual validation is required, and where action planning should focus.
+HR Fitness Check is an ORBIT product for quarterly C03-C06 HR Standard Work assessment across FC and Rx. It replaces a manually compiled, site-self-graded process with objective, repeatable, and traceable measurement while retaining authorized human review for manual and physical requirements.
+
+The Q3 2026 target state is a governed closed loop: deterministic rules score approved measures; AI converts grounded results into site-specific insights and recommended paths to green; Regional HR reviewers accept, modify, decline, or defer each recommendation with rationale; and accepted actions can be recorded in the approved SharePoint tracker only after explicit user confirmation. Later comparable measurements link actions to verified quality movement and sustained results.
+
+The product is being built for and in close collaboration with Weipan Le. It is estimated to make approximately 540 HR hours available annually for action rather than assessment compilation, representing $33,123 in estimated annual capacity value. These are planning estimates, not realized savings, until the baseline, live-source pilot, and reporting treatment are approved.
 
 The current repository preserves the existing product intent while aligning the work to reusable Agentic HRA Agent Protocol and RAG Protocol patterns. The product should remain a governed HR operations cockpit, not a marketing page and not an unconstrained chatbot.
 
 ## Current Assessment
 
-HR Fitness Check is directionally aligned with the target Agent/RAG architecture because the PRD already protects deterministic scoring, manual evidence, missing data, stale data, and human review. It is not yet pilot-ready as a governed agent/RAG implementation because source registry, canonical knowledge objects, route policy, tool boundaries, eval gates, observability, audit, rollout, and supervision controls still need approval and implementation.
+HR Fitness Check is directionally aligned with the target Agent/RAG architecture because the PRD protects deterministic scoring, manual evidence, missing data, stale data, human review, explicit action confirmation, and outcome lineage. It is not yet pilot-ready as a governed agent/RAG implementation because the catalog, source mappings, rules, access controls, recommendation workflow, SharePoint action class, eval gates, observability, audit, rollout, and outcome policies still need approval and implementation.
 
 The latest audit-sheet disposition is:
 
@@ -57,6 +62,7 @@ HR-Fitness-Check/
 |   `-- README.md
 |-- docs/
 |   |-- HR-Fitness-Check-PRD.md
+|   |-- HR-Fitness-Check-Q3-2026-Product-Narrative.md
 |   |-- Reviewed-Checklist-Disposition.md
 |   |-- Architecture-Alignment-Assessment.md
 |   |-- Agent-RAG-Alignment-Plan.md
@@ -95,6 +101,7 @@ HR-Fitness-Check/
 | Artifact | Purpose |
 | --- | --- |
 | docs/HR-Fitness-Check-PRD.md | Current product requirements and source-of-truth publishing model. |
+| docs/HR-Fitness-Check-Q3-2026-Product-Narrative.md | Leadership-ready Q3 2026 overview, roadmap, value statement, and definition boundaries. |
 | docs/Reviewed-Checklist-Disposition.md | Latest 33-task-row working catalog and reconciliation notes. |
 | docs/Architecture-Alignment-Assessment.md | Gap assessment against Agent Protocol and RAG Protocol. |
 | docs/Agent-RAG-Alignment-Plan.md | Practical product-preserving architecture alignment plan. |
@@ -128,7 +135,7 @@ http://127.0.0.1:8800/
 
 The MVP includes Overview, Work queue, Site review, Data readiness, Reports, and Audit views. Its reporting contract uses green share and evidence coverage with explicit numerators and denominators. Missing, stale, blocked, manual-required, and unmapped evidence is never converted to a red rating. Quarter comparisons are disabled when catalog versions are not comparable.
 
-The review build is not a production system: it has no live HR-system connection, production authorization, write-back, or approved scoring denominator.
+The review build is not a production system: it has no live HR-system connection, production authorization, model-generated recommendation workflow, SharePoint write-back, outcome linkage, or approved scoring denominator.
 
 ## Archived Static POC
 
@@ -177,8 +184,8 @@ For MVP, HR Fitness Check should operate at L0-L3:
 - L0/L1 for approved knowledge and source lookup.
 - L2 for deterministic status classification and readiness analysis.
 - L3 for supervised narrative recommendations grounded in scored results and caveats.
-- L4 only for exact manual input or publishing previews.
-- L5 disabled until manual input and publishing action classes have explicit approval records.
+- L4 for exact manual-input, recommendation-decision, SharePoint-action, or publishing previews after governance approval.
+- L5 disabled by default. A single supervised SharePoint action-recording class may be enabled only after explicit authorization, confirmation, idempotency, rollback, audit, and eval gates pass.
 - L6 out of scope.
 
 Required pilot controls:
@@ -201,15 +208,18 @@ Approved source registry
   -> rating rules
   -> fact_fitness_check_result
   -> rollups and exceptions
-  -> supervised narrative context package
-  -> validated UI and downstream publishing
+  -> supervised insight and recommendation context package
+  -> authorized human decision and rationale
+  -> confirmed SharePoint action record
+  -> comparable follow-up measurement and outcome linkage
+  -> validated UI, evaluation, and downstream publishing
 ```
 
 The repo does not currently include a workbook extraction script or production scoring service. Those should be implemented only after V1 denominator, owners, source mappings, rating rules, classification, and governance approvals are complete.
 
 ## Confluence Publishing
 
-The live HR Fitness Check PRD is Confluence page `5006537577`. It was re-verified on 2026-08-10 at version 15 with the reconciled 33-row working-catalog and synthetic MVP review boundaries. The five MVP support pages are downstream copies under the same HR Fitness Check product folder.
+The live HR Fitness Check PRD is Confluence page `5006537577`. Before the August 11 update it was version 17 and contained stakeholder edits that were reconciled into the repository, including the September 28 launch target, role-owner decision, required reporting hierarchy, source-list changes, and collaboration notes. The five MVP support pages are downstream copies under the same HR Fitness Check product folder and must retain their synthetic, read-only current-state boundary.
 
 The two older publishing-helper files are tombstones only:
 

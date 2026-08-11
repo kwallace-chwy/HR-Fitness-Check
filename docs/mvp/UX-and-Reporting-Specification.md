@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-UX-001` |
-| Version | `0.3` |
+| Version | `0.4` |
 | Status | Implemented MVP review specification; not production-approved |
-| Last updated | 2026-08-10 |
+| Last updated | 2026-08-11 |
 | Primary users | HR Fitness Check product reviewers, HR Operations SMEs, Engineering, Data Governance |
 | Experience type | Dense read-only operational cockpit |
 | Data posture | Synthetic fixture; 33-row working catalog; approval pending |
@@ -113,6 +113,9 @@ Checked-in Playwright coverage exercises the six top-level views, bootstrap and 
 | `UX-REQ-009` | All core review paths shall be usable at desktop and mobile widths without incoherent overlap; wide tables may scroll horizontally. |
 | `UX-REQ-010` | Keyboard-only and screen-reader review shall cover navigation, filters, dialogs, chart alternative data, report actions, and retry behavior before pilot. |
 | `UX-REQ-011` | The MVP shall expose no production write, approval, publish, or model action. |
+| `UX-REQ-012` | A future recommendation review shall show grounded evidence and caveats before allowing `accepted`, `modified`, `declined`, or `deferred`; every disposition shall capture rationale. |
+| `UX-REQ-013` | A future SharePoint action flow shall show the exact action, owner, target date, and destination and require explicit confirmation immediately before the write. |
+| `UX-REQ-014` | A future outcome view shall distinguish pending, not comparable, improved, unchanged, regressed, and sustained states and shall not imply causality from sequence alone. |
 
 ## Implemented versus future
 
@@ -125,6 +128,10 @@ Checked-in Playwright coverage exercises the six top-level views, bootstrap and 
 | Reporting | Deterministic draft, CSV, copy, print | Approved templates, audience policy, durable version, reviewer edits/approval, governed publish |
 | Audit | Ephemeral request table | Durable tamper-evident audit, authorization decision, alerts, retention, access review |
 | Narrative | Static non-causal templates | Optional supervised grounded generation after model/data/eval approval |
+| Recommendation review | Not implemented | Evidence-backed recommendation plus authorized accept/modify/decline/defer decision and rationale in the same governed interaction |
+| Action recording | Not implemented | Exact preview and explicit confirmation before recording action, owner, and target date in the approved SharePoint tracker |
+| Outcome loop | Not implemented | Link completed action to the next comparable measurement and show verified movement and sustained-result state |
+| Value readout | No production value claim | Show 540 hours and $33,123 only as planning estimates until baseline and pilot validation are approved |
 
 ## Assumptions
 
