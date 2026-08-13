@@ -1,7 +1,7 @@
 # HR Fitness Check Knowledge Base
 
 Status: Draft discovery knowledge base
-Last updated: 2026-08-11
+Last updated: 2026-08-12
 Product: ORBIT HR Fitness Check
 
 ## Purpose
@@ -22,9 +22,9 @@ Start with these files:
 
 ## Current Discovery Summary
 
-The latest verified SharePoint source workbook copy was last modified 2026-07-29 16:32:27 UTC. It contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. Its source-table, reviewer, and result fields were blank when fetched. A local Column-G derivative was mapped on 2026-08-11 from live read-only Snowflake metadata; SharePoint connector/version verification is pending, so the derivative must not be described as published to the live workbook. The catalog remains approval-pending: stable IDs, implementation modes, source contracts, rating rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision. The local MVP is read-only and uses synthetic fixture results.
+The original SharePoint source workbook was last modified 2026-07-29 16:32:27 UTC. It contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33; its source-table, reviewer, and result fields were blank when fetched and remain unchanged. A separate source-integrated derivative was published and version-verified in OneDrive/SharePoint on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. The catalog remains approval-pending: stable IDs, implementation modes, source contracts, rating rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision. The local MVP is read-only and uses synthetic fixture results.
 
-The 33-row local mapping disposition is 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, 1 derived, and 0 approved. `Validated-object/rule-pending` confirms metadata only; it does not authorize production scoring. All `SANDBOX` objects are discovery candidates, not production-certified sources.
+The 33-row source-integrated mapping disposition is 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 approved. Fifteen candidates remain sandbox-dependent. `Validated-object/rule-pending` confirms metadata only; it does not authorize production scoring. All `SANDBOX` objects are discovery candidates, not production-certified sources. Finding a source is not approval to ingest or score it.
 
 Most V1 data appears to sit in one of these source families:
 
@@ -32,9 +32,11 @@ Most V1 data appears to sit in one of these source families:
 - EDLDB / UKG Snowflake tables for timecard, schedule, and accrual data.
 - EDLDB People Analytics and fulfillment sandbox objects for Roster Health, Standups, surveys, Quality 1:1, LEWs, CAT, ECHO, VOC, VET/VTO, and Labor Planning discovery; these require production-source decisions.
 - Existing FC HR Analytics / Pipewiser jobs for HR Packet, Roster Health, ECHO, New Hire Surveys, CAT, VET/VTO, and Smartsheet roster feeds.
-- SharePoint and Smartsheet artifacts for SOPs, trackers, physical-evidence uploads, and older workflow sources.
+- SharePoint and Smartsheet artifacts for SOPs and current tracker workflows, including authoritative site Smartsheets for FLO and temporary schedules plus site locker-management examples.
+- Governed external-system leads: the EPA ServiceNow resolved-case export for SNOW/LOAA discovery, Workday report paths for beneficiary/emergency-contact checks, and EthicsPoint/OpenBark for investigations.
 - FC Ops Library 2026 TM Experience Roadmap artifacts for VOC Pulse action-loop context, approved-intervention candidates, and future-report recommendations.
 - Tableau dashboards fed by the sources above, useful for reconciliation but not preferred as the durable ingestion source.
+- A TM Experience/Signage Microsoft Forms builder that defines a future normalized response contract; live deployment and response coverage are not verified.
 
 ## Important Controls
 

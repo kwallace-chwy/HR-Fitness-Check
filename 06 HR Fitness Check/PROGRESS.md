@@ -1,6 +1,6 @@
 # HR Fitness Check - Project Progress
 
-**Last Updated**: 2026-08-11
+**Last Updated**: 2026-08-12
 
 **Status**: Q3 2026 - read-only synthetic MVP complete for review; launch-readiness approvals remain open
 
@@ -20,7 +20,7 @@ HR Fitness Check advances the ORBIT mission by replacing a manually compiled, si
 
 The review-ready MVP is complete as a read-only application that uses synthetic site results and the latest 33-row working catalog. It demonstrates the intended operational experience, deterministic metric behavior, provenance, reporting, source-readiness review, and governance boundaries without connecting to production HR systems or writing to downstream tools.
 
-The product is not pilot- or production-ready. The working catalog remains approval-pending. Draft row-level source dispositions now exist in a preservation-safe local mapped derivative, but production source mappings, scoring rules, access controls, governance decisions, operational controls, and production approvals remain open. The current planned target is 2026-09-28, contingent on those launch gates being satisfied.
+The product is not pilot- or production-ready. The working catalog remains approval-pending. Draft row-level source dispositions now exist in a separate source-integrated derivative that is published and version-verified in OneDrive/SharePoint, but production source mappings, scoring rules, access controls, governance decisions, operational controls, and production approvals remain open. The current planned target is 2026-09-28, contingent on those launch gates being satisfied.
 
 HR Fitness Check is being built for and in close collaboration with Weipan Le.
 
@@ -35,7 +35,7 @@ HR Fitness Check is being built for and in close collaboration with Weipan Le.
 | Accountability | Owner roles are populated for all 33 rows; named accountability and approval remain open |
 | MVP | Read-only synthetic review build complete and ready for stakeholder review |
 | Data posture | Synthetic site results only; no production HR-system connection or production scoring service |
-| Source readiness | 33 draft Column G dispositions in a preservation-safe local mapped derivative: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived; many candidates are sandbox-only, 0 mappings are production-approved, and SharePoint connector verification is pending |
+| Source readiness | 33/33 draft Column G dispositions in the published source-integrated derivative: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidates remain sandbox-dependent and 0 mappings are production-approved. |
 | Launch posture | Planned target of 2026-09-28; pilot and production readiness remain gated by approvals and release evidence |
 
 The five rows present in the June 30 working snapshot but absent from the latest July 29 workbook still require an approved disposition. Draft identifiers must not be used as production join keys until stable IDs and the final V1 denominator are approved.
@@ -51,7 +51,7 @@ The five rows present in the June 30 working snapshot but absent from the latest
 - [x] Added contract, API, reporting, fixture, browser, accessibility, and responsive-interface test coverage for the review build.
 - [x] Documented the target source registry, canonical knowledge objects, route policy, tool/action boundaries, evaluation controls, audit posture, and rollout gates.
 - [x] Established source-inventory, discovery, and ingestion-planning artifacts for continued mapping work.
-- [x] Validated live Snowflake metadata and produced a preservation-safe local mapped derivative with draft Column G dispositions for all 33 rows; Column F remains `Resource to Check`, and no SharePoint publication or production approval is claimed.
+- [x] Validated live Snowflake metadata, integrated governed non-Snowflake source leads, and published a separate version-verified derivative with draft Column G dispositions for all 33 rows; the original July 29 workbook remains unchanged and no production approval is claimed.
 
 Completion of the review build does not approve the catalog, production data, scoring rules, access model, AI use, write actions, rollout, or production release.
 
@@ -83,7 +83,9 @@ The current manual process gathers evidence across nine source categories docume
 
 Source discovery has identified leads across SharePoint, Snowflake/HR DataMart, UKG, Workday, ServiceNow, FC HR Analytics, Tableau, ECHO, CAT, and related workflow artifacts. Source availability is not the same as source approval or production readiness.
 
-The 2026-08-11 live metadata pass classified the local derivative's 33 draft Column G dispositions as 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Many candidates are sandbox-only. The original July 29 SharePoint workbook retains `Resource to Check` in Column F and blank `Snowflake Table` values in Column G; connector verification is still required before any live-publication claim.
+The 2026-08-12 source-integrated pass classifies the derivative's 33 draft Column G dispositions as 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidates remain sandbox-dependent. The separate derivative is published and version-verified as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, while the original July 29 SharePoint workbook retains `Resource to Check` in Column F and blank `Snowflake Table` values in Column G.
+
+The external source pass located the EPA ServiceNow resolved-case export for SNOW and LOAA discovery, site Smartsheet workflows for FLO and temporary schedules, site SharePoint locker examples, governed Workday report paths for beneficiary and emergency-contact checks, EthicsPoint/OpenBark governance paths for investigations, and a future TM Experience/Signage Forms data contract. These are source-found leads, not approved production mappings.
 
 - [ ] Complete the source system, object/table/report, fields, joins, filters, site key, date window, data owner, and refresh cadence for every automatable row.
 - [ ] Obtain source-owner approval and document classification, access, retention, redaction, citation, lineage, and freshness controls.

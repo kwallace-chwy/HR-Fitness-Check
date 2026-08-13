@@ -1,7 +1,7 @@
 # Snowflake Discovery Results
 
 Status: Draft discovery results
-Last updated: 2026-08-11
+Last updated: 2026-08-12
 
 Identifier note: `V1-###` references below are legacy discovery IDs from the older 27-row snapshot. Use the crosswalk in `knowledge-base/ingestion-backlog.md`; do not use legacy or current draft IDs for production joins until the stable catalog is approved.
 
@@ -53,20 +53,22 @@ The table above preserves the June 19 discovery baseline. A targeted live refres
 | `edldb_people_hrfc_columns.sql` | 738 | `01c652cf-071c-eb73-00a0-2d04d5224267` | Columns for HRFC-relevant `PEOPLE_ANALYTICS_SANDBOX` and fulfillment-optimization objects. |
 | `edldb_labor_plan_columns.csv` local output | 103 | Not captured | Local sandbox labor-planning column inventory; the producing query ID was not retained. |
 | `hrdm_servicenow_candidate_tables.sql` | 0 | `01c652c8-0420-b62d-0066-27031a1068ee` | Live confirmation that expected ServiceNow HR case/task names are not visible in the queried HRDM metadata. |
+| `edldb_gap_deep_columns.sql` | 3,249 | `01c65a14-071c-f099-00a0-2d04da237b03` | Deep EDLDB column-name search for unresolved source families; no overlooked production-grade object closed the unresolved mappings. |
+| `hrdm_gap_deep_columns.csv` local output | 399 | Not captured | Deep HRDM column-name output preserved at `outputs/019ff1d5-e2d8-76b1-8f5b-ea0500b454ce/hrdm_gap_deep_columns.csv`; no producing query ID is claimed. |
 
 The EDLDB and HRDM session smoke tests also passed on 2026-08-11. No DML, DDL, record-level sampling, or source-system write was performed.
 
-## 2026-08-11 Column-G Mapping Derivative
+## 2026-08-12 Source-Integrated Column-G Derivative
 
-The July 29 SharePoint-sourced workbook copy still had a blank `Snowflake Table` column when fetched. The following is a local mapped derivative prepared from the live metadata results. It is pending SharePoint connector/version verification and is not evidence that the live workbook was updated. It is also not an approved catalog, production source map, or scoring contract.
+The original July 29 SharePoint workbook still has a blank `Snowflake Table` column and remains unchanged. The separate source-integrated derivative combines read-only Snowflake metadata with governed external-source discovery and was published and version-verified on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. Publication proves artifact availability only; the derivative is not an approved catalog, production source map, or scoring contract.
 
 Disposition counts across the 33 working rows:
 
 | Disposition | Rows |
 |---|---:|
-| Candidate | 19 |
-| Blocked | 8 |
-| Manual/hybrid | 4 |
+| Candidate | 21, including 2 external governed-source candidates |
+| Blocked | 5 |
+| Manual/hybrid | 5 |
 | Validated objects; rule pending | 1 |
 | Derived | 1 |
 | Approved for production or pilot | 0 |
@@ -75,38 +77,38 @@ Disposition counts across the 33 working rows:
 
 | Workbook row | HR task | Disposition | Local column-G mapping or gap |
 |---:|---|---|---|
-| 2 | TM Experience Walk | Manual/hybrid | No Snowflake table found; source remains the TM Experience Walk Smartsheet. |
+| 2 | TM Experience Walk | Manual/hybrid | No Snowflake table found; source remains the TM Experience Walk Smartsheet. A future Microsoft Forms data contract was found, but live deployment is unverified. |
 | 3 | Standup Audits | Candidate | Sandbox: `EDLDB.PEOPLE_ANALYTICS_SANDBOX.STAND_UP_AUDITS`; base `EDLDB.PEOPLE_ANALYTICS_SANDBOX.FULFILLMENT_STAND_UPS`. |
 | 4 | New Hire Orientation | Blocked | CCURE DNS object not found; UKG-side candidate `EDLDB.UKG.GOLD_V_PEOPLE`. |
 | 5 | HR Metrics & Roster Health | Blocked | Metric definition/threshold blocked; sandbox candidate `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT`; roster reference `D_HRDATAMART.S_ANALYTICS.ROSTER_DAY_END`. |
-| 6 | HR ServiceNow (SNOW) Tickets | Blocked | No ServiceNow HR case/task object found in live `D_HRDATAMART` metadata. |
+| 6 | HR ServiceNow (SNOW) Tickets | Candidate - external governed source | No ServiceNow HR case/task object found in `D_HRDATAMART`; an EPA weekly resolved-case export contains relevant service/location/lifecycle/SLA fields. Production use remains blocked pending complete/open-case coverage, cadence, site key, SLA logic, and approval. |
 | 7 | VET Process | Candidate | Sandbox `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.VET_VTO_INFO_ZEUS`; request detail `EDLDB.PEOPLE_ANALYTICS_SANDBOX.V_UKG_TIME_OFF_REQUESTS`. No-match semantics remain unconfirmed. |
 | 8 | VTO Process | Candidate | Sandbox `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.VET_VTO_INFO_ZEUS`; request detail `EDLDB.PEOPLE_ANALYTICS_SANDBOX.V_UKG_TIME_OFF_REQUESTS`. No-match semantics remain unconfirmed. |
 | 9 | Shift Transfers / Includes site-to-site transfers | Candidate | `EDLDB.UKG.GOLD_V_PEOPLE` plus `EDLDB.UKG.GOLD_V_SCHEDULE_SHIFT`; FC MET Scheduled mismatch rule pending. |
-| 10 | FLO Certification management | Manual/hybrid | No Snowflake FLO tracker object found; Smartsheet/Workday/UKG reconciliation remains unvalidated. |
+| 10 | FLO Certification management | Manual/hybrid | No Snowflake FLO tracker object found. The SOP identifies authoritative site Pending/Completed Smartsheets; site inventory, connector, and Workday/UKG reconciliation remain unapproved. |
 | 11 | Missing Time Stamps | Validated objects; rule pending | `EDLDB.UKG.GOLD_V_TIMECARD_EXCEPTION` plus `EDLDB.UKG.GOLD_V_TIMECARD_PUNCH`. Current-shift exclusion, grace period, site key, and rating logic remain unapproved. |
 | 12 | Unscheduled but Working | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT` has exact NSBW fields; UKG reference `EDLDB.UKG.GOLD_V_TIMECARD_WORK_SHIFT`. |
 | 13 | 13h Day (or +1h over scheduled shift) Risk Assessment | Candidate | `EDLDB.UKG.GOLD_V_TIMECARD_WORK_SHIFT` (`SHIFT_TOTAL_HOURS`) plus `EDLDB.UKG.GOLD_V_SCHEDULE_SHIFT`. |
 | 14 | 60h Week Risk Assessment | Candidate | `EDLDB.UKG.GOLD_V_TIMECARD_TOTAL` (`HOURS_AMOUNT`); week detail `EDLDB.UKG.GOLD_V_TIMECARD_TRANSACTION`. |
-| 15 | Locker Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.NHE_SURVEYS` (`NHO_RESOURCES`); locker-question mapping pending. |
+| 15 | Locker Management | Candidate | Sandbox `NHE_SURVEYS` plus current SDF4/SDF6 SharePoint locker workbooks and network SOP; exact survey mapping and network coverage remain pending. |
 | 16 | Badge Management | Manual/hybrid | No badge-inventory table found. `D_HRDATAMART.S_ANALYTICS.EMPLOYEE_BADGING` is scan evidence, not badge stock. |
 | 17 | Swag Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.VOC_BOARD`; taxonomy and text-scoring approval pending. |
 | 18 | Audit schedule groups | Candidate | `EDLDB.UKG.GOLD_V_PEOPLE` (`SCHEDULE_GROUP`, `GROUP_SCHEDULE`) plus `EDLDB.UKG.GOLD_V_SCHEDULE_SHIFT`. |
-| 19 | Review Temporary Schedule Adjustments | Blocked | Approved accommodations tracker is not in Snowflake; UKG-side candidates are `EDLDB.UKG.GOLD_V_PEOPLE` and `EDLDB.UKG.GOLD_V_SCHEDULE_SHIFT`. |
+| 19 | Review Temporary Schedule Adjustments | Manual/hybrid | Not in Snowflake as a complete source. The SOP identifies authoritative site Smartsheet trackers plus Workday documents and UKG schedule-group evidence; access, inventory, joins, and rule remain unapproved. |
 | 20 | Attendance Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT`; no `BUBBLE` or `BUBBLE_PERCENT` field was found, so the Tableau calculation is pending. |
-| 21 | Ensure site TMs have listed beneficiaries | Blocked | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` supplies denominator context only; no beneficiary/enrollment field found. |
-| 22 | Ensure site TMs have listed emergency contacts | Blocked | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` supplies denominator context only; no emergency-contact field found. |
+| 21 | Ensure site TMs have listed beneficiaries | Blocked | HRDM supplies denominator context only. An SOP identifies a monthly Workday report, but no approved report/RaaS extract contract or target fields were located. |
+| 22 | Ensure site TMs have listed emergency contacts | Blocked | HRDM supplies denominator context only. An SOP identifies a Workday report, but no approved report/RaaS extract contract, target fields, or tenure rule was located. |
 | 23 | Quality 1:1 | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.QUALITY_ONE_ON_ONE`; base `EDLDB.PEOPLE_ANALYTICS_SANDBOX.FULFILLMENT_QUALITY`. |
 | 24 | LEWs | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.FULFILLMENT_LEW`; completion denominator pending. |
-| 25 | Investigations | Blocked | No approved aggregate investigation/SLA object; governance and Legal approval required. |
-| 26 | LOAA Management | Blocked | No ServiceNow SLA object found; `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` provides LOA cohort context only. |
+| 25 | Investigations | Blocked | EthicsPoint/OpenBark are authoritative case systems, but no current approved aggregate export was located; Employee Relations, Legal, Privacy, and source-owner approval are required. |
+| 26 | LOAA Management | Candidate - external governed source | No ServiceNow SLA object found in Snowflake. The EPA weekly resolved-case export contains LOAA services and SLA-breach fields; complete/open-case coverage, cadence, site key, taxonomy, and SLA rules remain unapproved. |
 | 27 | CAT Tracker | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.CAT_TRACKER_SNAPSHOT`. |
 | 28 | Fishbowl Display | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` has a `FISHBOWL` field. |
 | 29 | VOC Board Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` plus `EDLDB.PEOPLE_ANALYTICS_SANDBOX.VOC_BOARD`; scoring rule pending. |
 | 30 | Roundtables | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT`; no explicit roundtable field found, so taxonomy/window remain pending. |
 | 31 | Chewtopian of the Month/Leader of the Pack | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` has `COTM` and `LOP` fields. |
 | 32 | Audit exempt HR Standard Work | Derived | No external table; future Fitness Check result fact is not implemented. |
-| 33 | Site communication & signage | Manual/hybrid | No Snowflake table found; source remains the TM Experience Walk Smartsheet. |
+| 33 | Site communication & signage | Manual/hybrid | No Snowflake table found; current source remains the TM Experience Walk Smartsheet. A future Forms builder defines normalized signage fields, but live deployment is unverified. |
 | 34 | Labor Planning | Candidate | Sandbox only: `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.SP_SNAP_ATTENDANCE_FCST_HR_METRICS` exposes actual/forecast attendance factors and error fields; Rx lead `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.RX_LABOR_PLAN_METRICS`. Metric definition, FC/Rx coverage, and production target remain pending. |
 
 ## UKG Objects Confirmed In Metadata

@@ -1,16 +1,16 @@
 # Reviewed Checklist Disposition
 
-Version: 0.4
+Version: 0.5
 Status: Working catalog, approval pending
 Source workbook: ORBIT - HR Fitness Check Matrix.xlsx
 SharePoint last modified: 2026-07-29 16:32:27 UTC
-Local mapped derivative: ORBIT - HR Fitness Check Matrix.preserved.xlsx, generated 2026-08-11; SharePoint connector verification pending
-Reviewed by: Repository research and live Snowflake metadata validation; workbook reviewer fields are blank
-Last Updated: 2026-08-11
+Published mapping derivative: ORBIT - HR Fitness Check Matrix - Column G Source Integrated.xlsx, item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes, verified 2026-08-12
+Reviewed by: Repository research, live Snowflake metadata validation, and governed external-source discovery; workbook reviewer fields are blank
+Last Updated: 2026-08-12
 
 ## Purpose
 
-This file translates the latest available SharePoint workbook and the 2026-08-11 preservation-safe local mapped derivative into product-scope language. It is not an approved denominator, source-to-target map, or scoring contract. `In Scope.` means business intent only. Every item still requires stable identity, implementation mode, source or manual-evidence mapping, rating rules, named accountability, validation, and approval before production use.
+This file translates the original July 29 SharePoint workbook and the separate 2026-08-12 source-integrated derivative into product-scope language. It is not an approved denominator, source-to-target map, or scoring contract. `In Scope.` means business intent only. Every item still requires stable identity, implementation mode, source or manual-evidence mapping, rating rules, named accountability, validation, and approval before production use.
 
 The latest workbook supersedes the 49-row discovery snapshot and the June 30 38-row / 37-intent snapshot.
 
@@ -22,14 +22,15 @@ The latest workbook supersedes the 49-row discovery snapshot and the June 30 38-
 | Rows marked in scope | 33 |
 | Current owner role populated | 33 |
 | Column F | `Resource to Check`; preserved from the July 29 SharePoint baseline and not the Snowflake mapping target |
-| Draft Column G dispositions in local derivative | 33: 19 candidate; 8 blocked; 4 manual/hybrid; 1 validated-object/rule-pending; 1 derived |
+| Draft Column G dispositions in published derivative | 33: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived |
+| Sandbox-dependent candidates | 15 |
 | Production-approved source mappings | 0 |
 | Reviewer populated | 0 |
 | Result / fitness value populated | 0 |
 | Approved production denominator | Not established |
 | Approval status | Unfinished / approval pending |
 
-The original July 29 SharePoint workbook has blank `Snowflake Table` values in Column G. The local derivative preserves workbook structure while recording draft mapping dispositions; many candidates are sandbox-only, and the file has not been connector-verified as published to SharePoint. `HR Metrics & Roster Health` also has no populated threshold. Slack updates on 2026-07-28 and 2026-08-04 described the matrix work as unfinished while backend work was beginning.
+The original July 29 SharePoint workbook remains unchanged with blank `Snowflake Table` values in Column G. The separate source-integrated derivative preserves workbook structure while recording 33/33 draft mapping dispositions and is published and version-verified in the user's OneDrive/SharePoint. Fifteen candidates remain sandbox-dependent, two are governed external-source candidates, and zero mappings are production-approved. `HR Metrics & Roster Health` also has no populated threshold. Slack updates on 2026-07-28 and 2026-08-04 described the matrix work as unfinished while backend work was beginning.
 
 ## Current Working Catalog
 

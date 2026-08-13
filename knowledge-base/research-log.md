@@ -1,7 +1,20 @@
 # Research Log
 
 Status: Draft discovery log
-Last updated: 2026-08-11
+Last updated: 2026-08-12
+
+## Source-Integrated Reconciliation - 2026-08-12
+
+- Published and version-verified a separate 33-row Column G derivative in OneDrive/SharePoint: item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. The original July 29 workbook remains unchanged with blank Column G values.
+- Reconciled dispositions to 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 production-approved. Fifteen candidates remain sandbox-dependent.
+- Ran the EDLDB deep gap metadata query, which returned 3,249 rows under query ID `01c65a14-071c-f099-00a0-2d04da237b03`.
+- Preserved the HRDM deep-column output at `outputs/019ff1d5-e2d8-76b1-8f5b-ea0500b454ce/hrdm_gap_deep_columns.csv` with 399 rows. No producing query ID was retained, so none is claimed.
+- Confirmed that the deeper Snowflake search did not surface production-grade objects for the unresolved ServiceNow, LOAA, beneficiary, emergency-contact, investigation, FLO, locker, badge-inventory, TM Experience, or signage requirements.
+- Located an EPA weekly ServiceNow resolved-case export with fields relevant to SNOW and LOAA. Both rows are now external governed-source candidates, but production scoring remains blocked until complete/open-case coverage, cadence, site mapping, and service-specific SLA rules are approved.
+- Located authoritative site Smartsheet workflows for FLO and temporary schedules through current SOPs; current site SharePoint locker examples; Workday report paths for beneficiary and emergency-contact checks; and EthicsPoint/OpenBark governance paths for investigations.
+- Located a future TM Experience/Signage Microsoft Forms data contract, but did not verify a live deployed response source. Badge inventory remains manual because the located Badge Reprint App and CCURE artifacts do not represent consumable inventory.
+
+These findings distinguish a located source lead from an approved production mapping. No catalog, source contract, scoring rule, privacy treatment, or access approval was granted by this discovery pass.
 
 ## Current Reconciliation - 2026-08-11
 
@@ -209,13 +222,13 @@ Use source docs for context, but perform ingestion work only through approved go
 ## Next Research Actions
 
 1. Install Snowflake connector secure local storage in the existing Workload Lens venv if repeated browser prompts become disruptive.
-2. Reconcile the 19 candidate mappings to source owners, Tableau definitions, and production-certified objects; do not promote sandbox names directly into scoring contracts.
+2. Reconcile the 21 candidate mappings to source owners, Tableau definitions, and production-certified objects or governed external-source contracts; do not promote sandbox names or discovery exports directly into scoring contracts.
 3. Confirm UKG Dataview 965 name, owner, field list, filters, and intended missed-punch use.
 4. Run the HRDM employee badging SQL seed for BNA1, DFW8, SDF2, and SDF4 and compare against a labelled HRA sample.
-5. Ask Workday/HRDM owners to identify the exact beneficiary and emergency-contact report/table/fields because HRDM first-pass metadata did not reveal obvious columns.
-6. Confirm the actual ServiceNow production connector schema/database because HRDM first-pass search did not reveal `sn_hr_core_case` or `sn_hr_core_task`.
+5. Ask Workday report owners to approve the exact beneficiary and emergency-contact report/RaaS fields, privacy-minimized outputs, filters, cadence, and reconciliation samples; HRDM deep discovery did not reveal the required columns.
+6. Replace the weekly EPA ServiceNow resolved-case discovery export with an approved complete/open-case production contract, then confirm site keys, service crosswalks, pause logic, and SLA denominators for SNOW and LOAA.
 7. Confirm whether the FC HR Analytics GitHub repo is accessible and inspect source SQL for the HR Packet, Roster Health, ECHO, CAT, VOC, and survey pipelines.
 8. Ask EPA/Talent Management owners to validate the discovered sandbox Quality 1:1 and LEW objects, completion denominators, Tableau reconciliation, and production targets.
 9. Ask Governance/Legal whether Investigations can be measured using aggregate SLA metadata only.
-10. Verify the live SharePoint workbook version and connector result before claiming the local Column-G derivative was published.
-11. Confirm which 2026 TM Experience Roadmap workstream artifacts are approved for ORBIT citation and which are still draft planning material.
+10. Maintain the published source-integrated derivative as a separate mapping-review artifact; do not overwrite or represent the unchanged July 29 workbook as synchronized.
+11. Confirm live deployment, response storage, coverage, ownership, and approval for the TM Experience/Signage Forms contract before using it as scoring evidence.

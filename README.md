@@ -4,7 +4,7 @@ Status: Q3 2026 launch planning; MVP review build available; approval gates rema
 Source of truth: Reviewed repository content; GitHub becomes authoritative after approved changes are committed and pushed
 Current PRD: docs/HR-Fitness-Check-PRD.md
 Target launch: 2026-09-28
-Last updated: 2026-08-11
+Last updated: 2026-08-12
 
 ## Purpose
 
@@ -26,11 +26,11 @@ The latest audit-sheet disposition is:
 | --- | ---: | --- |
 | Working in-scope intent | 33 | Business intent only; not an approved production denominator. |
 | Current owner role populated | 33 | Named accountability and approval remain open. |
-| Draft Column G dispositions in the preservation-safe local mapped derivative | 33 | 19 candidate; 8 blocked; 4 manual/hybrid; 1 validated-object/rule-pending; 1 derived. |
+| Draft Column G dispositions in the published source-integrated derivative | 33 | 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived. |
 | Production-approved source mappings | 0 | Source and scoring readiness remain incomplete. |
 | Reviewer / result populated in the July 29 SharePoint baseline | 0 | Review and scoring evidence remain incomplete. |
 
-The original SharePoint workbook baseline, last modified 2026-07-29, retains `Resource to Check` in Column F and has a blank `Snowflake Table` mapping target in Column G. Live Snowflake metadata validation on 2026-08-11 produced the preservation-safe local mapped derivative summarized above. Many candidates are sandbox-only, the derivative has not been connector-verified as published to SharePoint, and none of its mappings is production-approved.
+The original SharePoint workbook baseline, last modified 2026-07-29, remains unchanged: it retains `Resource to Check` in Column F and has a blank `Snowflake Table` mapping target in Column G. A separate source-integrated derivative was published and version-verified in OneDrive/SharePoint on 2026-08-12: [ORBIT - HR Fitness Check Matrix - Column G Source Integrated.xlsx](https://chewycomllc-my.sharepoint.com/personal/kwallace12_chewy_com/_layouts/15/Doc.aspx?sourcedoc=%7B971B883B-58B1-4D00-9855-78956F8517F1%7D&file=ORBIT%20-%20HR%20Fitness%20Check%20Matrix%20-%20Column%20G%20Source%20Integrated.xlsx&action=default&mobileredirect=true), item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. Fifteen candidate mappings still depend on sandbox objects, two candidates depend on governed external sources, and none of the 33 mappings is production-approved.
 
 Q3 2025 baseline percentages remain discovery evidence only until the approved V1 denominator, implementation modes, source mappings, and missing-data policy are finalized.
 
@@ -174,11 +174,12 @@ The interface is intentionally dense and operational: readiness metrics, source 
 Source discovery and ingestion planning are captured in knowledge-base. Important current facts:
 
 - The original July 29 SharePoint workbook has blank Column G values; Column F remains `Resource to Check`.
-- The 2026-08-11 preservation-safe local mapped derivative contains draft Column G dispositions for all 33 rows: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived.
-- Many candidate mappings are sandbox-only; zero mappings are production-approved, and SharePoint publication remains pending connector verification.
+- The separate source-integrated derivative contains draft Column G dispositions for all 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived.
+- The source-integrated derivative is published and version-verified in OneDrive/SharePoint, while the original July 29 workbook remains unchanged with blank Column G values.
+- Fifteen candidate mappings are sandbox-dependent; the external SNOW and LOAA leads still require governed source contracts; zero mappings are production-approved.
 - Current owner roles are populated for all 33 working rows; named accountability and approval are still required.
-- ServiceNow HR case/task source discovery remains blocked by schema/source confirmation.
-- Workday beneficiary and emergency contact fields were not found in the first HRDM metadata pass.
+- ServiceNow HR case/task objects were not found in Snowflake, but an EPA weekly resolved-case export provides an external governed-source candidate for SNOW and LOAA discovery; production scoring remains blocked pending complete/open-case coverage, cadence, site keys, and approved SLA logic.
+- Workday SOPs identify governed reports for beneficiary and emergency-contact checks, but those fields were not found in HRDM and no approved report/RaaS contract exists yet.
 - Quality 1:1 and LEW have candidate sandbox objects, but field, rule, source-owner, and production approvals remain open.
 - Investigations-related rows require governance review before field-level mapping.
 - VOC Pulse action roadmap content is recommendation context only, not V1 scoring input.

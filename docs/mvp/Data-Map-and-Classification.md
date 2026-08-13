@@ -5,24 +5,24 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-DATA-001` |
-| Version | `0.5` |
+| Version | `0.6` |
 | Status | MVP review draft; not production-ready |
-| Last updated | 2026-08-11 |
-| Evidence cutoff | Implemented-MVP and connected-source verification through 2026-08-11; published SharePoint working catalog as of 2026-07-29 16:32:27 UTC; locally verified 33-row Column G publication candidate pending live publication because of a workbook resource lock; synthetic data snapshot as of 2026-08-06 20:00:00 UTC |
+| Last updated | 2026-08-12 |
+| Evidence cutoff | Implemented-MVP and connected-source verification through 2026-08-12; original SharePoint working catalog as of 2026-07-29 16:32:27 UTC; separate 33-row source-integrated derivative published and version-verified on 2026-08-12; synthetic data snapshot as of 2026-08-06 20:00:00 UTC |
 | Accountable owner | ORBIT Product, approval pending |
 | Intended audience | Product, HR Operations, Engineering, Data Governance, Security, Evaluation |
 | Source of truth | GitHub repository; Confluence is a downstream publishing copy |
 
-> **Decision boundary:** The MVP uses synthetic product-validation data only. The 33-row July 29 working catalog is approval-pending and is not an approved production scoring denominator. The 2026-08-11 local mapped derivative is discovery evidence, not an activated connector or an approved production map.
+> **Decision boundary:** The MVP uses synthetic product-validation data only. The 33-row July 29 working catalog is approval-pending and is not an approved production scoring denominator. The 2026-08-12 source-integrated derivative is published discovery evidence, not an activated connector or an approved production map.
 
 ## Truth hierarchy
 
 | Priority | Evidence | Current interpretation |
 | --- | --- | --- |
 | 1 | `mvp/data/mvp-data.json`, catalog version `working-2026-07-29`, derived from the July 29 SharePoint baseline | Implemented fixture evidence: 33 scope-intent rows, owner-group roles populated, 0 approved source mappings, 0 approved implementation modes, 33 blank Column G source-table fields, 33 blank reviewer fields, and 33 blank result fields. Column F remains `Resource to Check`. |
-| 2 | Preservation-safe local mapped derivative generated 2026-08-11 | Live Snowflake metadata validation produced 33 draft Column G dispositions: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Fifteen candidates depend on sandbox objects; 0 mappings are production-approved, and SharePoint publication remains pending because of a workbook resource lock. |
-| 3 | Six read-only Snowflake metadata queries listed under Source-lead map | Confirms accessible candidate objects and columns plus the HRDM ServiceNow zero-match result. Queryability is discovery evidence, not production mapping approval. |
-| 4 | Published July 29 SharePoint working workbook | Remains the latest verified live workbook until the resource lock clears and the 33 Column G dispositions are published and re-read. |
+| 2 | Published source-integrated derivative verified 2026-08-12 | Item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, contains 33 draft Column G dispositions: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidates depend on sandbox objects; 0 mappings are production-approved. |
+| 3 | Seven retained Snowflake query IDs plus the no-ID HRDM deep output listed under Source-lead map | Confirms accessible candidate objects and columns, the HRDM ServiceNow zero-match result, and a deep-gap search. Queryability is discovery evidence, not production mapping approval. |
+| 4 | Original July 29 SharePoint working workbook | Remains the unchanged source baseline with blank Column G values; the source-integrated artifact is a separate derivative. |
 | 5 | Historical June 30 workbook snapshot, retained in repository reconciliation notes | Superseded discovery snapshot: 38 task rows, 37 scope-intent rows, and 1 removal. Retain for reconciliation history; do not use as the current working denominator. |
 | 6 | Live Confluence PRD, page 5006537577 | Version 18 is the pre-sync baseline for this discovery update. Re-fetch the current version before every write. Confluence does not override GitHub, workbook provenance, or approval gates. |
 
@@ -65,15 +65,15 @@ There is no production connector, source query, model call, durable database, ap
 | Owner-group roles | HRA 18; HRBP 6; HRG 1; HRM 8 | Role labels are populated; named/current-owner approval remains blocked |
 | Assumed implementation mode | Automatable 20; hybrid 6; manual 5; derived 1; governance-first 1 | All are product-validation assumptions; approved count is 0 |
 | Assumed evidence mode | Virtual 22; mixed 6; physical 5 | Product-validation assumption |
-| Draft Column G candidate | 19 | Discovery candidates only; 15 depend on sandbox objects |
-| Draft Column G blocked | 8 | Source, definition, or governance blockers remain |
-| Draft Column G manual/hybrid | 4 | Approved manual evidence workflow is still required |
+| Draft Column G candidate | 21 | Discovery candidates only; 15 depend on sandbox objects and 2 depend on governed external sources |
+| Draft Column G blocked | 5 | Source, definition, or governance blockers remain |
+| Draft Column G manual/hybrid | 5 | Approved manual evidence workflow is still required |
 | Draft Column G validated-object/rule-pending | 1 | Missing Time Stamps objects were validated; rule and production mapping remain unapproved |
 | Draft Column G derived | 1 | Depends on future `fact_fitness_check_result`; not implemented |
 | Approved source mappings | 0 | Production scoring is blocked |
 | Approved denominator | 0 | The 33 rows must not be called the approved V1 denominator |
 | Threshold gaps | 1 | At least one scoring threshold remains incomplete |
-| Live SharePoint publication | Pending | Local 33-row candidate is verified; live update is blocked by a workbook resource lock |
+| Source-integrated derivative publication | Verified | Separate item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, verified at 17,144 bytes; original baseline unchanged |
 
 ## Source-lead map
 
@@ -83,9 +83,9 @@ Catalog-row counts describe fixture assumptions, not approved mappings.
 
 | Draft disposition | Rows | Control interpretation |
 | --- | ---: | --- |
-| Candidate | 19 | Requires exact production object, field, filter, window, site key, freshness, owner, lineage, rule, and access approval; 15 currently depend on sandbox objects. |
-| Blocked | 8 | Requires source, definition, or governance remediation or an approved deferral. |
-| Manual/hybrid | 4 | Requires an approved evidence system of record, reviewer workflow, corrections, retention, and access. |
+| Candidate | 21 | Requires exact production object, field, filter, window, site key, freshness, owner, lineage, rule, and access approval; 15 currently depend on sandbox objects and 2 on governed external-source delivery contracts. |
+| Blocked | 5 | Requires source, definition, or governance remediation or an approved deferral. |
+| Manual/hybrid | 5 | Requires an approved evidence system of record, reviewer workflow, corrections, retention, and access. |
 | Validated-object/rule-pending | 1 | Object evidence exists; deterministic rule and production mapping remain open. |
 | Derived | 1 | Depends on future Fitness Check result storage; no external table or implemented calculation exists. |
 
@@ -98,7 +98,9 @@ Catalog-row counts describe fixture assumptions, not approved mappings.
 | HRDM HRFC table inventory | `01c652cc-0420-bdd7-0066-27031a10b762` | Candidate roster and Workday objects in `D_HRDATAMART`. |
 | HRDM priority-column inventory | `01c652cc-0420-b7c9-0066-27031a1059f2` | Candidate HRDM roster, Workday, LOA, and related fields. |
 | People/HRFC column inventory | `01c652cf-071c-eb73-00a0-2d04d5224267` | Candidate People Analytics and HRFC-relevant columns used to refine row dispositions. |
-| HRDM ServiceNow zero-match search | `01c652c8-0420-b62d-0066-27031a1068ee` | Confirms no expected ServiceNow HR case/task object matched in the searched HRDM metadata; SNOW and LOAA mappings remain blocked. |
+| HRDM ServiceNow zero-match search | `01c652c8-0420-b62d-0066-27031a1068ee` | Confirms no expected ServiceNow HR case/task object matched in the searched HRDM metadata. |
+| EDLDB deep gap-column search | `01c65a14-071c-f099-00a0-2d04da237b03` | Returned 3,249 metadata rows; did not reveal an overlooked production-grade object that closes the unresolved source contracts. |
+| HRDM deep gap-column output | Not captured | Local 399-row output at `outputs/019ff1d5-e2d8-76b1-8f5b-ea0500b454ce/hrdm_gap_deep_columns.csv`; no producing query ID is claimed. |
 
 These query IDs are reproducibility evidence for read-only discovery only. They do not approve sandbox promotion, connector activation, row-level field contracts, scoring rules, or production use.
 
@@ -111,17 +113,18 @@ These query IDs are reproducibility evidence for read-only discovery only. They 
 | ECHO, CAT, and VOC sandbox | `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT`; `CAT_TRACKER_SNAPSHOT`; `VOC_BOARD` | Swag, CAT, Fishbowl, VOC, Roundtables, CoTM/LOP | `LOCATION`, `COMMON_DATE`/timeframe, `FISHBOWL`, `COTM`, `LOP`, CAT action/resolution, and VOC date/category fields were visible | Approved taxonomy, score calculation, identifiable-comment handling, period rules, production target, and governance |
 | VET/VTO and labor sandbox | `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.VET_VTO_INFO_ZEUS`; `SP_SNAP_ATTENDANCE_FCST_HR_METRICS`; `RX_LABOR_PLAN_METRICS`; `EDLDB.PEOPLE_ANALYTICS_SANDBOX.V_UKG_TIME_OFF_REQUESTS` | VET, VTO, Labor Planning | VET/VTO date, FC, week, request-detail fields and labor actual/forecast/error fields were visible | No-match semantics, FC/Rx coverage, planned-versus-actual definition, site grain, production target, freshness, and owner approval |
 | HRDM Workday and roster | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED`; `D_HRDATAMART.S_ANALYTICS.ROSTER_DAY_END` | HR Metrics reference, beneficiary and emergency-contact denominators, LOAA cohort context | Worker, location/site, hire/tenure, roster, and LOA context were visible | Target beneficiary, enrollment, emergency-contact, and ServiceNow SLA fields were not found; source-owner mapping is required |
-| Manual and derived | No Snowflake object for TM Experience Walk, FLO tracker, badge inventory, or signage; future `fact_fitness_check_result` is not implemented | Four manual/hybrid rows and one derived row | Not applicable | Approve evidence home, reviewer/correction/retention workflow, action authorization, and derived comparability rule |
+| External governed and hybrid sources | EPA ServiceNow resolved-case export; site FLO and temporary-schedule Smartsheets; Workday beneficiary/emergency-contact reports; EthicsPoint/OpenBark; site locker workbooks; TM Experience/Signage Forms contract | SNOW, LOAA, FLO, temporary schedules, beneficiary, emergency contacts, investigations, locker, TM Experience, signage | Source artifacts expose partial service/location/date/status, workflow, or audit fields | Approve production delivery, completeness, site keys, cadence, classification, access, retention, aggregation, reconciliation, and row-specific rules; the Forms contract is not verified live |
+| Manual and derived | No badge-inventory source; current TM Experience/signage evidence remains manual/hybrid; future `fact_fitness_check_result` is not implemented | Five manual/hybrid rows and one derived row | Not applicable | Approve evidence home, reviewer/correction/retention workflow, action authorization, and derived comparability rule |
 
 | Source ID | Source family | Discovery status | Assumed catalog rows | Production handling decision still required |
 | --- | --- | --- | ---: | --- |
 | `src.ukg` | UKG Pro / Snowflake | Located | 10 | Field mappings, site key, windows, freshness, access, and SME rating examples |
 | `src.hrdm` | HR DataMart | Located | 4 | Roster grain, keys, snapshots, classification, and access |
-| `src.workday` | Workday to HRDM | Candidate | 2 | Locate governed beneficiary and emergency-contact fields or reports |
-| `src.snow` | ServiceNow / SNOW | Blocked | 2 | Confirm production replication location; prohibit case narrative exposure |
+| `src.workday` | Workday / governed reports | Blocked | 2 | Approve report/RaaS fields, privacy treatment, aggregation, cadence, exclusions, and reconciliation |
+| `src.snow` | ServiceNow / EPA resolved-case export | External governed-source candidate | 2 | Approve complete/open-case coverage, site keys, service definitions, SLA logic, access, and production delivery; prohibit case narrative exposure |
 | `src.tableau` | Tableau | Candidate | 3 | Map underlying governed tables; use dashboards for reconciliation by default |
 | `src.echo` | ECHO / CAT | Located | 5 | Map site, period, completion, score, and dwell fields |
-| `src.manual` | Manual evidence workflow | Blocked | 6 | Approve evidence home, fields, approver, corrections, and retention |
+| `src.manual` | Manual/hybrid evidence workflow | Blocked | 5 | Approve evidence home, fields, approver, corrections, retention, and distributed Smartsheet/site-file contracts |
 | `src.investigations` | Investigations | Governance review | 1 | Legal, privacy, source-owner, and aggregate-only approval |
 | `src.fc-analytics` | FC HR Analytics | Located | 0 direct | Confirm repository access and underlying SQL before use |
 | `src.sharepoint` | SharePoint / OperationsHR | Located | 0 direct | Separate authoritative evidence from discovery artifacts |
@@ -190,7 +193,7 @@ Decision and outcome records may support governed evaluation. They do not author
 
 | Assumption ID | Assumption | Validation needed |
 | --- | --- | --- |
-| `DATA-A-001` | The July 29 SharePoint workbook remains the latest verified live matrix because the 2026-08-11 Column G publication attempt is blocked by a resource lock. | Clear the lock, publish the locally verified 33-row candidate, re-open the live workbook, and verify all 33 Column G cells before treating SharePoint as current. |
+| `DATA-A-001` | The original July 29 SharePoint workbook remains the unchanged baseline, while the separate source-integrated derivative is a published mapping-review artifact. | Maintain separate identities and provenance; do not treat derivative publication as catalog, source, or scoring approval. |
 | `DATA-A-002` | The 33 role assignments express working accountability intent. | HR Operations approves named/current owners. |
 | `DATA-A-003` | Source-family leads are directionally useful for discovery. | Source owners approve exact objects, fields, filters, keys, and freshness. |
 | `DATA-A-004` | Quarterly site-level aggregation is the intended reporting grain. | Product, Privacy, and HR Operations approve audience and minimum aggregation. |
@@ -205,7 +208,7 @@ Decision and outcome records may support governed evaluation. They do not author
 | `DATA-R-003` | Located source leads are mistaken for activated mappings. | Preserve source status and show approved mapping count as 0. |
 | `DATA-R-004` | Synthetic site codes or percentages are used in an HR decision. | Label every view/export as synthetic and exclude outputs from production decision records. |
 | `DATA-R-005` | Future detailed HR data leaks through reports, traces, or Confluence. | Enforce pre-retrieval authorization, aggregation, redaction, output validation, and audit controls. |
-| `DATA-R-006` | The locally verified Column G candidate is mistaken for the live SharePoint workbook while the resource lock remains. | Keep publication status `pending`, identify the local candidate separately, and require post-lock publication plus 33-row live verification. |
+| `DATA-R-006` | The published source-integrated derivative is mistaken for an update to the original workbook or for approved production mapping. | Display the distinct item/version, preserve the original baseline provenance, and keep approved mapping count at 0 until source contracts and rules pass governance. |
 
 ## Cross-references
 

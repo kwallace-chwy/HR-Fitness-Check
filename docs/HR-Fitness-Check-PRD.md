@@ -1,12 +1,12 @@
 # HR Fitness Check Product Requirements Document
 
-Version: 0.6
+Version: 0.7
 Status: Q3 2026 launch planning - MVP review build; approval gates remain open
 Owner: Kenny Wallace, ORBIT Program Owner and Product Owner
 Process Owner / SME: Weipan Le
 Product Sponsor: Ashley Larue
 Target Launch: 2026-09-28
-Last Updated: 2026-08-11
+Last Updated: 2026-08-12
 
 ## 1. Vision And Problem Statement
 
@@ -32,11 +32,13 @@ This PRD supersedes both the older 49-row discovery snapshot and the June 30 38-
 | Current owner role populated | 33 | Role ownership is present for all rows; named accountability and approval remain release decisions. |
 | Approved production items | 0 | The workbook is unfinished and was still described as approval-pending in Slack on 2026-07-28 and 2026-08-04. |
 
-Current evidence layers as of 2026-08-11:
+Current evidence layers as of 2026-08-12:
 
 - The original SharePoint workbook baseline, last modified 2026-07-29, retains `Resource to Check` in Column F and has blank `Snowflake Table` values in Column G.
-- Live Snowflake metadata validation produced a preservation-safe local mapped derivative with draft Column G dispositions for all 33 rows: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived.
-- Fifteen of the 19 candidate mappings depend on sandbox objects. Zero mappings are production-approved, and publication of the local derivative to SharePoint remains pending connector verification because the workbook is resource-locked.
+- A separate source-integrated derivative is published and version-verified in OneDrive/SharePoint as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. It contains draft Column G dispositions for all 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived.
+- Fifteen candidate mappings depend on sandbox objects. Zero mappings are production-approved. Publication of the derivative proves artifact availability, not approval or activation, and the original July 29 workbook remains unchanged.
+- Deep Snowflake discovery did not locate production-grade objects that close the remaining gaps. EDLDB deep query `01c65a14-071c-f099-00a0-2d04da237b03` returned 3,249 metadata rows; the HRDM deep output contains 399 rows and has no retained query ID.
+- Governed external-source discovery located an EPA ServiceNow resolved-case export for SNOW/LOAA, authoritative site Smartsheet workflows for FLO and temporary schedules, site SharePoint locker examples, Workday report paths for beneficiary/emergency-contact checks, and EthicsPoint/OpenBark for investigations. A future TM Experience/Signage Forms data contract was found, but live deployment is unverified. These are source leads, not approved production mappings.
 - The workbook has populated `Current Owner` roles for all 33 rows.
 - The workbook has no populated `Reviewer(s)` values for the 33 rows.
 - The workbook has no populated result / fitness values for the 33 rows.
@@ -61,7 +63,7 @@ The concise leadership narrative for the Q3 2026 vision, roadmap, value estimate
 |---|---|---|---|
 | SM-001 | Catalog readiness | 100% of reviewed rows have stable item IDs, final V1 disposition, current owner, objective, source family, and rating band. | 33 working rows reviewed; owner roles are populated, while stable IDs and final approval remain open. |
 | SM-002 | V1 scope readiness | 100% of the 33 working rows are classified as automatable, hybrid/manual input, manual only, or deferred with rationale. | Not complete for release. The local derivative has draft dispositions for all 33 rows, but implementation modes and scope decisions remain unapproved. |
-| SM-003 | Source mapping readiness | 100% of V1 rows have source system, source object/table/report, source fields, filters, site key, date window, data owner, and refresh cadence. | Draft Column G discovery covers 33/33 rows: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Fifteen candidate rows depend on sandbox objects, required mapping contracts remain incomplete, SharePoint publication is blocked by a workbook resource lock, and 0 mappings are production-approved. |
+| SM-003 | Source mapping readiness | 100% of V1 rows have source system, source object/table/report, source fields, filters, site key, date window, data owner, and refresh cadence. | The published source-integrated derivative covers 33/33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidate rows depend on sandbox objects, required mapping contracts remain incomplete, and 0 mappings are production-approved. |
 | SM-004 | Rating accuracy | Deterministic scoring matches SME-approved examples for each mapped item. | TBD after examples and source fields are approved. |
 | SM-005 | Baseline recast | Q3 2025 baseline is recalculated using the approved V1 denominator and missing-data policy. | The 33-row working catalog is not an approved denominator; historical legacy ratings are not comparable until a mapping or recast is approved. |
 | SM-006 | Manual control integrity | Manual, physical, stale, missing, and unmapped items never masquerade as automated facts. | Required control; design in progress. |
@@ -372,7 +374,7 @@ Disallowed ORBIT behavior:
 | Risk ID | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
 | R-001 | The latest 33-row working list is treated as an approved scoring denominator before implementation-mode and governance decisions are complete. | Medium | High | Recast baseline only after final V1 catalog, source mapping, owner assignment, and missing-data policy are approved. |
-| R-002 | Workbook says in scope, but Column G dispositions remain draft and many candidate mappings are sandbox-only. | High | High | Treat in scope and draft mapping dispositions as discovery evidence only; require implementation mode, production source mapping, and approval before scoring. |
+| R-002 | Workbook says in scope, but Column G dispositions remain draft; 15 candidates are sandbox-dependent and 2 rely on unapproved governed external sources. | High | High | Treat in scope and draft mapping dispositions as discovery evidence only; require implementation mode, production source mapping, and approval before scoring. |
 | R-003 | Source dashboards differ from system-of-record data. | Medium | High | Require source-owner approval and reconciliation examples for each mapped item. |
 | R-004 | Manual/physical checks are automated without evidence controls. | Medium | High | Use manual input workflow with owner, timestamp, evidence reference, and result status. |
 | R-005 | AI summaries overstate causality or hide caveats. | Medium | High | Ground narratives in scored IDs and caveats; require human review during pilot. |
@@ -393,7 +395,7 @@ Working matrix: [ORBIT - HR Fitness Check Matrix](https://chewycomllc-my.sharepo
 | OQ-001 | Who gives final approval for the V1 catalog and movement of research items into or out of V1? | Kenny / Weipan / Ashley | Before catalog freeze |
 | OQ-002 | Do release-gate results still support the confirmed 2026-09-28 launch target? | Weipan / Kenny / Ashley | Launch readiness review |
 | OQ-003 | Role-based catalog owners are approved. Who is authorized to be selected as the named owner of each accepted action? | Weipan / Regional HR | Before action workflow enablement |
-| OQ-004 | Which draft Column G dispositions can be promoted to approved, production-accessible source mappings and automatable V1 items? | Kenny / data engineering / source owners | Resolve sandbox promotion for 15 candidate rows and approve exact fields, filters, joins, site keys, windows, freshness, owners, lineage, access, reconciliation examples, and rules before build readiness; publish and verify the live SharePoint copy after the resource lock clears. |
+| OQ-004 | Which draft Column G dispositions can be promoted to approved, production-accessible source mappings and automatable V1 items? | Kenny / data engineering / source owners | Resolve sandbox promotion for 15 candidate rows; approve production delivery contracts for external SNOW/LOAA candidates and hybrid Smartsheet/Workday/UKG sources; and approve exact fields, filters, joins, site keys, windows, freshness, owners, lineage, access, reconciliation examples, and rules before build readiness. |
 | OQ-005 | What approved system of record, evidence contract, reviewer workflow, correction path, and retention policy will support the four draft manual/hybrid rows? | Kenny / Phoenix / Weipan | Design readiness |
 | OQ-006 | Does the working guidance in matrix column H constitute the approved missing-value policy for eligible-item and valid-rated denominators? | Weipan / Data Governance | Baseline recast |
 | OQ-007 | Should any composite quality index be introduced later? It is intentionally excluded from the MVP pending definition and approval. | Kenny / Weipan / Ashley | Post-MVP decision |
@@ -426,7 +428,7 @@ The current MVP remains L0-L3: approved source lookup, deterministic analysis, a
 
 The July 29 workbook changes the working catalog from the older 49-row snapshot and June 30 38-row snapshot to 33 rows, all marked in scope. "In Scope." is still business intent only. Rows must not be counted in a production denominator until catalog approval, implementation mode, source mapping, rating rules, and missing-data policy are approved.
 
-On 2026-08-11, a preservation-safe local derivative populated Column G for all 33 rows from read-only Snowflake metadata discovery while preserving Column F as `Resource to Check`. Its disposition totals are 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, and 1 derived. Fifteen candidates depend on sandbox objects and no mapping is production-approved. Publication and post-write verification of the live SharePoint workbook remain pending because the workbook is resource-locked.
+On 2026-08-12, a separate source-integrated derivative populated Column G for all 33 rows while preserving Column F as `Resource to Check`. Its disposition totals are 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidates depend on sandbox objects and no mapping is production-approved. The derivative is published and version-verified in the user's OneDrive/SharePoint; the original July 29 workbook remains unchanged with blank Column G values.
 
 Specific data quality concerns captured in the workbook notes:
 

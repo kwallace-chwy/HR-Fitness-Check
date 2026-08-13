@@ -1,52 +1,52 @@
 # HR Fitness Check ingestion backlog
 
 Status: Draft source-mapping backlog
-Last updated: 2026-08-11
+Last updated: 2026-08-12
 
-This backlog was originally seeded from an older 27-row V1 snapshot and then reconciled to the June 30 38-row / 37-intent snapshot. Both identifier mappings are historical. The latest verified SharePoint source workbook copy was last modified 2026-07-29 16:32:27 UTC and contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. Its source-table, reviewer, and result fields were blank when fetched. A local mapped derivative was created on 2026-08-11 from live read-only Snowflake metadata, but SharePoint connector/version verification is pending. The catalog remains approval-pending: implementation modes, stable IDs, source contracts, rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision.
+This backlog was originally seeded from an older 27-row V1 snapshot and then reconciled to the June 30 38-row / 37-intent snapshot. Both identifier mappings are historical. The original July 29 SharePoint workbook contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33; its source-table, reviewer, and result fields were blank when fetched and remain unchanged. A separate source-integrated derivative was published and version-verified on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`. The catalog remains approval-pending: implementation modes, stable IDs, source contracts, rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision.
 
 The backlog rows below are source-discovery leads, not a complete or approved current V1 scope. The current working task list is maintained in `docs/Reviewed-Checklist-Disposition.md`. The local MVP is read-only and uses synthetic fixture results.
 
 > **PROHIBITED FOR JOINS:** Every `V1-###` and `A-###` mapping in the historical sections below is superseded and may point to a different business task than the July 29 draft list. Do not use either namespace for source joins, scoring, ownership, results, or historical recasts. Approve stable IDs and an explicit crosswalk first.
 
-## Current 33-Row Source-Map Derivative - Approval Pending
+## Current 33-Row Source-Integrated Derivative - Approval Pending
 
-This is the task-name-based local derivative prepared on 2026-08-11. It records discovery posture, not production authorization. Counts reconcile to 33 rows: 19 candidate, 8 blocked, 4 manual/hybrid, 1 validated-object/rule-pending, 1 derived, and 0 approved. All `SANDBOX` objects are sandbox discovery candidates, not production-certified sources.
+This is the task-name-based derivative published and version-verified on 2026-08-12. It records discovery posture, not production authorization. Counts reconcile to 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 approved. Fifteen candidates remain sandbox-dependent. All `SANDBOX` objects are discovery candidates, not production-certified sources.
 
 | Workbook row | Current task | Disposition | Candidate object or gap | Next decision |
 |---:|---|---|---|---|
-| 2 | TM Experience Walk | Manual/hybrid | No Snowflake object; TM Experience Walk Smartsheet | Approve the governed manual evidence workflow. |
+| 2 | TM Experience Walk | Manual/hybrid | Current TM Experience Walk Smartsheet; future normalized Microsoft Forms contract found but live deployment unverified | Inventory the governed current source and approve the evidence workflow; treat the Forms builder as future-state only. |
 | 3 | Standup Audits | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.STAND_UP_AUDITS`; base `FULFILLMENT_STAND_UPS` | Confirm owner, production object, week/site grain, and rating calculation. |
 | 4 | New Hire Orientation | Blocked | CCURE DNS object not found; UKG-side `EDLDB.UKG.GOLD_V_PEOPLE` | Locate CCURE source and approve mismatch join. |
 | 5 | HR Metrics & Roster Health | Blocked | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT`; HRDM roster reference | Approve the missing metric definition and thresholds before source selection. |
-| 6 | HR ServiceNow (SNOW) Tickets | Blocked | No HR case/task object found in live HRDM metadata | Confirm actual production ServiceNow replication database/schema. |
+| 6 | HR ServiceNow (SNOW) Tickets | Candidate - external governed source | EPA weekly resolved-case export; no production Snowflake case/task object found | Approve complete/open-case coverage, cadence, site key, service mapping, SLA rule, classification, access, and production delivery contract. |
 | 7 | VET Process | Candidate | Sandbox `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.VET_VTO_INFO_ZEUS`; request detail `V_UKG_TIME_OFF_REQUESTS` | Reconcile no-match semantics and numerator. |
 | 8 | VTO Process | Candidate | Sandbox `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.VET_VTO_INFO_ZEUS`; request detail `V_UKG_TIME_OFF_REQUESTS` | Reconcile no-match semantics and numerator. |
 | 9 | Shift Transfers | Candidate | `EDLDB.UKG.GOLD_V_PEOPLE` plus `GOLD_V_SCHEDULE_SHIFT` | Reconcile FC MET Scheduled logic, site transfers, and effective date. |
-| 10 | FLO Certification management | Manual/hybrid | No Snowflake FLO tracker object | Approve the tracker sample and Workday/UKG reconciliation workflow. |
+| 10 | FLO Certification management | Manual/hybrid | Authoritative site `FLO Process - Pending/Completed` Smartsheets per SOP; no Snowflake object | Inventory site sheets and approve the connector, fields, site/date keys, Workday/UKG reconciliation, access, and rating rule. |
 | 11 | Missing Time Stamps | Validated objects; rule pending | `EDLDB.UKG.GOLD_V_TIMECARD_EXCEPTION` plus `GOLD_V_TIMECARD_PUNCH` | Approve joins, current-shift exclusion, grace period, site key, and rating rule. |
 | 12 | Unscheduled but Working | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT`; UKG `GOLD_V_TIMECARD_WORK_SHIFT` | Reconcile exact NSBW field to Tableau and approve seven-day rule. |
 | 13 | 13h Day Risk Assessment | Candidate | `EDLDB.UKG.GOLD_V_TIMECARD_WORK_SHIFT` plus `GOLD_V_SCHEDULE_SHIFT` | Approve shift-type thresholds and exclusions. |
 | 14 | 60h Week Risk Assessment | Candidate | `EDLDB.UKG.GOLD_V_TIMECARD_TOTAL`; detail `GOLD_V_TIMECARD_TRANSACTION` | Approve week boundary, paycodes, site grain, and exclusions. |
-| 15 | Locker Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.NHE_SURVEYS` (`NHO_RESOURCES`) | Confirm the locker-question mapping and denominator. |
-| 16 | Badge Management | Manual/hybrid | No inventory object; `EMPLOYEE_BADGING` is scan evidence only | Approve a physical inventory workflow and labor-plan input. |
+| 15 | Locker Management | Candidate | Sandbox `NHE_SURVEYS` plus current SDF4/SDF6 SharePoint locker workbooks and network SOP | Confirm the exact Day 1 survey mapping and denominator; inventory network site trackers and approve a durable contract. |
+| 16 | Badge Management | Manual/hybrid | Badge Reprint App/CCURE cover replacements and access, not badge/reel/lanyard/ink stock; `EMPLOYEE_BADGING` is scan evidence only | Approve a physical inventory workflow and labor-plan input. |
 | 17 | Swag Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.VOC_BOARD` | Approve VOC taxonomy/text handling and scoring rule. |
 | 18 | Audit schedule groups | Candidate | `EDLDB.UKG.GOLD_V_PEOPLE` plus `GOLD_V_SCHEDULE_SHIFT` | Define missing/incorrect group logic and official source. |
-| 19 | Review Temporary Schedule Adjustments | Blocked | Approved accommodations tracker not in Snowflake; UKG-side people/schedule candidates | Locate approved tracker and approve sensitive join/sample rule. |
+| 19 | Review Temporary Schedule Adjustments | Manual/hybrid | Authoritative site Smartsheet tracker per SOP plus Workday documents and UKG schedule-group evidence | Inventory trackers and approve minimum-necessary access, site/date keys, sensitive joins, weekly review, and sample rule. |
 | 20 | Attendance Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ROSTER_HEALTH_SNAPSHOT`; no Bubble field | Reconcile the Tableau Bubble calculation and source-of-truth discrepancy. |
-| 21 | Ensure site TMs have listed beneficiaries | Blocked | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` provides denominator only | Source owner must identify beneficiary/enrollment fields and exclusions. |
-| 22 | Ensure site TMs have listed emergency contacts | Blocked | `D_HRDATAMART.S_WORKDAY.WD_DATAMARTFEED` provides denominator only | Source owner must identify emergency-contact fields and tenure rule. |
+| 21 | Ensure site TMs have listed beneficiaries | Blocked | Workday report workflow identified by SOP; HRDM feed provides denominator only and no target fields | Approve the report/RaaS contract, fields, exclusions, aggregate-only output, privacy controls, and monthly cadence. |
+| 22 | Ensure site TMs have listed emergency contacts | Blocked | Workday report workflow identified by SOP; HRDM feed provides denominator only and no target fields | Approve the report/RaaS contract, fields, tenure rule, aggregate-only output, privacy controls, and cadence. |
 | 23 | Quality 1:1 | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.QUALITY_ONE_ON_ONE`; base `FULFILLMENT_QUALITY` | Confirm completion denominator, Tableau reconciliation, and production source. |
 | 24 | LEWs | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.FULFILLMENT_LEW` | Confirm completion denominator, Tableau reconciliation, and production source. |
-| 25 | Investigations | Blocked | No approved aggregate investigation/SLA object | Obtain Governance/Legal approval before field mapping. |
-| 26 | LOAA Management | Blocked | No ServiceNow SLA object; Workday feed supplies cohort context only | Confirm ServiceNow source and SLA formula. |
+| 25 | Investigations | Blocked | EthicsPoint/OpenBark are authoritative case systems; no current approved aggregate export located | Obtain Employee Relations, Legal, Privacy, source-owner, access, retention, and aggregate-only approval before field mapping. |
+| 26 | LOAA Management | Candidate - external governed source | EPA weekly resolved-case export contains LOAA service and SLA-breach fields; Workday feed supplies cohort context only | Approve complete/open-case coverage, cadence, site key, LOAA service taxonomy, SLA formula, access, and production delivery contract. |
 | 27 | CAT Tracker | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.CAT_TRACKER_SNAPSHOT` | Confirm weekly CAT score formula and production source. |
 | 28 | Fishbowl Display | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` (`FISHBOWL`) | Confirm score semantics and production source. |
 | 29 | VOC Board Management | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` plus `VOC_BOARD` | Approve weekly score formula and identifiable-comment treatment. |
 | 30 | Roundtables | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT`; no explicit roundtable field | Confirm taxonomy, window, denominator, and production source. |
 | 31 | Chewtopian of the Month/Leader of the Pack | Candidate | Sandbox `EDLDB.PEOPLE_ANALYTICS_SANDBOX.ECHO_SNAPSHOT` (`COTM`, `LOP`) | Confirm score semantics and production source. |
 | 32 | Audit exempt HR Standard Work | Derived | No external table; future Fitness Check result fact is not implemented | Approve dependency set, denominator, and comparability rule. |
-| 33 | Site communication & signage | Manual/hybrid | No Snowflake object; TM Experience Walk Smartsheet | Approve manual question/evidence workflow. |
+| 33 | Site communication & signage | Manual/hybrid | Current TM Experience Walk Smartsheet; future Microsoft Forms builder defines normalized signage fields but live deployment is unverified | Approve the current evidence workflow and separately validate future form deployment, response store, completeness, and ownership. |
 | 34 | Labor Planning | Candidate | Sandbox `EDLDB.FULFILLMENT_OPTIMIZATION_SANDBOX.SP_SNAP_ATTENDANCE_FCST_HR_METRICS` exposes actual/forecast attendance factors and error fields; Rx lead `RX_LABOR_PLAN_METRICS` | Confirm FC/Rx coverage, business definition, owner, and production target. |
 
 ## Historical June 30 draft-ID crosswalk - superseded
