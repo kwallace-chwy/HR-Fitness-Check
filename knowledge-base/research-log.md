@@ -1,11 +1,20 @@
 # Research Log
 
 Status: Draft discovery log
-Last updated: 2026-08-12
+Last updated: 2026-08-13
 
-## Source-Integrated Reconciliation - 2026-08-12
+## Original Workbook Publication Verification - 2026-08-13
 
-- Published and version-verified a separate 33-row Column G derivative in OneDrive/SharePoint: item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. The original July 29 workbook remains unchanged with blank Column G values.
+- Published the source-integrated Column G mapping to the exact original SharePoint workbook, not only to an intermediate derivative.
+- Recorded the initial Column G publication checkpoint on the same drive item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, filename `ORBIT - HR Fitness Check Matrix.xlsx`, sourcedoc `{1DFA0CDA-2819-45AF-BC80-53D46C594575}`, version `30.0`, last modified `2026-08-13T19:44:43Z`, size 17,144 bytes.
+- Re-read the current workbook after the product-contract extension: version `34.0`, last modified `2026-08-17T16:16:20Z`, size 37,518 bytes. It preserves `G2:G34` as 33/33 exact and nonblank and adds `Measure Contract`, `Cadence & Context`, and `Product Readiness` with 19 gates. Content verification confirms `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent; publication does not approve those contracts or gates.
+- Verified `G2:G34` as 33/33 nonblank and 33/33 exact matches to the publication manifest.
+- Preserved the source-readiness totals: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 production-approved.
+- Publication and exact manifest matching prove workbook synchronization only. They do not approve a production denominator, source contract, scoring rule, access model, or runtime connector.
+
+## Source-Integrated Reconciliation - 2026-08-12 (superseded publication checkpoint)
+
+- Published and version-verified an intermediate 33-row Column G derivative in OneDrive/SharePoint. That checkpoint was superseded on 2026-08-13 when the exact original workbook was updated and verified.
 - Reconciled dispositions to 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 production-approved. Fifteen candidates remain sandbox-dependent.
 - Ran the EDLDB deep gap metadata query, which returned 3,249 rows under query ID `01c65a14-071c-f099-00a0-2d04da237b03`.
 - Preserved the HRDM deep-column output at `outputs/019ff1d5-e2d8-76b1-8f5b-ea0500b454ce/hrdm_gap_deep_columns.csv` with 399 rows. No producing query ID was retained, so none is claimed.
@@ -34,7 +43,7 @@ Actions completed:
 
 - Revalidated the separate EDLDB and HRDM browser-SSO profiles using the read-only query runner.
 - Ran targeted object and column discovery for UKG, People Analytics sandbox, fulfillment sandbox, HRDM roster/Workday, ServiceNow names, surveys, ECHO/CAT/VOC, Talent Management candidates, and labor planning.
-- Matched the accessible metadata to all 33 working workbook task names and created a local Column-G derivative.
+- At this superseded 2026-08-11 checkpoint, matched the accessible metadata to all 33 working workbook task names and created a local Column-G derivative; the exact original workbook was subsequently published and verified on 2026-08-13.
 - Ran metadata queries only. No DML, DDL, record-level sampling, source-system write, credential change, or live SharePoint update was performed.
 
 Results:
@@ -230,5 +239,5 @@ Use source docs for context, but perform ingestion work only through approved go
 7. Confirm whether the FC HR Analytics GitHub repo is accessible and inspect source SQL for the HR Packet, Roster Health, ECHO, CAT, VOC, and survey pipelines.
 8. Ask EPA/Talent Management owners to validate the discovered sandbox Quality 1:1 and LEW objects, completion denominators, Tableau reconciliation, and production targets.
 9. Ask Governance/Legal whether Investigations can be measured using aggregate SLA metadata only.
-10. Maintain the published source-integrated derivative as a separate mapping-review artifact; do not overwrite or represent the unchanged July 29 workbook as synchronized.
+10. Re-read the exact original SharePoint item after every approved workbook update and require a full `G2:G34` manifest match before representing it as synchronized; synchronization does not confer production approval.
 11. Confirm live deployment, response storage, coverage, ownership, and approval for the TM Experience/Signage Forms contract before using it as scoring evidence.

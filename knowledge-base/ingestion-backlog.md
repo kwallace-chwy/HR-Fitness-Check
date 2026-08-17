@@ -1,17 +1,17 @@
 # HR Fitness Check ingestion backlog
 
 Status: Draft source-mapping backlog
-Last updated: 2026-08-12
+Last updated: 2026-08-13
 
-This backlog was originally seeded from an older 27-row V1 snapshot and then reconciled to the June 30 38-row / 37-intent snapshot. Both identifier mappings are historical. The original July 29 SharePoint workbook contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33; its source-table, reviewer, and result fields were blank when fetched and remain unchanged. A separate source-integrated derivative was published and version-verified on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`. The catalog remains approval-pending: implementation modes, stable IDs, source contracts, rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision.
+This backlog was originally seeded from an older 27-row V1 snapshot and then reconciled to the June 30 38-row / 37-intent snapshot. Both identifier mappings are historical. The exact original SharePoint workbook contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33. On 2026-08-13, source-integrated Column G values were published to and verified in that same drive item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `30.0`; `G2:G34` is 33/33 nonblank and 33/33 exact against the publication manifest. The catalog remains approval-pending: implementation modes, stable IDs, source contracts, rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision.
 
 The backlog rows below are source-discovery leads, not a complete or approved current V1 scope. The current working task list is maintained in `docs/Reviewed-Checklist-Disposition.md`. The local MVP is read-only and uses synthetic fixture results.
 
 > **PROHIBITED FOR JOINS:** Every `V1-###` and `A-###` mapping in the historical sections below is superseded and may point to a different business task than the July 29 draft list. Do not use either namespace for source joins, scoring, ownership, results, or historical recasts. Approve stable IDs and an explicit crosswalk first.
 
-## Current 33-Row Source-Integrated Derivative - Approval Pending
+## Current 33-Row Source-Integrated Workbook - Approval Pending
 
-This is the task-name-based derivative published and version-verified on 2026-08-12. It records discovery posture, not production authorization. Counts reconcile to 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 approved. Fifteen candidates remain sandbox-dependent. All `SANDBOX` objects are discovery candidates, not production-certified sources.
+This is the task-name-based mapping published to and version-verified in the exact original workbook on 2026-08-13. It records discovery posture, not production authorization. Counts reconcile to 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 approved. Fifteen candidates remain sandbox-dependent. All `SANDBOX` objects are discovery candidates, not production-certified sources.
 
 | Workbook row | Current task | Disposition | Candidate object or gap | Next decision |
 |---:|---|---|---|---|

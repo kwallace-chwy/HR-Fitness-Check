@@ -1,8 +1,8 @@
 # HR Fitness Check Source Registry
 
-Version: 0.6
+Version: 0.7
 Status: Draft source registry
-Last updated: 2026-08-12
+Last updated: 2026-08-13
 
 ## Purpose
 
@@ -30,8 +30,8 @@ This file complements:
 
 | Source ID | Title | System | Owner | Steward | Classification | Allowed audiences | Allowed workflows | Freshness SLA | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `src.hrfc.catalog.reviewed_matrix.v1` | Reviewed HR Fitness Check matrix | Excel / SharePoint / local workbook evidence | Kenny Wallace / Weipan Le | ORBIT product | Internal, review required | Product, process owner, data engineering | Catalog readiness, source mapping, scoring design | Review per scope decision | Candidate; 33-row July 29 source copy, approval pending; Snowflake Table cells were blank when fetched |
-| `src.hrfc.catalog.column_g.source_integrated.v1` | Published 2026-08-12 Column-G source-integrated derivative | Excel / OneDrive / SharePoint plus Snowflake and governed external-source discovery | Kenny Wallace / ORBIT product | ORBIT product / data engineering, TBD | Internal, review required | Product, process owner, data engineering | Source-map review only; no runtime scoring | Rebuild after approved source/version change | Candidate; item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`; 21 candidate, 5 blocked, 5 manual/hybrid, 1 validated-object/rule-pending, 1 derived; 15 candidates sandbox-dependent; 0 production-approved |
+| `src.hrfc.catalog.reviewed_matrix.v1` | Reviewed HR Fitness Check matrix | Excel / SharePoint | Kenny Wallace / Weipan Le | ORBIT product | Internal, review required | Product, process owner, data engineering | Catalog, measure/cadence contract, source mapping, scoring, and release-gate readiness | Review per scope decision | Candidate; exact original item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `34.0`, modified `2026-08-17T16:16:20Z`, 37,518 bytes; `G2:G34` is 33/33 exact and nonblank; `Measure Contract`, `Cadence & Context`, and `Product Readiness` sheets are present with 19 gates; `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent; 0 production-approved |
+| `src.hrfc.catalog.column_g.source_integrated.v1` | Source-integrated Column-G mapping | Exact original Excel / OneDrive / SharePoint workbook plus Snowflake and governed external-source discovery | Kenny Wallace / ORBIT product | ORBIT product / data engineering, TBD | Internal, review required | Product, process owner, data engineering | Source-map review only; no runtime scoring | Rebuild after approved source/version change | Candidate; same item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, current workbook version `34.0`, modified `2026-08-17T16:16:20Z`, 37,518 bytes; `G2:G34` is 33/33 exact and nonblank; `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent; 21 candidate, 5 blocked, 5 manual/hybrid, 1 validated-object/rule-pending, 1 derived; 15 candidates sandbox-dependent; 0 production-approved |
 | `src.hrfc.prd.github.v1` | GitHub PRD and repo docs | GitHub | ORBIT product | ORBIT product | Internal | Product, engineering, governance, Confluence publishers | Requirements, publishing, capability governance | On commit | Candidate |
 | `src.hrfc.ukg.edldb.v1` | UKG Pro Snowflake objects | EDLDB.UKG | TBD UKG/data owner | Data engineering | Confidential until classified | Approved HR/data users | UKG-derived metrics | TBD by object | Candidate |
 | `src.hrfc.people_analytics_sandbox.v1` | HRFC-relevant People Analytics sandbox objects | EDLDB.PEOPLE_ANALYTICS_SANDBOX and fulfillment sandbox schemas | TBD EPA/data owners | Data engineering | Internal / confidential review; associate and comment data possible | Approved HR/data users only | Source and rule discovery; Tableau reconciliation | TBD by object | Candidate; sandbox only, not production-certified or approved for scoring |
@@ -82,7 +82,7 @@ Each registry row must be completed before pilot use:
 | Source family | Scoring input | Recommendation context | Notes |
 | --- | --- | --- | --- |
 | Reviewed matrix | Yes, after catalog approval | Yes | Discovery workbook is evidence, not durable runtime source. |
-| Source-integrated Column-G derivative | No | No | Published, version-verified mapping-review artifact only. Publication proves artifact availability, not source approval or production readiness. The original July 29 workbook remains unchanged. |
+| Source-integrated Column-G mapping in the original workbook | No | No | Published, version-verified mapping-review artifact only. The 33/33 manifest match proves workbook synchronization, not source approval or production readiness. |
 | UKG / EDLDB | Yes, for approved aggregate metrics | Limited | Avoid raw associate-level data in shared outputs. |
 | People Analytics and fulfillment sandbox objects | No until production source approval | Limited, after classification | Sandbox names/columns support discovery and reconciliation only. Do not describe them as production-certified or use them for reported site ratings. |
 | HRDM / Workday | Yes, after owner mapping | Limited | Benefits/emergency contact fields are not yet located. |
@@ -133,7 +133,7 @@ Each registry row must be completed before pilot use:
 | Gap | Impact |
 | --- | --- |
 | Owner roles are populated for all 33 working rows, but named accountability and approval are incomplete | Blocks approved catalog identity, business accountability, and source-owner validation. |
-| The original SharePoint workbook remains blank in Column G; a separate source-integrated derivative is published and version-verified | Enables structured mapping review while preserving the baseline. It does not make either workbook an approved runtime catalog. |
+| The exact original SharePoint workbook now has 33/33 manifest-matched Column G values | Enables synchronized mapping review. It does not make the workbook an approved runtime catalog or any row an approved production mapping. |
 | ServiceNow schema was not found in the deep Snowflake search; only an EPA weekly resolved-case export was located | SNOW and LOAA remain external governed-source candidates. Complete/open-case coverage, cadence, site key, service definitions, SLA logic, and approvals still block automation. |
 | Beneficiary and emergency-contact fields were not found in HRDM; SOPs identify Workday report workflows but no approved export contract | Blocks both rows until source owners approve report/RaaS fields, privacy controls, aggregation, cadence, exclusions, and reconciliation. |
 | Quality 1:1 and LEW candidates were found only in EDLDB sandbox objects | Enables field/rule reconciliation, but owner, denominator, Tableau reconciliation, and production-certified source decisions still block automation. |

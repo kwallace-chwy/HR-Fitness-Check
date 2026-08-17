@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-OPS-001` |
-| Version | `0.4` |
+| Version | `0.5` |
 | Status | Local MVP review runbook; production rollout prohibited |
-| Last updated | 2026-08-11 |
+| Last updated | 2026-08-17 |
 | Supported stage | Local prototype / product review |
 | Default endpoint | `http://127.0.0.1:8800` |
 | Operational owner | Engineering / Product, formal owner TBD |
@@ -117,6 +117,9 @@ There is no implemented alerting, SLO monitor, durable log, paging, backup, or d
 | `INC-004` | Live Confluence is claimed current without verification | Mark sync status unknown/stale and halt update claim | Page version/body verified against approved GitHub source |
 | `INC-005` | Production or associate-level data is introduced | Stop server, restrict access, notify Security/Privacy/Data Governance under approved process | Data removed from MVP and incident owner clears restart |
 | `INC-006` | Server is exposed beyond loopback | Stop server and network exposure | Bound to approved local environment and access reviewed |
+| `INC-007` | Provisional monthly/on-demand output is presented as a certified Quarterly Fitness Check | Stop distribution and certification claims; preserve the run/report IDs | Recipients corrected and authority labels/run controls independently verified |
+| `INC-008` | Conversational context changes or appears to change a deterministic score, denominator, source, rule, or certification | Disable context/recommendation capability, preserve trace, notify Product/Data/Governance/Security as applicable | Root cause fixed; affected reports corrected/recast under approval; regression cases pass |
+| `INC-009` | Expired, withdrawn, superseded, unauthorized, or over-sensitive context appears in a report/model prompt | Disable retrieval path, restrict output, preserve redacted evidence, initiate privacy/access response | Context excluded/corrected, impacted outputs assessed, access and regression tests pass |
 
 ## Confluence documentation update procedure
 
@@ -142,6 +145,41 @@ Do not publish the synthetic metric examples as an assessment result. Do not ove
 | Pilot/Beta | Limited business workflow and supervised actions if separately approved | Alpha evidence plus operational metrics, support staffing, source SLAs, human approval, and rollback drills | Blocked |
 | Production | Approved scope, denominator, deployment, operations, governance, and change control | All release criteria and organizational approvals recorded | Blocked |
 
+## Future production operating rhythm
+
+These procedures are target-state gates, not instructions for the current local MVP.
+
+### Monthly progress run
+
+1. Create an immutable `monthly_progress` assessment run with `provisional` authority, site/rollup scope, period, evidence cutoff, and frozen catalog/source/rule versions.
+2. Validate source freshness, required monthly windows/aggregation, eligibility, missing/manual states, and evidence coverage.
+3. Calculate deterministic results; never substitute context for missing evidence or a failed score.
+4. Retrieve only authorized, in-scope, unexpired contextual assertions and open disputes/source-change proposals. Show attribution and verification state.
+5. Generate a provisional report with system findings, user context, interpretation, recommendations, open actions, and risks to the next Quarterly Fitness Check kept separate.
+6. Complete reviewer checks and publish only through the approved report workflow. The output remains provisional.
+
+### Quarterly Fitness Check and certification
+
+1. Create an immutable `quarterly_fitness_check` run in `pending_certification` with the approved quarterly evidence contract for every active item.
+2. Freeze source snapshots, execute approved quarterly construction, collect required manual/physical evidence, and reconcile disputes/exceptions.
+3. Prohibit averaging monthly colors. Use monthly runs only as operational context or approved numeric inputs explicitly permitted by the item contract.
+4. Complete certification checklist, reviewer sign-off, audit envelope, and report verification before setting the run/report to `certified`.
+5. Link the certified result as the formal baseline for later comparable measurement. Any approved correction creates a historical recast; it never edits the prior certified run in place.
+
+### Annual summary
+
+1. Resolve the authorized year/scope and retrieve the applicable certified Quarterly Fitness Check run/report IDs.
+2. Verify certification and recast status and record any missing, uncertified, or non-comparable quarter.
+3. Build the derived annual report from the certified quarterly results, actions, outcomes, and caveats. Do not create a fifth assessment/scoring run or calculate an annual rating.
+4. Review and publish only through the approved reporting workflow with the supporting quarterly references visible.
+
+### Context, dispute, and learning operations
+
+- A durable context record requires classification, minimization, authorization, exact save preview, explicit confirmation, receipt, purpose/scope/audience, effective dates, verification, expiry, privacy/retention, and correction/retraction controls.
+- Evidence disputes and source-change proposals enter owner work queues and leave frozen evidence/approved mappings unchanged until validation, reconciliation, evaluation, and approval complete.
+- Expiry and access sweeps remove ineligible context from retrieval. Corrections supersede; withdrawals preserve audit lineage while preventing future use.
+- Feedback improvement is offline: classify/redact, review, create a change proposal, run regression evals, approve, version and release, monitor, and roll back if needed. No runtime self-training or silent configuration update is permitted.
+
 ## Production promotion checklist
 
 - [ ] Stable catalog IDs, final disposition, effective version, and legacy crosswalk approved.
@@ -157,6 +195,12 @@ Do not publish the synthetic metric examples as an assessment result. Do not ove
 - [ ] Grounded recommendation review passes all four dispositions with rationale, immutable source recommendation, and authorized reviewer scope.
 - [ ] SharePoint action recording has an approved target/schema, action class, exact preview, explicit confirmation, idempotency, receipt, correction, rollback, and audit evidence.
 - [ ] Comparable-measurement, verified-improvement, sustained-result, and association-only policies pass approved eval cases.
+- [ ] Monthly, quarterly, on-demand, and recast run types have approved authority, period/window, item aggregation, certification, comparability, immutable lineage, scheduling, retry, and failure procedures.
+- [ ] Quarterly construction tests prove monthly colors are never averaged; each active item has approved monthly and quarterly calculation fixtures.
+- [ ] Context assertion, evidence dispute, source-change proposal, and feedback stores have approved authorization, preview/confirmation, attribution, privacy/retention, expiry, correction/retraction, access-review, audit, and incident procedures.
+- [ ] Unverified chat-input tests produce zero score, denominator, source, rule, certification, prompt/model, or policy changes.
+- [ ] Governed offline-learning change control and rollback drills pass before any feedback-driven production change.
+- [ ] Annual-summary derivation identifies only applicable certified Quarterly Fitness Checks, exposes missing/uncertified/recast/non-comparable quarters, and creates no new run, annual rating, or certification.
 - [ ] The 540-hour and $33,123 planning estimates have an approved baseline, pilot method, and reporting treatment before validated or realized value is claimed.
 
 ## Rollback posture
@@ -176,6 +220,12 @@ Production rollback is not implemented. A future design must independently roll 
 | `OPS-REQ-005` | Any production-data introduction or non-loopback exposure shall stop the MVP review and trigger approved Security/Privacy handling. |
 | `OPS-REQ-006` | Promotion beyond MVP review shall remain blocked until every stage-specific gate is supported by recorded evidence. |
 | `OPS-REQ-007` | Recommendation, SharePoint action, and outcome-link writes shall remain disabled until their individual capability, action-class, target, confirmation, audit, correction, rollback, and eval gates pass. |
+| `OPS-REQ-008` | Production scheduling shall keep monthly progress, quarterly certification, on-demand preview, and historical recast runs separate, immutable, idempotent, observable, and recoverable. |
+| `OPS-REQ-009` | A quarterly run shall fail certification when required evidence/manual review/reconciliation/sign-off is incomplete or when an item lacks an approved quarterly construction contract. |
+| `OPS-REQ-010` | Context retrieval shall run expiry, withdrawal, supersession, authorization, purpose, audience, and privacy checks before every prompt/report assembly. |
+| `OPS-REQ-011` | Evidence disputes and source-change proposals shall have staffed ownership, service targets, escalation, resolution, recast, and communication procedures before chat capture is enabled. |
+| `OPS-REQ-012` | Feedback-driven releases shall require offline eval, approval, version, rollback, and post-release monitoring evidence; runtime automatic learning remains prohibited. |
+| `OPS-REQ-013` | Annual-summary generation shall be a read/derive/report workflow over certified Quarterly Fitness Checks, not an assessment scheduler or scoring path, and shall preserve exact source-quarter lineage. |
 
 ## Assumptions
 
@@ -191,6 +241,8 @@ Production rollback is not implemented. A future design must independently roll 
 | `OPS-R-001` | Risk | A local prototype is treated as a deployed service. Use stage labels and loopback-only instructions. |
 | `OPS-R-002` | Risk | Confluence is updated from a stale or unapproved editor draft. Re-verify current page/editor state and capture exact preview approval. |
 | `OPS-R-003` | Risk | Rollback is improvised after a future source/action integration. Require tested component-level rollback before alpha/pilot. |
+| `OPS-R-004` | Risk | Monthly cadence increases stale-source, partial-window, and report-volume failure modes. Use run-specific preflight, authority labels, freshness checks, and idempotent scheduling. |
+| `OPS-R-005` | Risk | Persistent context creates privacy, staleness, and trust failures. Apply minimum-necessary storage, expiry/access sweeps, correction/withdrawal UX, and incident response. |
 
 ## Cross-references
 

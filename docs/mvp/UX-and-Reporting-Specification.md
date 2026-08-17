@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-UX-001` |
-| Version | `0.4` |
+| Version | `0.5` |
 | Status | Implemented MVP review specification; not production-approved |
-| Last updated | 2026-08-11 |
+| Last updated | 2026-08-17 |
 | Primary users | HR Fitness Check product reviewers, HR Operations SMEs, Engineering, Data Governance |
 | Experience type | Dense read-only operational cockpit |
 | Data posture | Synthetic fixture; 33-row working catalog; approval pending |
@@ -83,6 +83,40 @@ The report shows selected scope and period, a review title, deterministic templa
 
 There is no Confluence Publish, Approve, Send, Edit Source, Write Back, or model-generated recommendation action.
 
+## Future continuous-review experience
+
+This target-state experience is planned and is not implemented in the synthetic, read-only MVP.
+
+### Run selector and authority
+
+The user selects or confirms site/rollup, assessment period, and run type before results or chat context are assembled. Every page and exported report shows run type, actual evidence window, data-as-of time, evidence coverage, catalog/rule versions, and authority:
+
+- Monthly Progress Check: provisional operational report.
+- Quarterly Fitness Check: pending certification or certified formal record.
+- On-Demand Preview: provisional and partial-window where applicable.
+- Historical Recast: versioned replacement view linked to the superseded run and reason.
+
+The product never presents monthly progress as a certified Quarterly Fitness Check and never implies that the quarterly result is an average of monthly colors.
+
+### Annual summary
+
+The future Reports experience may offer an Annual Summary assembled from the applicable certified Quarterly Fitness Checks for the selected year and authorized scope. The page shows the supporting quarterly run/report IDs, certification/recast state, and missing or non-comparable quarters. It is labeled as a derived summary—not another Fitness Check—and provides no annual score, assessment run, or certification action.
+
+### Conversational review
+
+The chat panel presents system evidence and caveats first, then asks only focused questions that can improve interpretation, source routing, or action planning. Responses are visually separated into:
+
+1. System finding.
+2. User-provided context with attribution, scope, verification, and effective dates.
+3. Model interpretation.
+4. Recommendation.
+
+When the user offers persistent context, the agent classifies it as an operational/process assertion, evidence dispute, source-change proposal, recommendation/narrative feedback, action update, or product feedback. Before saving, the UI shows the normalized record, site/item/run scope, audience, allowed/prohibited use, effective dates, verification state, expiry, privacy/retention treatment, and correction/retraction path. The record is saved only after explicit confirmation and returns a receipt.
+
+Useful retention choices are `this answer only`, `this month`, `submit as an ongoing site fact`, and `submit as a source/process change`. Each choice invokes a different persistence and approval workflow. The UI must never say the agent “learned” a production truth when it only recorded feedback for governed review.
+
+An unresolved evidence dispute visibly qualifies the finding. A source-change report creates a pending proposal and leaves the approved mapping active. Context may qualify the monthly narrative or constrain a recommendation, but cannot change the rating, denominator, approved source, rule, quarterly certification, or causal boundary.
+
 ## Visual and responsive behavior
 
 - The desktop surface uses a fixed top bar, left navigation, constrained main workspace, four-column metric grid, compact panels, tables, and a right-side detail dialog.
@@ -116,6 +150,12 @@ Checked-in Playwright coverage exercises the six top-level views, bootstrap and 
 | `UX-REQ-012` | A future recommendation review shall show grounded evidence and caveats before allowing `accepted`, `modified`, `declined`, or `deferred`; every disposition shall capture rationale. |
 | `UX-REQ-013` | A future SharePoint action flow shall show the exact action, owner, target date, and destination and require explicit confirmation immediately before the write. |
 | `UX-REQ-014` | A future outcome view shall distinguish pending, not comparable, improved, unchanged, regressed, and sustained states and shall not imply causality from sequence alone. |
+| `UX-REQ-015` | Every future report/chat view shall show assessment run type, period, evidence window, data-as-of, evidence coverage, authority/certification state, and recast status before results. |
+| `UX-REQ-016` | Monthly/on-demand reports shall remain visibly provisional; quarterly certification and recast status shall be unambiguous in UI, copy, CSV, print, and downstream publishing. |
+| `UX-REQ-017` | The chat experience shall visually distinguish system findings, attributed user context, interpretation, and recommendation and shall not imply context changed deterministic evidence. |
+| `UX-REQ-018` | A durable context/dispute/source-change/feedback record shall require an exact save preview, explicit confirmation, receipt, scope, purpose, audience, effective dates, expiry, privacy/retention, and correction/retraction controls. |
+| `UX-REQ-019` | Users shall be able to inspect, correct, withdraw, or supersede retained context within authorized scope, and expired/withdrawn context shall not appear in later reports. |
+| `UX-REQ-020` | An annual summary shall identify its certified Quarterly Fitness Check inputs and all missing/uncertified/recast/non-comparable quarters and shall never appear as a fifth assessment, annual score, or certified event. |
 
 ## Implemented versus future
 
@@ -124,10 +164,14 @@ Checked-in Playwright coverage exercises the six top-level views, bootstrap and 
 | Scope selection | Fixture period/region/group filters | Authorized site/rollup scope derived from identity |
 | Catalog review | Search/filter/read-only inspection | Stable IDs, approved decisions, workflow assignment, controlled change history |
 | Site review | Synthetic alphabetical attention view | Governed current data, approved comparison, ownership workflow, correction/escalation |
+| Assessment cadence | Fixture quarters only | Monthly provisional checks, certified Quarterly Fitness Checks, on-demand previews, and immutable historical recasts with authority labels |
+| Annual summary | Not implemented | Derived report over certified Quarterly Fitness Checks with source-quarter and comparability disclosure; no new run or score |
 | Data readiness | Discovery statuses and blockers | Source activation, freshness alerts, lineage, steward workflow |
 | Reporting | Deterministic draft, CSV, copy, print | Approved templates, audience policy, durable version, reviewer edits/approval, governed publish |
 | Audit | Ephemeral request table | Durable tamper-evident audit, authorization decision, alerts, retention, access review |
 | Narrative | Static non-causal templates | Optional supervised grounded generation after model/data/eval approval |
+| Conversational context | Not implemented | Focused questions; confirmed structured assertions; evidence disputes; source-change proposals; attributed monthly context; expiry/correction/retraction; no score/source/rule changes |
+| Learning loop | Not implemented | Immediate draft revision plus governed offline feedback evaluation, approved versioned changes, rollback, and monitoring; no automatic training |
 | Recommendation review | Not implemented | Evidence-backed recommendation plus authorized accept/modify/decline/defer decision and rationale in the same governed interaction |
 | Action recording | Not implemented | Exact preview and explicit confirmation before recording action, owner, and target date in the approved SharePoint tracker |
 | Outcome loop | Not implemented | Link completed action to the next comparable measurement and show verified movement and sustained-result state |
@@ -150,6 +194,8 @@ Checked-in Playwright coverage exercises the six top-level views, bootstrap and 
 | `UX-R-003` | CSV leaves the application without context. | Include provenance columns and require a synthetic-data banner in any review package. |
 | `UX-R-004` | Print/copy output loses visible UI banners. | Keep caveats inside report content, not only application chrome. |
 | `UX-R-005` | Accessibility gaps block reviewers. | Retain automated browser/Axe coverage and complete human accessibility validation before alpha. |
+| `UX-R-006` | Users mistake provisional monthly output or local explanations for a certified Quarterly Fitness Check. | Keep run authority persistent in every channel and separate evidence, context, interpretation, and recommendation. |
+| `UX-R-007` | Users do not understand what the agent will remember or who can see it. | Require explicit retention choices and a save preview with audience, purpose, expiry, privacy, and correction/withdrawal controls. |
 
 ## Cross-references
 

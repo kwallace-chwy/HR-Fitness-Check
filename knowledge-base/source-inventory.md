@@ -1,7 +1,7 @@
 # Source Inventory
 
 Status: Draft discovery artifact
-Last updated: 2026-08-12
+Last updated: 2026-08-13
 
 ## Source Status Legend
 
@@ -74,8 +74,8 @@ Last updated: 2026-08-12
 | Artifact | Status | Location / URL | Useful facts |
 |---|---|---|---|
 | HR Standard Work Fitness Check SOP | Located | `https://chewycomllc.sharepoint.com/sites/OperationsHR/Shared Documents/HRM/HR Standard Work Fitness Check - SOP.pdf?web=1` | Confirms FC and Rx scope, quarterly cadence, HRM accountability, HRD review, Smartsheet folders, and archive practice. |
-| ORBIT - HR Fitness Check Matrix.xlsx | Located; original unchanged | User OneDrive/SharePoint workbook URL; source copy verified at 2026-07-29 16:32:27 UTC | Source working evidence: 33 task rows, all marked `In Scope.`, with owner roles populated for all 33; its source-table, reviewer, and result fields were blank when fetched and remain unchanged. |
-| ORBIT - HR Fitness Check Matrix - Column G Source Integrated.xlsx | Published and version-verified derivative | `https://chewycomllc-my.sharepoint.com/personal/kwallace12_chewy_com/_layouts/15/Doc.aspx?sourcedoc=%7B971B883B-58B1-4D00-9855-78956F8517F1%7D&file=ORBIT%20-%20HR%20Fitness%20Check%20Matrix%20-%20Column%20G%20Source%20Integrated.xlsx&action=default&mobileredirect=true` | Separate 2026-08-12 mapping-review artifact: item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes; 21 candidate, 5 blocked, 5 manual/hybrid, 1 validated-object/rule-pending, 1 derived, 0 approved. Fifteen candidates remain sandbox-dependent. |
+| ORBIT - HR Fitness Check Matrix.xlsx | Published and version-verified current workbook | `https://chewycomllc-my.sharepoint.com/:x:/r/personal/kwallace12_chewy_com/_layouts/15/Doc.aspx?sourcedoc=%7B1DFA0CDA-2819-45AF-BC80-53D46C594575%7D&file=ORBIT%20-%20HR%20Fitness%20Check%20Matrix.xlsx&action=default` | Exact original drive item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `34.0`, modified `2026-08-17T16:16:20Z`, 37,518 bytes. `G2:G34` is 33/33 exact and nonblank: 21 candidate, 5 blocked, 5 manual/hybrid, 1 validated-object/rule-pending, 1 derived, 0 approved. Added `Measure Contract`, `Cadence & Context`, and `Product Readiness` design sheets with 19 gates; `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent; no gate is activated by publication. |
+| ORBIT - HR Fitness Check Matrix - Column G Source Integrated.xlsx | Intermediate publication artifact | User OneDrive/SharePoint derivative published 2026-08-12 | Retained as publication history only. The exact original workbook above is the current synchronized mapping-review artifact. |
 | Fulfillment Center & Pharmacy Human Resources Reporting Job Aid | Located | `https://chewycomllc.sharepoint.com/sites/OperationsHR/Shared Documents/HR Reports/Fulfillment Center & Pharmacy Human Resources Reporting Job Aid.pdf?web=1` | Lists HR Daily Packet, Roster Health, Site Summary, ECHO, VOC, New Hire Experience, OTMP, PAWS, and other report sources. |
 | Chewy Locations.csv | Located | OperationsHR HR Reports / FC Reports | Site/location reference with location code, type, region, active flag, and ECHO/PLLC/STAND_UPS/LEW/QUALITY_ONE columns. Contact columns exist but should not be copied into this KB. |
 | HR Daily Packet handbook page | Located | HR Reports / FC Reports / FC and Rx Reporting Handbook / `2 - HR Daily Packet.pdf` | Daily Tableau report with Summary, Attendance Detail, Labor Plan Attendance, REG-VET-MET Summary, Over 12 or 13 Hours, and other views. |

@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-EVAL-001` |
-| Version | `0.6` |
+| Version | `0.8` |
 | Status | MVP review evidence; production release blocked |
-| Last updated | 2026-08-12 |
+| Last updated | 2026-08-17 |
 | Evaluation target | Local read-only ORBIT HR Fitness Check MVP `0.1.0` |
 | Catalog under test | `working-2026-07-29`, approval pending |
 | Decision supported | Ready for product/UX review only |
@@ -27,7 +27,7 @@
 | `FACT-006` | No model produces the executive narrative. | Report builder uses fixed templates; report caveat states no model-generated causality | Confirmed |
 | `FACT-007` | No Quality Index is emitted. | Trend/report contract test and server response inspection | Confirmed |
 | `FACT-008` | No recorded approval closes the catalog/denominator, access-list, source-mapping, scoring-rule, or MVP-acceptance gates. | Current PRD/release gates plus the 33 draft Column G dispositions, seven retained Snowflake query IDs, the no-ID HRDM deep output, and external-source discovery | Confirmed: 0 production-approved mappings; draft queryability, source availability, publication, and dispositions are not approvals. |
-| `FACT-009` | A published, version-verified source-integrated Column G derivative covers all 33 working rows. | Workbook verification plus Column G disposition artifact | Confirmed: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidate rows depend on sandbox objects. Item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, is separate from the unchanged July 29 baseline. |
+| `FACT-009` | The exact original SharePoint workbook covers all 33 working rows in Column G and contains the new product-contract checklists. | Same-item post-write verification and content-marker checks | Confirmed: item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `34.0`, modified `2026-08-17T16:16:20Z`, 37,518 bytes; `G2:G34` is 33/33 exact and nonblank; `Measure Contract`, `Cadence & Context`, and `Product Readiness` are present with 19 gates; `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent. Dispositions are 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Fifteen candidate rows depend on sandbox objects and 0 mappings or gates are production-approved. |
 
 ## Executed automated evidence
 
@@ -48,9 +48,10 @@ npm run test:all
 | `EVID-004` | `npm run test:all` | PASS: syntax, 46 core tests, and 6 browser/accessibility tests in one command |
 | `EVID-005` | Independent adversarial QA | Found crash, route-contract, rounding, fixture-integrity, provenance, report-schema, audit-classification/scope, bootstrap/history/focus, mobile, and accessibility defects; each confirmed issue was corrected and regression-checked before handoff |
 | `EVID-006` | Dependency audit | PASS: 0 known vulnerabilities reported after installing the locked development dependencies; production dependencies remain 0 |
-| `EVID-007` | Connected-source currency check | PASS for discovery evidence only: the published source-integrated derivative contains 33/33 draft dispositions (21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived); 15 candidate rows depend on sandbox objects; 0 mappings are production-approved. Evidence query IDs: EDLDB inventory `01c652ca-071c-ed42-00a0-2d04d51ded47`; UKG priority columns `01c652cb-071c-eb73-00a0-2d04d51eeba3`; HRDM tables `01c652cc-0420-bdd7-0066-27031a10b762`; HRDM priority columns `01c652cc-0420-b7c9-0066-27031a1059f2`; People HRFC columns `01c652cf-071c-eb73-00a0-2d04d5224267`; HRDM ServiceNow zero-match `01c652c8-0420-b62d-0066-27031a1068ee`; EDLDB deep gap query `01c65a14-071c-f099-00a0-2d04da237b03`. The 399-row HRDM deep output has no retained query ID. |
+| `EVID-007` | Connected-source currency check | PASS for discovery evidence only: the exact original SharePoint workbook contains 33/33 nonblank Column G dispositions and matches the publication manifest 33/33 (21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived); 15 candidate rows depend on sandbox objects; 0 mappings are production-approved. Evidence query IDs: EDLDB inventory `01c652ca-071c-ed42-00a0-2d04d51ded47`; UKG priority columns `01c652cb-071c-eb73-00a0-2d04d51eeba3`; HRDM tables `01c652cc-0420-bdd7-0066-27031a10b762`; HRDM priority columns `01c652cc-0420-b7c9-0066-27031a1059f2`; People HRFC columns `01c652cf-071c-eb73-00a0-2d04d5224267`; HRDM ServiceNow zero-match `01c652c8-0420-b62d-0066-27031a1068ee`; EDLDB deep gap query `01c65a14-071c-f099-00a0-2d04da237b03`. The 399-row HRDM deep output has no retained query ID. |
 | `EVID-008` | Supported-runtime replay | PASS: checksum-verified official Node 22.22.3 and Node 24.18.0 LTS runtimes each passed syntax, all 46 Node tests, and all 6 Edge/Axe tests; the locked install dry-run also passed on both runtimes |
-| `EVID-009` | 2026-08-12 source-integrated mapping and publication verification | Combined read-only Snowflake metadata with governed external-source discovery, preserved Column F as `Resource to Check`, and published a separate 33/33 derivative as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. The original July 29 workbook remains unchanged and 0 mappings are production-approved. |
+| `EVID-009` | 2026-08-13 original-workbook publication verification | Combined read-only Snowflake metadata with governed external-source discovery, preserved Column F as `Resource to Check`, and published Column G to the exact original workbook. Re-read evidence confirms item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `30.0`, modified `2026-08-13T19:44:43Z`, 17,144 bytes, with `G2:G34` 33/33 nonblank and 33/33 exact against the manifest. Zero mappings are production-approved. |
+| `EVID-010` | 2026-08-17 product-contract workbook publication verification | Re-read evidence confirms the same item at version `34.0`, modified `2026-08-17T16:16:20Z`, 37,518 bytes. The original 33 rows are preserved and `G2:G34` is 33/33 exact and nonblank; `Measure Contract`, `Cadence & Context`, and `Product Readiness` are present with 19 gates; `quarterly_fitness_check`, `annual_summary`, and `on_demand_preview` are present, while legacy `quarterly_audit` and the superseded `ad_hoc_preview` label are absent. Publication activates no mapping, rule, cadence contract, or release gate. |
 
 Current tests cover:
 
@@ -105,6 +106,7 @@ For the network fixture, the executive report displays 62% green share, 72% evid
 | `UX-REQ-001` through `UX-REQ-009` | Checked-in Edge interaction tests plus desktop and exact-320px review pass for the review build | Product/UX acceptance and broader supported-browser coverage required |
 | `UX-REQ-010` | Axe serious/critical scans, keyboard overflow, focus return, focus contrast, and reduced-motion foundations pass | Human screen-reader, full keyboard workflow, zoom/reflow, and formal WCAG review required |
 | `UX-REQ-011` | Method guard and absence of write actions tested/inspected | Production broker/action policy required if actions are later added |
+| Target-state cadence/context requirements | Not implemented or exercised by the local MVP | Monthly/quarterly run authority, certification/recast, structured context, privacy, dispute/source-change routing, and offline-learning evals required before enablement |
 
 ## Release-gate status
 
@@ -116,6 +118,9 @@ For the network fixture, the executive report displays 62% green share, 72% evid
 | `RC-004` Source mappings and rating rules approved | Blocked | Draft Column G discovery covers 33 rows, but 15 candidate rows depend on sandbox objects, 2 candidates depend on governed external-source contracts, 5 are blocked, 5 are manual/hybrid, 1 has its rule pending, and 0 mappings are production-approved. Close only with approved production objects or delivery contracts, fields, filters, joins, site keys, windows, freshness, owners, lineage, access, classification, reconciliation examples, and SME-approved rules. |
 | `RC-005` Manual evidence workflow approved | Blocked | System of record, access, approval, correction, and retention |
 | `RC-010` MVP backend/reporting validated | Review | Automated contract tests and manual browser checks pass; product/UX acceptance remains |
+| `RC-011` Monthly/quarterly assessment-run contract approved | Blocked | Item-level monthly/quarterly windows and aggregation, run authority, certification, recast, and comparability are approved and executable |
+| `RC-012` Conversational context and feedback governance approved | Blocked | Identity/scope, exact save preview, confirmation, allowed/prohibited use, verification, expiry, privacy/retention, correction/retraction, access, and audit contracts pass |
+| `RC-013` Governed offline learning approved | Blocked | Feedback classification/redaction, review, eval/regression, approval, release, rollback, and monitoring process is staffed and proven |
 
 No gate in this document approves a production scoring denominator.
 
@@ -135,6 +140,10 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-GAP-010` | SharePoint target/schema, authorization, exact confirmation, idempotency, receipt, correction, rollback, and denial tests | Blocks any action write |
 | `EVAL-GAP-011` | Comparable-measurement, verified-improvement, sustained-result, and no-causality test cases | Blocks outcome reporting |
 | `EVAL-GAP-012` | Approved current-state effort baseline and capacity-value methodology | Blocks validation of the 540-hour and $33,123 estimates |
+| `EVAL-GAP-013` | Item-level monthly/quarterly window and aggregation gold cases; run authority, certification, recast, and comparability cases | Blocks monthly progress and quarterly certified reporting |
+| `EVAL-GAP-014` | Context classification, question usefulness, save-preview/confirmation, scope, attribution, privacy, expiry, correction/retraction, conflict, and unauthorized-use cases | Blocks durable conversational context and feedback capture |
+| `EVAL-GAP-015` | Feedback redaction, reviewed change proposal, offline regression, approval, versioning, rollback, and monitoring evidence | Blocks any claim that the product safely improves from feedback |
+| `EVAL-GAP-016` | Annual-summary derivation, certified-quarter selection, missing/uncertified/recast/non-comparable disclosure, and no-new-score/run cases | Blocks annual summary distribution |
 
 ## Required pre-pilot evaluation plan
 
@@ -150,6 +159,10 @@ No gate in this document approves a production scoring denominator.
 10. Before any SharePoint pilot, test exact preview and confirmation, missing owner/date, unauthorized reviewer, duplicate retry, target failure, receipt validation, correction, and rollback.
 11. Test missing, changed, and comparable follow-up measurements; verified improvement/no change/regression; pending and sustained rechecks; and zero unsupported causal claims.
 12. Validate the 540-hour and $33,123 planning estimates against an approved timed baseline and pilot method before any realized-value claim.
+13. Build monthly, quarterly, on-demand, and recast cases for every active item. Prove run authority, item-specific window/aggregation, quarterly construction without color averaging, certification, immutable recast lineage, and not-comparable behavior.
+14. Test conversational context across `this answer only`, monthly, ongoing-site-fact, evidence-dispute, and source/process-change routes. Include exact preview/confirmation, attribution, privacy, unauthorized scope, expiry, correction, withdrawal, conflict, and zero deterministic-authority changes.
+15. Exercise the full offline learning loop from classified/redacted feedback through review, change proposal, regression eval, approval, versioned release, rollback, and monitoring. Automatic training or self-modification must remain absent.
+16. Test annual summaries with four certified Quarterly Fitness Checks plus missing, uncertified, recast, unauthorized, and non-comparable quarters. Prove the report creates no fifth run, annual rating, or certification.
 
 ## Release decision rubric
 
@@ -175,6 +188,11 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-REQ-009` | Enabling recommendation decisions, SharePoint actions, or outcome links shall require separate versioned eval gates with zero unauthorized or unconfirmed successful writes. |
 | `EVAL-REQ-010` | Outcome evaluation shall preserve not-comparable and pending states and shall record zero unsupported causal claims. |
 | `EVAL-REQ-011` | Value reporting shall identify 540 hours and $33,123 as planning estimates until baseline and pilot evidence are approved. |
+| `EVAL-REQ-012` | Enabling monthly or quarterly production reporting shall require per-item window/aggregation gold cases, immutable assessment runs, authority/certification checks, recast lineage, and comparability tests. |
+| `EVAL-REQ-013` | Durable context enablement shall achieve 100% correct save-preview/confirmation, authorization, purpose/scope/audience, attribution, expiry, correction/retraction, and privacy behavior on the approved gold set. |
+| `EVAL-REQ-014` | Test cases shall record zero score, denominator, source mapping, rule, certification, or policy changes caused solely by unverified conversational input, an unresolved dispute, or a pending source-change proposal. |
+| `EVAL-REQ-015` | No feedback-driven production change shall release without classified/redacted evidence, human review, offline regression results, approval, version identity, rollback target, and monitoring plan. |
+| `EVAL-REQ-016` | Annual-summary release shall require exact supporting certified Quarterly Fitness Check references, scope authorization, missing/recast/comparability disclosure, and zero new assessment runs, ratings, or certifications. |
 
 ## Assumptions
 
@@ -190,6 +208,7 @@ No gate in this document approves a production scoring denominator.
 | `EVAL-R-001` | Risk | Passing fixture tests may be mistaken for production correctness. Keep release conclusion and blocked gates attached to evidence. |
 | `EVAL-R-002` | Risk | Exact fixture metrics can be circulated as real results. Label them regression fixtures in every test/report artifact. |
 | `EVAL-R-003` | Risk | Automated browser and Axe checks miss assistive-technology or supported-browser defects. Complete human accessibility and browser-matrix review before alpha. |
+| `EVAL-R-004` | Risk | The expanded target-state documentation is mistaken for implemented monthly, chat-memory, or learning-loop functionality. Keep the current MVP release conclusion, synthetic/read-only boundary, and blocked gates attached to every review. |
 
 ## Cross-references
 

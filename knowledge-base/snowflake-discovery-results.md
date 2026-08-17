@@ -1,7 +1,7 @@
 # Snowflake Discovery Results
 
 Status: Draft discovery results
-Last updated: 2026-08-12
+Last updated: 2026-08-13
 
 Identifier note: `V1-###` references below are legacy discovery IDs from the older 27-row snapshot. Use the crosswalk in `knowledge-base/ingestion-backlog.md`; do not use legacy or current draft IDs for production joins until the stable catalog is approved.
 
@@ -58,9 +58,9 @@ The table above preserves the June 19 discovery baseline. A targeted live refres
 
 The EDLDB and HRDM session smoke tests also passed on 2026-08-11. No DML, DDL, record-level sampling, or source-system write was performed.
 
-## 2026-08-12 Source-Integrated Column-G Derivative
+## Source-Integrated Column-G Publication
 
-The original July 29 SharePoint workbook still has a blank `Snowflake Table` column and remains unchanged. The separate source-integrated derivative combines read-only Snowflake metadata with governed external-source discovery and was published and version-verified on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. Publication proves artifact availability only; the derivative is not an approved catalog, production source map, or scoring contract.
+The source-integrated mapping combines read-only Snowflake metadata with governed external-source discovery. Its initial exact-workbook publication checkpoint was version `30.0` on 2026-08-13. The same SharePoint item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV` is now version `34.0`, modified `2026-08-17T16:16:20Z`, and 37,518 bytes. Verification confirms `G2:G34` remains 33/33 exact and nonblank and the workbook now also includes `Measure Contract`, `Cadence & Context`, and `Product Readiness` with 19 gates; `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent. Publication proves workbook synchronization only; it is not an approved catalog, production source map, scoring contract, cadence contract, or release approval.
 
 Disposition counts across the 33 working rows:
 
