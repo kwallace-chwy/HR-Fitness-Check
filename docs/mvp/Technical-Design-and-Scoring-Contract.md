@@ -5,9 +5,9 @@
 | Field | Value |
 | --- | --- |
 | Document ID | `HRFC-MVP-TECH-001` |
-| Version | `0.4` |
+| Version | `0.5` |
 | Status | Implemented MVP contract; not a production architecture approval |
-| Last updated | 2026-08-11 |
+| Last updated | 2026-08-17 |
 | Runtime | Node.js 22 or newer; use a supported LTS line; built-in production modules only; Playwright/Axe are development test dependencies |
 | Product version | `0.1.0` |
 | Catalog version | `working-2026-07-29`, approval pending |
@@ -132,6 +132,46 @@ No composite Quality Index is calculated or returned.
 - Trend rows are rendered for product review only. They must not be described as business improvement, regression, or a valid quarter-over-quarter comparison.
 - Production comparison remains blocked until an approved catalog, missing-value policy, rules, and historical recast exist.
 
+## Future assessment-run and context contract
+
+This target-state contract is not implemented in the current synthetic, read-only MVP.
+
+### Run types and authority
+
+| Run type | Purpose | Authority and completion rule |
+| --- | --- | --- |
+| `monthly_progress` | Full-month progress, evidence, action, and context review | Always `provisional`; cannot certify Standard Work performance |
+| `quarterly_fitness_check` | Formal C03-C06 Quarterly Fitness Check | Begins `pending_certification`; becomes `certified` only after required automated/manual evidence, reconciliation, and authorized sign-off |
+| `on_demand_preview` | Month-to-date or point-in-time question/report | Always `provisional`; must show partial-window and data-as-of caveats |
+| `historical_recast` | Recalculate a prior period under an approved correction/change | New immutable run linked to `recastOfRunId`, reason, approvals, and superseded run; never overwrites history |
+
+The canonical production result grain is `siteId x assessmentRunId x swItemId`. Every run freezes `periodId`, `runType`, `authorityStatus`, site/rollup scope, catalog version, source-mapping versions, rule versions, evidence cutoff, source snapshots, and completion/certification state.
+
+### Window, aggregation, and comparison
+
+- Each active Standard Work item defines supported run types plus monthly and quarterly evidence windows, aggregation methods, numerator/denominator, exclusions, direction, missing policy, and non-overlapping threshold operators.
+- Quarterly construction evaluates the approved quarterly evidence. It must never average monthly green/yellow/red labels. Numeric monthly observations may contribute only when the item contract explicitly defines that aggregation and its tests.
+- Comparability checks site, item, population, catalog applicability, rule, denominator, window, source basis, and required evidence. The resolver emits `comparable`, `not_comparable`, or `pending_measurement` with reasons.
+- A source/rule/catalog correction creates a new recast run and report version. Previously certified results, actions, and control records remain addressable and immutable.
+
+### Annual summary derivation
+
+`annual_summary` is a report type, not a fifth assessment/scoring run. The report builder accepts an authorized year/scope and the applicable certified `quarterly_fitness_check` run/report IDs. It may summarize certified quarterly results, comparable movement, actions, outcomes, and caveats. It must expose missing, uncertified, recast, or non-comparable quarters; it cannot calculate a replacement annual rating, change a quarterly rating/certification, or create an assessment run.
+
+### Conversational context and feedback workflow
+
+The production workflow uses request/session context ephemerally. Durable context requires the following transaction:
+
+1. Classify the user statement as an operational/process assertion, evidence dispute, source-change proposal, recommendation/narrative feedback, action update, or product feedback.
+2. Normalize and minimize the record; resolve authorized site/item/run scope, purpose, audience, effective dates, sensitivity, and verification requirement.
+3. Show an exact save preview including allowed/prohibited uses, expiry, correction/retraction path, and whether the record can appear in the monthly narrative.
+4. Persist only after explicit user confirmation and return an immutable receipt.
+5. Retrieve only while the record is in scope, unexpired, not withdrawn/superseded, authorized for the audience, and allowed for the current workflow.
+
+The output schema keeps `systemFinding`, `userProvidedContext`, `interpretation`, and `recommendation` separate. A context assertion can constrain a recommendation or qualify a narrative, but cannot change a deterministic score, denominator, approved source mapping, rule, certification state, or causal boundary. Evidence disputes freeze the challenged interpretation and route validation; source-change reports create proposals rather than activating mappings.
+
+Feedback is not online training data. Cross-session product changes require a classified/redacted feedback set, human-reviewed change proposal, offline eval and regression result, approval, versioned prompt/model/retrieval/source/rule/policy release as applicable, rollback target, and post-release monitoring.
+
 ## Fixture result generation contract
 
 - `validateFixture()` runs before the server can start. It fails closed on missing/duplicate IDs, invalid enums or timestamps, unknown source references, catalog-count drift, missing periods, invalid distributions, unavailable-source undercount, or inconsistent result status.
@@ -202,6 +242,13 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | `TECH-REQ-011` | Startup shall validate every published fixture metadata/source/gate field, nonblank rendered dimensions, exact safety statuses, canonical UTC provenance, newest-to-oldest contiguous quarters, referential integrity, enumerations, bounded catalog counts, and distributions before accepting a request. |
 | `TECH-REQ-012` | Report content identity shall be deterministic over semantic report content and scoped results while request ID and generation time remain volatile. |
 | `TECH-REQ-013` | The current MVP shall remain read-only; target-state recommendation, decision, SharePoint action, and outcome endpoints shall not be added to this runtime without approved contracts and release evidence. |
+| `TECH-REQ-014` | Production shall represent monthly, quarterly, on-demand, and recast executions as immutable assessment runs and shall fail any attempt to label a monthly/on-demand output certified. |
+| `TECH-REQ-015` | Every active item shall have executable monthly and quarterly window/aggregation contracts; tests shall prove quarterly colors are never averaged and invalid/overlapping threshold boundaries fail closed. |
+| `TECH-REQ-016` | A recast shall create a new run/report identity with reason, approvals, lineage, and comparison impact; it shall not mutate the prior run or its control history. |
+| `TECH-REQ-017` | A durable context write shall require authorization, exact preview, explicit confirmation, idempotency, receipt, scope/purpose/audience, effective dates, expiry, correction/retraction, retention, and audit. |
+| `TECH-REQ-018` | Retrieval and output tests shall keep system findings, attributed user context, interpretation, and recommendations separate and shall enforce zero deterministic score/source/rule/certification changes from unverified chat input. |
+| `TECH-REQ-019` | Feedback-driven changes shall be offline, evaluated, approved, versioned, reversible, and monitored; the runtime shall perform no automatic training or self-modification. |
+| `TECH-REQ-020` | An annual summary shall derive only from applicable certified Quarterly Fitness Check runs/reports, disclose missing/uncertified/recast/non-comparable quarters, and create no assessment run, annual rating, or certification. |
 
 ## Future production work
 
@@ -212,6 +259,9 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | Sources | Discovery metadata only | Governed connectors, active versions, freshness, lineage, access, rollback |
 | Scoring | Synthetic generator | Executable SME-approved rules, missing policy, reconciliation fixtures, run IDs |
 | Storage | Repository JSON and process memory | Governed result, lineage, report, approval, and append-only audit stores |
+| Assessment cadence | Quarterly-labeled fixture periods only | Immutable monthly progress, Quarterly Fitness Check, on-demand preview, and historical-recast runs with distinct authority/certification and item-level construction contracts |
+| Annual reporting | No annual artifact | Derived annual summary over certified Quarterly Fitness Checks; no fifth run, annual score, or certification |
+| Context and feedback | No chat, durable memory, dispute, or feedback store | Ephemeral session state plus confirmed structured assertions, disputes, source-change proposals, feedback events, expiry/correction/retraction, privacy, offline learning, and audit |
 | Narrative | Static templates | Optional supervised model gateway only after data handling, grounding, citation, validation, eval, cost, and rollback approval |
 | Recommendations | None | Grounded immutable recommendation records tied to result IDs, caveats, and approved intervention references |
 | Decisions | None | Authorized Regional HR review with `accepted`, `modified`, `declined`, or `deferred`, required rationale, immutable generated recommendation, and durable audit |
@@ -235,6 +285,8 @@ The store is process memory only, holds at most 100 newest events, returns at mo
 | `TECH-R-002` | Risk | Report content is called deterministic although IDs/timestamps vary; validation must compare semantic fields, not whole-response bytes. |
 | `TECH-R-003` | Risk | The implemented versioned contract registry is not a formal OpenAPI/JSON Schema compatibility program; production still requires generated schema conformance and deprecation policy. |
 | `TECH-R-004` | Risk | Local security headers do not replace authentication, authorization, secrets, deployment hardening, or privacy review. |
+| `TECH-R-005` | Risk | Monthly and quarterly results are conflated or history is overwritten by a correction. Persist run authority and immutable recast lineage and validate every comparison. |
+| `TECH-R-006` | Risk | Conversational context becomes uncontrolled long-term memory or silently affects deterministic authority. Persist only confirmed structured records with purpose/expiry/privacy controls and hard score/source/rule prohibitions. |
 
 ## Cross-references
 

@@ -1,12 +1,12 @@
 # HR Fitness Check Agent/RAG alignment plan
 
-Version: 0.3
+Version: 0.4
 Status: Draft implementation plan
-Last updated: 2026-08-10
+Last updated: 2026-08-17
 
 ## Planning thesis
 
-Keep HR Fitness Check as a governed quarterly Standard Work assessment. Do not convert it into a general agent. Deterministic catalog, source, rule, and result services remain authoritative; retrieval supplies governed context; AI may produce a supervised narrative only after those controls pass.
+Keep HR Fitness Check as a bounded Standard Work quality-improvement workflow, not a general agent. The operating rhythm has two distinct authorities: monthly progress checks are provisional operational reports, while certified Quarterly Fitness Checks are the formal C03-C06 record. Deterministic catalog, source, rule, run, and result services remain authoritative; governed retrieval may add attributed site context; AI may ask focused questions, synthesize findings, and propose actions only after those controls pass.
 
 ## Current state
 
@@ -30,8 +30,10 @@ flowchart LR
   Scope --> Orchestrator["Bounded Fitness Check workflow"]
   Capability --> Orchestrator
   Orchestrator --> Retrieval["Source/result retrieval"]
+  Orchestrator --> ContextStore["Governed context and feedback store"]
   Orchestrator --> Broker["Tool broker"]
   Retrieval --> Context["Context guard"]
+  ContextStore --> Context
   Broker --> Context
   Context --> Model["Approved model gateway"]
   Model --> Output["Output validator"]
@@ -51,9 +53,25 @@ These remain proposed until owners approve the corresponding ADRs.
 | Retrieval | Metadata/keyword and deterministic structured lookups in MVP; no vector or graph dependency. |
 | Scoring | Deterministic rule engine before any model call. |
 | Autonomy | L0-L3 default; L4 preview only for manual input/publishing; L5 disabled; L6 out of scope. |
-| Context | Approved canonical objects and result facts only; access filtered and minimized before model context. |
-| Memory | Request/session state only unless a separate retention decision approves more. |
+| Assessment authority | Monthly runs are provisional; Quarterly Fitness Check runs become formal only through certification. On-demand previews and historical recasts remain separately labeled and versioned. An annual summary is a derived report over certified Quarterly Fitness Checks, not an assessment or scoring run. |
+| Context | Approved canonical objects and result facts are authoritative. Verified or user-confirmed contextual assertions may be retrieved only within approved scope, purpose, audience, effective dates, and retention. |
+| Memory | Request/session state is ephemeral. Durable context is allowed only as a structured `context_assertion`, `evidence_dispute`, `source_change_proposal`, or `feedback_event` after an explicit save preview and confirmation; raw chat is not durable product memory. |
 | Recommendation sources | VOC/TM Experience roadmap material may support recommendations only after artifact-level approval; it is not scoring input. |
+| Learning | Interaction feedback can revise the current draft. Product learning is offline and governed: classify/redact, review, propose a versioned change, evaluate, approve, release, and monitor. No automatic training, prompt change, source change, scoring change, or policy change follows from chat input. |
+
+## Assessment-run and context flow
+
+1. Resolve user identity, authorized site/rollup scope, requested run type, period, and workflow purpose.
+2. Select the effective catalog, source mappings, rules, evidence windows, and aggregation methods for the run.
+3. Freeze source snapshots and calculate deterministic item results. A monthly run receives `provisional` authority; a quarterly run remains `pending_certification` until required manual evidence, reconciliation, and sign-off pass.
+4. Retrieve the last certified Quarterly Fitness Check, current/prior comparable progress runs, open actions, source incidents, and in-scope contextual assertions. Expired, withdrawn, superseded, unauthorized, or prohibited-use context is excluded.
+5. Present system findings and caveats before asking focused questions. The agent keeps system evidence, user-provided context, interpretation, and recommendation visibly separate.
+6. Classify user feedback. Evidence disputes and source-change reports create proposals; operational context can become a scoped assertion; recommendation and narrative feedback become feedback events.
+7. Preview the normalized record, scope, audience, allowed use, prohibited use, effective dates, verification state, and expiry. Persist only after explicit user confirmation and return a receipt.
+8. Use confirmed context in the applicable monthly narrative or recommendation constraint without changing a deterministic score, denominator, approved source mapping, or rule.
+9. Quarterly Fitness Check certification uses only approved evidence and authorized manual review. Monthly colors are never averaged to produce the quarterly result; each item uses its approved quarterly construction method.
+10. Historical changes create a new recast run linked to the superseded run. They never overwrite the prior result or control history.
+11. An annual summary composes the applicable certified Quarterly Fitness Check report/result references, comparability caveats, action/outcome history, and approved narrative. It creates no fifth run, recalculates no score, and cannot replace a quarterly certification.
 
 ## Exact artifact plan
 
@@ -103,9 +121,10 @@ Exit evidence: approved catalog, source candidates, decision records, and no amb
 ### Phase 1: Deterministic assessment core
 
 1. Implement approved source connectors or views with manifests and active-version semantics.
-2. Implement catalog, source mapping, rule, result, and rollup schemas.
+2. Implement assessment-period, assessment-run, catalog, source mapping, rule, result, report, and rollup schemas.
 3. Implement scoring outside the model.
-4. Reconcile results against SME-approved examples and recast the baseline only after the denominator decision.
+4. Implement item-level monthly and quarterly window/aggregation contracts, run authority, comparability, certification, and immutable recast lineage.
+5. Reconcile results against SME-approved examples and recast the baseline only after the denominator decision.
 
 Exit evidence: exact scoring fixtures pass; missing/manual/stale/unmapped cases never receive fabricated ratings.
 
@@ -121,9 +140,10 @@ Exit evidence: read-only alpha evals, access-denial tests, redacted traces, and 
 ### Phase 3: Supervised RAG and narrative
 
 1. Assemble citation-ready context from approved results, canonical rules, source metadata, and caveats.
-2. Use one approved model profile and one versioned prompt package.
-3. Validate schema, citations, unsupported claims, privacy, caveats, and action-boundary language.
-4. Capture review feedback as product evidence, not training data.
+2. Add structured, scoped, user-confirmed contextual assertions plus dispute/source-change/feedback capture with expiry, correction, retraction, and verification workflows.
+3. Use one approved model profile and one versioned prompt package.
+4. Validate schema, citations, attribution layers, unsupported claims, privacy, caveats, question usefulness, and action-boundary language.
+5. Capture review feedback as governed product evidence, not automatic training data.
 
 Exit evidence: narrative gold cases and human review thresholds pass with zero critical unsupported claims.
 
@@ -140,7 +160,10 @@ Exit evidence: explicit approval and rollback tests pass. L6 remains out of scop
 - Every enabled capability has an owner, feature flag, source/tool/model scope, output schema, eval gate, rollout state, and rollback.
 - Every enabled source has an approved owner, steward, classification, audience, workflow, freshness, retention, redaction, citation, and active version.
 - Deterministic scoring reconciles to approved examples.
+- Monthly and quarterly run construction, authority, certification, recast, and comparability cases pass independently; quarterly results are never derived by averaging monthly colors.
 - Unauthorized, stale, conflicting, injected, missing, manual, and unsafe-action cases fail as designed.
+- Context save/use/expiry/correction/retraction tests pass, and unverified conversational input causes zero score, denominator, source, rule, or policy changes.
+- Offline learning changes require a reviewed proposal, regression evidence, approval, versioned release, rollback target, and post-release monitoring.
 - Shared traces contain no raw sensitive payloads.
 - Audit samples prove route, capability, source, tool, model, prompt, validation, approval, and feedback state.
 - Support, review sampling, incident ownership, and rollback dry runs are complete.
@@ -151,4 +174,4 @@ Exit evidence: explicit approval and rollback tests pass. L6 remains out of scop
 - Multi-agent orchestration without a measured need.
 - Autonomous source-system writes or employment decisions.
 - Associate-level findings in shared UI, narrative, Confluence, traces, or eval exports.
-- Vector search, GraphRAG, long-term memory, or curated cache in MVP without benchmark and governance approval.
+- Vector search, GraphRAG, unstructured long-term chat memory, or curated cache in MVP without benchmark and governance approval.

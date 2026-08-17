@@ -4,13 +4,19 @@ Status: Q3 2026 launch planning; MVP review build available; approval gates rema
 Source of truth: Reviewed repository content; GitHub becomes authoritative after approved changes are committed and pushed
 Current PRD: docs/HR-Fitness-Check-PRD.md
 Target launch: 2026-09-28
-Last updated: 2026-08-12
+Last updated: 2026-08-17
 
 ## Purpose
 
-HR Fitness Check is an ORBIT product for quarterly C03-C06 HR Standard Work assessment across FC and Rx. It replaces a manually compiled, site-self-graded process with objective, repeatable, and traceable measurement while retaining authorized human review for manual and physical requirements.
+HR Fitness Check is an ORBIT product for continuous C03-C06 HR Standard Work improvement across FC and Rx. It replaces a manually compiled, site-self-graded process with objective, repeatable, and traceable measurement while retaining authorized human review for manual and physical requirements.
+
+The target operating model has four explicit run types: provisional Monthly Progress Checks for early course correction, formal Quarterly Fitness Checks (`quarterly_fitness_check`) whose results may reach certified state, authorized On-Demand Previews that remain draft, and Historical Recasts that create a new version without overwriting history. Every production measure requires separately approved monthly and quarterly construction rules; monthly colors are not averaged into quarterly ratings.
+
+The annual and year-to-date Fitness Check view is a reporting summary derived from certified Quarterly Fitness Checks. It is not a fifth scoring run and must disclose any missing or uncertified quarter.
 
 The Q3 2026 target state is a governed closed loop: deterministic rules score approved measures; AI converts grounded results into site-specific insights and recommended paths to green; Regional HR reviewers accept, modify, decline, or defer each recommendation with rationale; and accepted actions can be recorded in the approved SharePoint tracker only after explicit user confirmation. Later comparable measurements link actions to verified quality movement and sustained results.
+
+The conversational agent is also a governed interface for questions, attributed operational context, evidence disputes, source/process-change proposals, and feedback. It asks focused follow-up questions and previews any durable context before confirmation. Context is scoped, time-bounded, access-controlled, reviewable, correctable, and visibly separate from system evidence. It may improve an applicable narrative or recommendation, but it cannot by itself change a deterministic score, approved source mapping, rule, denominator, or certified Quarterly Fitness Check result.
 
 The product is being built for and in close collaboration with Weipan Le. It is estimated to make approximately 540 HR hours available annually for action rather than assessment compilation, representing $33,123 in estimated annual capacity value. These are planning estimates, not realized savings, until the baseline, live-source pilot, and reporting treatment are approved.
 
@@ -18,19 +24,20 @@ The current repository preserves the existing product intent while aligning the 
 
 ## Current Assessment
 
-HR Fitness Check is directionally aligned with the target Agent/RAG architecture because the PRD protects deterministic scoring, manual evidence, missing data, stale data, human review, explicit action confirmation, and outcome lineage. It is not yet pilot-ready as a governed agent/RAG implementation because the catalog, source mappings, rules, access controls, recommendation workflow, SharePoint action class, eval gates, observability, audit, rollout, and outcome policies still need approval and implementation.
+HR Fitness Check is directionally aligned with the target Agent/RAG architecture because the PRD protects deterministic scoring, manual evidence, missing data, stale data, human review, explicit action confirmation, context provenance, and outcome lineage. It is not yet pilot-ready as a governed agent/RAG implementation because the catalog, source mappings, monthly/quarterly construction rules, Quarterly Fitness Check certification workflow, annual reporting lineage, structured context/feedback lifecycle, access controls, recommendation workflow, SharePoint action class, eval gates, observability, audit logging, rollout, and outcome policies still need approval and implementation.
 
-The latest audit-sheet disposition is:
+The latest Fitness Check matrix disposition is:
 
 | Disposition | Count | Meaning |
 | --- | ---: | --- |
 | Working in-scope intent | 33 | Business intent only; not an approved production denominator. |
 | Current owner role populated | 33 | Named accountability and approval remain open. |
-| Draft Column G dispositions in the published source-integrated derivative | 33 | 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived. |
+| Draft Column G dispositions in the published original SharePoint workbook | 33 | 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived. |
 | Production-approved source mappings | 0 | Source and scoring readiness remain incomplete. |
+| Production-approved monthly/quarterly measure contracts | 0 | Cadence, construction, certification, and comparability remain approval-pending. |
 | Reviewer / result populated in the July 29 SharePoint baseline | 0 | Review and scoring evidence remain incomplete. |
 
-The original SharePoint workbook baseline, last modified 2026-07-29, remains unchanged: it retains `Resource to Check` in Column F and has a blank `Snowflake Table` mapping target in Column G. A separate source-integrated derivative was published and version-verified in OneDrive/SharePoint on 2026-08-12: [ORBIT - HR Fitness Check Matrix - Column G Source Integrated.xlsx](https://chewycomllc-my.sharepoint.com/personal/kwallace12_chewy_com/_layouts/15/Doc.aspx?sourcedoc=%7B971B883B-58B1-4D00-9855-78956F8517F1%7D&file=ORBIT%20-%20HR%20Fitness%20Check%20Matrix%20-%20Column%20G%20Source%20Integrated.xlsx&action=default&mobileredirect=true), item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. Fifteen candidate mappings still depend on sandbox objects, two candidates depend on governed external sources, and none of the 33 mappings is production-approved.
+The exact original SharePoint workbook, [ORBIT - HR Fitness Check Matrix.xlsx](https://chewycomllc-my.sharepoint.com/:x:/r/personal/kwallace12_chewy_com/_layouts/15/Doc.aspx?sourcedoc=%7B1DFA0CDA-2819-45AF-BC80-53D46C594575%7D&file=ORBIT%20-%20HR%20Fitness%20Check%20Matrix.xlsx&action=default), now contains the source-integrated Column G mapping and governed design checklists. Post-write verification on 2026-08-17 confirmed the same drive item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, version `34.0`, last modified `2026-08-17T16:16:20Z`, size 37,518 bytes, with `G2:G34` 33/33 exact and nonblank plus `Measure Contract`, `Cadence & Context`, and `Product Readiness` sheets with 19 gates. Content verification confirms `quarterly_fitness_check` and `annual_summary` are present and the legacy `quarterly_audit` label is absent. Fifteen candidate mappings still depend on sandbox objects, two candidates depend on governed external sources, and none of the 33 mappings, cadence contracts, rules, or release gates is production-approved.
 
 Q3 2025 baseline percentages remain discovery evidence only until the approved V1 denominator, implementation modes, source mappings, and missing-data policy are finalized.
 
@@ -67,6 +74,7 @@ HR-Fitness-Check/
 |-- docs/
 |   |-- HR-Fitness-Check-PRD.md
 |   |-- HR-Fitness-Check-Q3-2026-Product-Narrative.md
+|   |-- HR-Fitness-Check-Internal-Press-Release.md
 |   |-- Reviewed-Checklist-Disposition.md
 |   |-- Architecture-Alignment-Assessment.md
 |   |-- Agent-RAG-Alignment-Plan.md
@@ -106,6 +114,7 @@ HR-Fitness-Check/
 | --- | --- |
 | docs/HR-Fitness-Check-PRD.md | Current product requirements and source-of-truth publishing model. |
 | docs/HR-Fitness-Check-Q3-2026-Product-Narrative.md | Leadership-ready Q3 2026 overview, roadmap, value statement, and definition boundaries. |
+| docs/HR-Fitness-Check-Internal-Press-Release.md | Internal future-state working-backwards narrative; not a launch announcement or evidence of realized value. |
 | docs/Reviewed-Checklist-Disposition.md | Latest 33-task-row working catalog and reconciliation notes. |
 | docs/Architecture-Alignment-Assessment.md | Gap assessment against Agent Protocol and RAG Protocol. |
 | docs/Agent-RAG-Alignment-Plan.md | Practical product-preserving architecture alignment plan. |
@@ -114,7 +123,7 @@ HR-Fitness-Check/
 | knowledge-base/retrieval-context-assembly.md | Route-before-retrieval context assembly, access filters, citations, and failure behavior. |
 | docs/Capability-Registry-and-Route-Policy.md | Registered capabilities, routes, autonomy levels, and fallback behavior. |
 | docs/Tool-Action-Governance.md | Tool boundaries, action classes, approvals, and disabled write controls. |
-| docs/Evaluation-Observability-Audit.md | Eval gates, gold cases, trace fields, audit envelope, and release thresholds. |
+| docs/Evaluation-Observability-Audit.md | Eval gates, gold cases, trace fields, audit-trail envelope, and release thresholds. |
 | docs/Rollout-and-Operating-Model.md | Pilot gates, operating reviews, rollback, incidents, and ownership. |
 | docs/Confluence-PRD-Publishing-Copy.md | Retired tombstone that prohibits reuse of the superseded June 30 replacement body. |
 | docs/Confluence-PRD-Structure-Preserving-Fact-Check.md | Retired tombstone for the superseded version 14 / June 30 fact-check instructions. |
@@ -137,9 +146,9 @@ Open:
 http://127.0.0.1:8800/
 ```
 
-The MVP includes Overview, Work queue, Site review, Data readiness, Reports, and Audit views. Its reporting contract uses green share and evidence coverage with explicit numerators and denominators. Missing, stale, blocked, manual-required, and unmapped evidence is never converted to a red rating. Quarter comparisons are disabled when catalog versions are not comparable.
+The MVP includes Overview, Work queue, Site review, Data readiness, Reports, and an audit-log view. Its reporting contract uses green share and evidence coverage with explicit numerators and denominators. Missing, stale, blocked, manual-required, and unmapped evidence is never converted to a red rating. Quarter comparisons are disabled when catalog versions are not comparable.
 
-The review build is not a production system: it has no live HR-system connection, production authorization, model-generated recommendation workflow, SharePoint write-back, outcome linkage, or approved scoring denominator.
+The review build is not a production system: it has no live HR-system connection, production authorization, monthly run workflow, quarterly certification, persistent conversational context, feedback/change-proposal routing, model-generated recommendation workflow, SharePoint write-back, outcome linkage, or approved scoring denominator.
 
 ## Archived Static POC
 
@@ -167,15 +176,14 @@ The POC mirrors the local ORBIT operational cockpit reference at:
 http://127.0.0.1:8790/
 ```
 
-The interface is intentionally dense and operational: readiness metrics, source queue, illustrative site review, route policy, eval/audit controls, and a supervised assistant pane. Readiness counts come from the documented workbook review; site-level performance values are synthetic demo data only.
+The interface is intentionally dense and operational: readiness metrics, source queue, illustrative site review, route policy, evaluation/audit-trail controls, and a supervised assistant pane. Readiness counts come from the documented workbook review; site-level performance values are synthetic demo data only.
 
 ## Current Source Discovery
 
 Source discovery and ingestion planning are captured in knowledge-base. Important current facts:
 
-- The original July 29 SharePoint workbook has blank Column G values; Column F remains `Resource to Check`.
-- The separate source-integrated derivative contains draft Column G dispositions for all 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived.
-- The source-integrated derivative is published and version-verified in OneDrive/SharePoint, while the original July 29 workbook remains unchanged with blank Column G values.
+- The exact original SharePoint workbook now contains draft Column G dispositions for all 33 rows: 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; and 1 derived. Column F remains `Resource to Check`.
+- Post-write verification on 2026-08-17 confirmed the original drive item at version `34.0`, modified `2026-08-17T16:16:20Z`, size 37,518 bytes, with `G2:G34` 33/33 exact and nonblank plus `Measure Contract`, `Cadence & Context`, and `Product Readiness` sheets with 19 gates; `quarterly_fitness_check` and `annual_summary` are present, legacy `quarterly_audit` is absent, and no mapping, measure/cadence contract, rule, or release gate is production-approved.
 - Fifteen candidate mappings are sandbox-dependent; the external SNOW and LOAA leads still require governed source contracts; zero mappings are production-approved.
 - Current owner roles are populated for all 33 working rows; named accountability and approval are still required.
 - ServiceNow HR case/task objects were not found in Snowflake, but an EPA weekly resolved-case export provides an external governed-source candidate for SNOW and LOAA discovery; production scoring remains blocked pending complete/open-case coverage, cadence, site keys, and approved SLA logic.
@@ -192,7 +200,7 @@ For MVP, HR Fitness Check should operate at L0-L3:
 - L2 for deterministic status classification and readiness analysis.
 - L3 for supervised narrative recommendations grounded in scored results and caveats.
 - L4 for exact manual-input, recommendation-decision, SharePoint-action, or publishing previews after governance approval.
-- L5 disabled by default. A single supervised SharePoint action-recording class may be enabled only after explicit authorization, confirmation, idempotency, rollback, audit, and eval gates pass.
+- L5 disabled by default. A single supervised SharePoint action-recording class may be enabled only after explicit authorization, confirmation, idempotency, rollback, audit-logging, and eval gates pass.
 - L6 out of scope.
 
 Required pilot controls:
@@ -202,9 +210,12 @@ Required pilot controls:
 - Route policy before retrieval, tools, or model calls.
 - Access filtering before context assembly.
 - Deterministic scoring outside the model.
+- Explicit assessment-run authority so Monthly Progress Checks, Quarterly Fitness Checks, On-Demand Previews, Historical Recasts, and annual reporting cannot be conflated.
+- Structured context confirmation, attribution, scope, audience, verification, expiration, correction/retraction, conflict, and minimum-necessary retrieval controls.
+- Governed evidence-dispute, source/process-change, and feedback routing; conversational statements cannot silently change approved sources or scores.
 - Output validation for caveats, citations, unsupported claims, and action boundaries.
 - Eval gates before pilot.
-- Audit envelope for every run, tool call, model call, and publishing event.
+- Audit-trail envelope for every run, tool call, model call, and publishing event.
 
 ## Data Flow Target
 
@@ -212,17 +223,19 @@ Required pilot controls:
 Approved source registry
   -> canonical source mappings
   -> deterministic extraction or query
-  -> rating rules
+  -> assessment run and approved monthly/quarterly construction rules
   -> fact_fitness_check_result
   -> rollups and exceptions
-  -> supervised insight and recommendation context package
+  -> authorized questions, attributed context, disputes, and change proposals
+  -> supervised insight, narrative, and recommendation context package
   -> authorized human decision and rationale
   -> confirmed SharePoint action record
   -> comparable follow-up measurement and outcome linkage
+  -> annual or year-to-date report derived from certified Quarterly Fitness Checks
   -> validated UI, evaluation, and downstream publishing
 ```
 
-The repo does not currently include a workbook extraction script or production scoring service. Those should be implemented only after V1 denominator, owners, source mappings, rating rules, classification, and governance approvals are complete.
+The repo does not currently include a workbook extraction script, production scoring service, monthly/quarterly run controller, Quarterly Fitness Check certification workflow, annual reporting service, or persistent context/feedback service. Those should be implemented only after the V1 denominator, owners, source mappings, measure construction, rating rules, context classification/lifecycle, access, and governance approvals are complete.
 
 ## Confluence Publishing
 
@@ -246,7 +259,7 @@ When production implementation begins, create explicit contracts before adding a
 - Source contracts in knowledge-base/source-registry.md.
 - Canonical object schemas in knowledge-base/canonical-knowledge-objects.md.
 - Route and capability contracts in docs/Capability-Registry-and-Route-Policy.md.
-- Tool approval and audit contracts in docs/Tool-Action-Governance.md.
+- Tool approval and audit-trail contracts in docs/Tool-Action-Governance.md.
 - Eval and release gates in docs/Evaluation-Observability-Audit.md.
 
 ## License

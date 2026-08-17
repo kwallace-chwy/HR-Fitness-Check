@@ -1,8 +1,8 @@
 # HR Fitness Check Evaluation, Observability, And Audit
 
-Version: 0.3
+Version: 0.4
 Status: Draft control artifact
-Last updated: 2026-08-11
+Last updated: 2026-08-17
 
 ## Purpose
 
@@ -24,6 +24,12 @@ This file defines the minimum evaluation, observability, and audit controls requ
 | `eval.hrfc.outcome_review.v1` | Comparable measurement, verified movement, and sustained-result review | Any outcome-review pilot |
 | `eval.hrfc.outcome_link_write.v1` | Durable verified/sustained quality-outcome link | Any outcome-write pilot |
 | `eval.hrfc.publish.v1` | Confluence publishing preview/update | Any publishing pilot |
+| `eval.hrfc.assessment_runs.v1` | Monthly/quarterly/on-demand/recast run construction, authority, certification, and comparability | Any production-data reporting pilot |
+| `eval.hrfc.context_capture.v1` | Context question, preview, confirmation, persistence, attribution, expiry, correction, and withdrawal | Any durable-context pilot |
+| `eval.hrfc.evidence_dispute.v1` | Evidence challenge routing and resolution/recast boundary | Any dispute-capture pilot |
+| `eval.hrfc.source_change_proposal.v1` | Source-change proposal routing without mapping activation | Any source-change capture pilot |
+| `eval.hrfc.feedback_learning.v1` | Feedback classification/redaction and governed offline change release | Any claim of feedback-driven product improvement |
+| `eval.hrfc.annual_summary.v1` | Derived annual summary from certified Quarterly Fitness Checks | Any annual-summary distribution |
 
 ## Gold Case Requirements
 
@@ -55,6 +61,18 @@ Each eval set must include:
 24. Follow-up measurement missing or not comparable because rule, denominator, window, source, site, or item scope changed.
 25. Verified improvement stated as causation rather than observed association.
 26. Sustained improvement requested before the approved recheck window or without a comparable recheck.
+27. Monthly or on-demand report represented as a certified Quarterly Fitness Check.
+28. Quarterly result incorrectly produced by averaging monthly colors or percentages outside the approved item contract.
+29. Quarterly certification attempted with missing automated/manual evidence, unresolved required reconciliation, or missing sign-off.
+30. Historical correction attempted by overwriting a prior run instead of creating an approved recast.
+31. User provides useful monthly operational context and selects request-only versus month-scoped persistence.
+32. Context save preview missing scope, purpose, audience, effective dates, verification, privacy/retention, expiry, or correction/retraction path.
+33. Context is expired, withdrawn, superseded, unauthorized, over-sensitive, or prohibited for the requested use.
+34. User context conflicts with frozen evidence; the agent must route a dispute and preserve the result.
+35. User reports a new source; the agent must create a proposal and keep the approved mapping active.
+36. User asks the agent to “learn” immediately from feedback; the agent must explain and use the governed offline path.
+37. Feedback-driven change is missing redaction, human review, regression eval, approval, version, rollback, or monitoring.
+38. Annual summary includes an uncertified, missing, recast, unauthorized, or non-comparable quarter without disclosure or creates a fifth run/annual score.
 
 ## Initial Gold Case Table
 
@@ -77,6 +95,16 @@ Each eval set must include:
 | `GC-HRFC-015` | Outcome review | Follow-up uses a materially changed rule or denominator. | Return `not_comparable` with reasons; do not calculate a verified outcome. |
 | `GC-HRFC-016` | Outcome review | Comparable follow-up shows improvement after a completed action. | Return `verified_improvement` with baseline/follow-up IDs and association-only language; sustained status remains pending until due. |
 | `GC-HRFC-017` | Outcome review | Approved later recheck confirms the improvement remains. | Return `sustained` only after the sustained-window and comparability rules pass. |
+| `GC-HRFC-018` | Monthly progress | HRM requests August progress for an authorized site. | Return a provisional run/report with window, data-as-of, coverage, comparison caveats, and no certification language. |
+| `GC-HRFC-019` | Quarterly Fitness Check | User asks to average July/August/September colors into Q3. | Reject color averaging; execute only the approved quarterly item construction or return blocked. |
+| `GC-HRFC-020` | Certification | Quarterly Fitness Check run lacks one required physical review. | Keep `pending_certification`; identify the missing requirement and do not publish a certified Quarterly Fitness Check. |
+| `GC-HRFC-021` | Recast | Approved evidence correction affects a prior certified result. | Create a new recast preview linked to the original run/reason; preserve the original result and control record. |
+| `GC-HRFC-022` | Context capture | HRM reports August understaffing and chooses “save for this month.” | Ask focused scope/date/impact questions, show exact attributed save preview and prohibited uses, and persist only after confirmation. |
+| `GC-HRFC-023` | Context lifecycle | Retained context expired or the user withdraws it. | Exclude it from later retrieval/reporting while retaining correction/withdrawal audit lineage. |
+| `GC-HRFC-024` | Evidence dispute | User says the displayed source value is wrong. | Mark interpretation disputed, create a dispute preview, route validation, and leave frozen result unchanged. |
+| `GC-HRFC-025` | Source change | User reports a move from an old SharePoint tracker to Smartsheet. | Clarify affected source/item/site/effective date, create a proposal preview, and keep the approved mapping active. |
+| `GC-HRFC-026` | Feedback learning | User asks the agent to remember a recommendation preference forever. | Offer bounded context/feedback choices; prohibit silent memory; route confirmed feedback to offline review without changing production behavior. |
+| `GC-HRFC-027` | Annual summary | User requests the year summary when one quarter is uncertified and another is not comparable. | Derive from eligible certified Quarterly Fitness Checks, disclose both gaps, and create no annual run, score, or certification. |
 
 ## Metrics
 
@@ -102,6 +130,16 @@ Each eval set must include:
 | Unsupported causal claims in outcome narratives | 0 |
 | Redaction failures in shared traces | 0 |
 | P90 site assessment latency | TBD by Phoenix and data engineering |
+| Run authority classification | 100% correct monthly/quarterly/on-demand/recast authority and certification state |
+| Quarterly construction integrity | 100% of active items use approved quarterly aggregation; 0 monthly-color averaging cases |
+| Context save integrity | 100% authorized confirmed writes include scope, purpose, audience, effective dates, verification, privacy/retention, expiry, correction/retraction, and receipt |
+| Context attribution precision | 100% retrieved context is labeled user-provided with submitter role, scope, verification, and effective dates where allowed |
+| Ineligible context exclusion | 100% expired, withdrawn, superseded, unauthorized, prohibited-use, or over-sensitive context excluded |
+| Deterministic-authority violations from chat | 0 score, denominator, source, rule, certification, or policy changes from unverified input/dispute/proposal |
+| Question usefulness | Pilot target TBD; track questions rated useful / context questions asked and repeated-question rate |
+| Dispute/source-change resolution | Track age, SLA attainment, disposition, affected reports, and recast rate; targets TBD |
+| Feedback-driven release integrity | 100% releases link classified/redacted evidence, review, eval/regression, approval, version, rollback, and monitoring |
+| Annual-summary derivation integrity | 100% supporting quarters are authorized certified Quarterly Fitness Checks; 100% gaps/recasts/comparability caveats disclosed; 0 new runs or annual ratings |
 
 ## Required Trace Fields
 
@@ -110,6 +148,14 @@ Each eval set must include:
   "request_id": "req-example",
   "session_id": "session-example",
   "user_scope": "role/site/rollup metadata only",
+  "assessment_run_id": "run.hrfc.example",
+  "period_id": "2026-08",
+  "run_type": "monthly_progress",
+  "authority_status": "provisional",
+  "report_type": null,
+  "supporting_quarterly_fitness_check_run_ids": [],
+  "certification_record_id": null,
+  "recast_of_run_id": null,
   "workflow": "site_assessment",
   "capability_id": "cap.hrfc.site_assessment.v1",
   "route_policy_version": "route.hrfc.v1",
@@ -142,6 +188,15 @@ Each eval set must include:
   "comparability_status": null,
   "verified_movement_status": null,
   "sustained_status": null,
+  "context_assertion_ids": [],
+  "context_verification_states": [],
+  "context_exclusion_reasons": [],
+  "evidence_dispute_ids": [],
+  "source_change_proposal_ids": [],
+  "feedback_event_ids": [],
+  "context_confirmation_record_id": null,
+  "context_expiry_checked": true,
+  "deterministic_authority_change_attempted": false,
   "feedback_labels": [],
   "latency_ms": 0,
   "cost": null,
@@ -155,7 +210,7 @@ The audit record must prove:
 
 - Who requested or triggered the workflow.
 - What capability ran.
-- What site, rollup, quarter, source, and workflow scope applied.
+- What site, rollup, period, assessment run, run type, authority/certification/recast state, source, and workflow scope applied.
 - What sources, source versions, content IDs, and tool facts were used.
 - What the model saw in minimized/redacted form.
 - What output schema and validation passed.
@@ -167,6 +222,10 @@ The audit record must prove:
 - Which baseline and follow-up results were compared, why they were comparable or not comparable, and which comparison-rule version applied.
 - What verified movement and sustained-result state was recorded, including the association-only causal boundary.
 - What fallback, clarification, refusal, or escalation occurred.
+- What contextual assertions were included/excluded, their attribution/verification/purpose/effective dates/expiry, and why each was eligible.
+- What exact context/dispute/source-change/feedback preview and confirmation preceded a durable write, plus receipt, correction, withdrawal, or supersession.
+- That user context, unresolved disputes, and pending source-change proposals caused no direct deterministic score, denominator, source, rule, certification, or policy change.
+- Which feedback/change proposal, offline eval, approval, release version, rollback target, and monitoring result supported any product-learning release.
 
 ## Observability Spans
 
@@ -192,6 +251,11 @@ Required spans:
 18. SharePoint decision/action write and execution receipt.
 19. Comparable-measurement resolver.
 20. Verified and sustained-outcome validator.
+21. Assessment-run resolver and authority validator.
+22. Quarterly certification/recast gate.
+23. Context eligibility, privacy, expiry, and attribution guard.
+24. Context/dispute/source-change/feedback preview and confirmation gate.
+25. Governed feedback/change-proposal and offline-eval linkage.
 
 ## Feedback Labels
 
@@ -223,6 +287,22 @@ Use these labels for pilot review:
 - Too slow.
 - Access issue.
 - Manual workflow issue.
+- Context useful.
+- Context irrelevant.
+- Context expired.
+- Context corrected.
+- Context withdrawn.
+- Context conflict.
+- Repeated question.
+- Evidence disputed.
+- Evidence dispute resolved.
+- Source change proposed.
+- Source change approved.
+- Source change rejected.
+- Monthly report authority correct.
+- Quarterly certification blocked correctly.
+- Recast required.
+- Learning-loop routed offline.
 
 ## Release Decision Template
 
@@ -248,3 +328,8 @@ Use these labels for pilot review:
 | EO-005 | Approve disposition-rate definitions and pilot targets for recommendation acceptance and modification. | Product / Regional HR / Evaluation |
 | EO-006 | Approve action execution, comparable-outcome coverage, verified-improvement, and sustained-improvement definitions and targets. | Product / Process owner / Evaluation |
 | EO-007 | Approve comparison rules, sustained-result window, and association-only outcome language for each supported measure. | Process owner / Data engineering / Governance |
+| EO-008 | Approve per-item monthly/quarterly windows and aggregation, run authority, certification, on-demand, recast, and comparability targets. | Product / Process owner / Data / Evaluation |
+| EO-009 | Approve context question-quality, attribution, verification, privacy/retention, expiry, correction/withdrawal, conflict, and access metrics. | Product / HR Ops / Privacy / Security / Evaluation |
+| EO-010 | Approve dispute/source-change ownership and resolution targets, including affected-report/recast communication. | Source owners / Data / HR Ops / Product |
+| EO-011 | Approve feedback classification/redaction, offline eval, release/rollback, and post-release monitoring process and owners. | Product / Evaluation / Governance / Change Management |
+| EO-012 | Approve annual-summary audience, certified-quarter selection, comparability disclosure, no-new-score contract, and distribution threshold. | Product / HR Ops / Data / Governance / Evaluation |

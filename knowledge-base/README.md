@@ -1,12 +1,12 @@
 # HR Fitness Check Knowledge Base
 
 Status: Draft discovery knowledge base
-Last updated: 2026-08-12
+Last updated: 2026-08-17
 Product: ORBIT HR Fitness Check
 
 ## Purpose
 
-This knowledge base captures source-discovery findings for HR Fitness Check ingestion. It translates the reviewed PRD/checklist into data-source leads, ingestion candidates, open blockers, and Snowflake discovery steps.
+This knowledge base captures source-discovery findings and the governed knowledge model for HR Fitness Check. It translates the reviewed PRD/checklist into data-source leads, ingestion candidates, open blockers, Snowflake discovery steps, dual-cadence assessment-run contracts, and structured context/feedback controls.
 
 Tagline: Fitness check measures the quality of standard work. Is the stated process being followed?
 
@@ -19,10 +19,25 @@ Start with these files:
 - `knowledge-base/ingestion-backlog.md` for the first source-mapping tranche, the current 33-row working-catalog boundary, and explicitly historical June 30 crosswalks.
 - `knowledge-base/snowflake-discovery-playbook.md` for SQL templates and access checks to run once Snowflake access is available.
 - `knowledge-base/research-log.md` for what has already been searched and what was not found.
+- `knowledge-base/canonical-knowledge-objects.md` for monthly/quarterly assessment runs, results, reports, contextual assertions, disputes, source-change proposals, feedback, decisions, actions, and outcomes.
+- `knowledge-base/retrieval-context-assembly.md` for authority-aware retrieval, contextual attribution, privacy, expiry, and failure behavior.
+
+## Target Product Boundary
+
+The future product has two distinct reporting authorities:
+
+- Monthly Progress Checks are provisional operational reports used to review movement, evidence gaps, open actions, and attributed site context.
+- Certified Quarterly Fitness Checks are the formal C03-C06 record and require approved evidence, manual review where applicable, reconciliation, and authorized certification.
+
+Monthly ratings are not averaged into quarterly ratings. Every Standard Work item requires an approved monthly and quarterly evidence window and aggregation method. On-demand previews and historical recasts are separate immutable assessment runs with explicit authority and lineage.
+
+An annual summary is a derived reporting artifact built from the applicable certified Quarterly Fitness Checks. It is not a fifth assessment/scoring run, does not recalculate ratings, and must disclose missing or non-comparable quarters.
+
+The conversational agent may ask focused questions and, after an exact save preview and user confirmation, persist structured context for an approved scope and purpose. Durable context must include attribution, effective dates, verification status, audience, allowed/prohibited uses, privacy/retention, expiry, and correction/withdrawal history. Unverified chat input cannot change a deterministic score, denominator, approved source mapping, rule, or certification. Feedback can support governed offline evaluation, but it does not automatically train or reconfigure the product.
 
 ## Current Discovery Summary
 
-The original SharePoint source workbook was last modified 2026-07-29 16:32:27 UTC. It contains 33 task rows, all marked `In Scope.`, with owner roles populated for all 33; its source-table, reviewer, and result fields were blank when fetched and remain unchanged. A separate source-integrated derivative was published and version-verified in OneDrive/SharePoint on 2026-08-12 as item `01LYSC3QJ3RANZPMKYABGZQVLYSVXYKF7R`, version `1.0`, 17,144 bytes. The catalog remains approval-pending: stable IDs, implementation modes, source contracts, rating rules, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision. The local MVP is read-only and uses synthetic fixture results.
+The exact original SharePoint source workbook contains all 33 source-integrated Column G dispositions and the new governed design checklists. Post-write verification on 2026-08-17 confirmed the same drive item `01LYSC3QO2BT5B2GJIV5C3ZACT2RWFSRLV`, filename `ORBIT - HR Fitness Check Matrix.xlsx`, version `34.0`, last modified `2026-08-17T16:16:20Z`, size 37,518 bytes, with `G2:G34` 33/33 exact and nonblank plus `Measure Contract`, `Cadence & Context`, and `Product Readiness` sheets with 19 gates. Content verification confirms `quarterly_fitness_check` and `annual_summary` are present and legacy `quarterly_audit` is absent. The catalog remains approval-pending: stable IDs, implementation modes, source contracts, rating rules, cadence construction, and approvals are unapproved, and five June 30 rows are absent without an approved removal decision. The local MVP is read-only and uses synthetic fixture results.
 
 The 33-row source-integrated mapping disposition is 21 candidate, including 2 external governed-source candidates; 5 blocked; 5 manual/hybrid; 1 validated-object/rule-pending; 1 derived; and 0 approved. Fifteen candidates remain sandbox-dependent. `Validated-object/rule-pending` confirms metadata only; it does not authorize production scoring. All `SANDBOX` objects are discovery candidates, not production-certified sources. Finding a source is not approval to ingest or score it.
 
@@ -92,5 +107,5 @@ Practical solution:
 3. Reconcile each sandbox candidate to Tableau/source-owner definitions and identify a production-certified target before any scoring use.
 4. Ask HRDM/Workday owners for beneficiary and emergency-contact field/report mapping because those fields were not discoverable by obvious column names.
 5. Ask ServiceNow/HRDM owners for the actual production schema or database containing HR case/task replication.
-6. Verify the live SharePoint workbook version before claiming the local Column-G derivative was published.
+6. After every approved mapping change, re-read the exact original SharePoint item and verify its version, `G2:G34` nonblank count, and exact manifest match before claiming synchronization.
 7. Optionally install `snowflake-connector-python[secure-local-storage]` in the existing venv to reduce repeated browser SSO prompts.
